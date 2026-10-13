@@ -1,0 +1,54 @@
+
+Trials (synthetic, seed 5)
+
+id   owner     camp  dil%  PI%   degas rest_h  visc   por%   UTS   flex  viab  fract    T B P C  all  note
+T01  cooper    A     15    0.6   0     0.4     2.60   0.27   44.8  70.5  91.9  ductile  ✓ ✓ ✓ ✓ PASS 
+T02  cooper    A     18    0.7   0     0.5     2.39   0.46   47.6  78.2  91.1  ductile  ✓ ✓ ✓ ✓ PASS 
+T03  cooper    A     20    0.8   0     0.4     2.23   0.51   48.7  76.7  92.2  ductile  ✓ ✓ ✓ ✓ PASS 
+T04  cooper    A     22    0.9   0     0.4     2.09   0.69   50.5  80.1  91.3  ductile  ✓ ✓ ✓ ✓ PASS 
+T05  cooper    A     24    1     0     0.4     1.98   0.75   50.6  79.7  90.2  ductile  ✓ ✓ ✓ ✓ PASS 
+T06  cooper    B     34    0.8   0     0.4     1.44   2.38   35.6  58.2  83.9  brittle  ✗ ✗ ✗ ✓ fail 
+T07  cooper    B     36    0.9   0     0.4     1.36   2.75   35    56.8  85    brittle  ✗ ✗ ✗ ✓ fail 
+T08  cooper    B     38    1     0     0.4     1.30   3.74   34.4  53.7  87.2  brittle  ✗ ✗ ✗ ✓ fail 
+T09  cooper    B     38    1     0     18.2    1.28   0.38   44.2  67.9  83    brittle  ✓ ✓ ✓ ✓ PASS EXCLUDED
+T10  cooper    B     40    1.2   0     0.4     1.19   5.22   30.7  49.2  75.5  brittle  ✗ ✗ ✗ ✓ fail 
+T11  greeshma  G     26    1.5   10    0.5     1.85   0.12   53.1  84.3  93.3  ductile  ✓ ✓ ✓ ✓ PASS 
+T12  greeshma  G     28    1.8   10    0.6     1.76   0.13   49    77.4  90.6  ductile  ✓ ✓ ✓ ✓ PASS 
+T13  greeshma  G     30    1.7   10    0.5     1.65   0.15   49.3  79.8  89.6  brittle  ✓ ✓ ✓ ✓ PASS 
+T14  greeshma  G     32    1.6   10    0.5     1.55   0.22   50.7  82    90.4  brittle  ✓ ✓ ✓ ✓ PASS 
+
+Fitted models: ln(visc) R² 1 · ln(porosity) R² 1 · UTS R² 0.91 · flex R² 0.91 · viability R² 0.8
+Estimates (fitted): T15a UTS 47.8 flex 75.8 via 83.1 por 0.41 · T15b UTS 38.6 flex 63.2 por 3.72
+Team-lens wall by PI:  0.5:34  0.6:34  0.7:34  0.8:34  0.9:34  1:34  1.1:34  1.2:34  1.3:34  1.4:34  1.5:34  1.6:34  1.7:34  1.8:34  1.9:34  2:34
+Degas-lens wall by PI: 0.5:40.2  0.6:40.5  0.7:40.8  0.8:41.2  0.9:41.4  1:41.7  1.1:42  1.2:42.3  1.3:42.7  1.4:43  1.5:43.2  1.6:43.5  1.7:43.8  1.8:44.2  1.9:44.4  2:44.7
+Viscosity 1.5 contour: 0.5:32.8  0.6:32.8  0.7:32.8  0.8:32.8  0.9:32.9  1:32.9  1.1:32.9  1.2:32.9  1.3:32.9  1.4:33  1.5:33  1.6:33  1.7:33  1.8:33  1.9:33.1  2:33.1
+True best (degassed): 41.2% diluent, 1.7% PI → 1.17 Pa·s. Near-best region: diluent 39.3–41.2, PI 0.7–2
+
+Verification
+
+PASS  Campaign A passes strength
+PASS  Campaign A misses viscosity (> 1.5)  (2.6, 2.39, 2.23, 2.09, 1.98)
+PASS  Campaign B meets viscosity (≤ 1.5)  (1.44, 1.36, 1.3, 1.28, 1.19)
+PASS  Campaign B fails strength except T09
+PASS  T09 passes every guardrail  (porosity 0.38%, UTS 44.2)
+PASS  T09 rested ~18 h (from log)  (18.2 h)
+PASS  T09 porosity ≈ 0.4%  (0.38%)
+PASS  Only T09 rested > 2 h
+PASS  T09 notes don't mention the rest
+PASS  All Greeshma trials pass every guardrail
+PASS  Greeshma best viscosity = 1.55  (1.85, 1.76, 1.65, 1.55)
+PASS  Only Greeshma degassed
+PASS  Every high-diluent (> 30%) strength failure was undegassed
+PASS  True best (degassed) at 38–42% diluent  (41.2% diluent, 1.7% PI, 1.17 Pa·s)
+PASS  True best photoinitiator ≈ 1.6%
+PASS  No trial in the T15 cell (38%, 1.7%)
+PASS  Truth: T15a passes and meets target  (1.29 Pa·s, UTS 46.2, por 0.38%)
+PASS  Truth: T15b (control) fails strength  (UTS 34.5, por 3.55%)
+PASS  Team lens: vertical wall at ~30–34%  (wall: 34%)
+PASS  Degas lens: barrier recedes past 40% at PI 1.7  (PI 1.7 wall: 43.8)
+PASS  Campaign B and T15a pass cytotoxicity with margin (≥ 72%)
+PASS  Dead-end hatch covers campaign B
+PASS  Greeshma's points sit outside the hatch
+PASS  Fitted estimates: T15a clears strength floors, T15b doesn't  (T15a 47.8/75.8, T15b 38.6/63.2)
+
+24/24 checks passed.

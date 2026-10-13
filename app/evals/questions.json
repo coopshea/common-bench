@@ -1,0 +1,573 @@
+{
+  "generated_from": "data/notebook.json",
+  "generator": "evals/build-questions.ts",
+  "notebook_generated_at": "2026-10-13T09:30:00",
+  "seed": 5,
+  "questions": [
+    {
+      "id": "q01",
+      "category": "lookup",
+      "question": "What was T14's viscosity?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "T14: 1.55 Pa·s",
+        "numbers": [
+          {
+            "label": "T14 viscosity",
+            "values": [
+              1.55
+            ],
+            "tol": 0.005,
+            "unit": "Pa·s"
+          }
+        ],
+        "required_ids": [
+          "T14"
+        ],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q02",
+      "category": "lookup",
+      "question": "Who ran T09, and on what date?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "Cooper Shea, 2025-04-22",
+        "numbers": [],
+        "required_ids": [
+          "T09"
+        ],
+        "concepts": [
+          {
+            "label": "owner Cooper Shea",
+            "patterns": [
+              "Cooper"
+            ]
+          },
+          {
+            "label": "date 2025-04-22",
+            "patterns": [
+              "2025-04-22",
+              "Apr[a-z]*\\.?\\s+22(st|nd|rd|th)?,?\\s+2025",
+              "22\\s+Apr[a-z]*\\.?,?\\s+2025"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q03",
+      "category": "lookup",
+      "question": "What porosity did T08 have, and did it pass the porosity guardrail?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "3.74% vs ≤ 1% limit: fail",
+        "numbers": [
+          {
+            "label": "T08 porosity",
+            "values": [
+              3.74
+            ],
+            "tol": 0.005,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [
+          "T08"
+        ],
+        "concepts": [
+          {
+            "label": "failed",
+            "patterns": [
+              "\\bfail(ed|s)?\\b",
+              "did not pass",
+              "didn't pass",
+              "does not pass",
+              "doesn't pass",
+              "not pass"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q04",
+      "category": "lookup",
+      "question": "Which trials were excluded from the team's conclusions, and why?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "T09: Anomalous, likely a lucky specimen.",
+        "numbers": [],
+        "required_ids": [
+          "T09"
+        ],
+        "concepts": [
+          {
+            "label": "reason: anomalous / lucky specimen",
+            "patterns": [
+              "anomal",
+              "lucky",
+              "fluke"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q05",
+      "category": "aggregation",
+      "question": "What was the mean tensile strength (UTS) of Cooper's campaign B, with and without the excluded trial?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "All 5 (T06, T07, T08, T09, T10): 35.98 MPa; without T09: 33.92 MPa",
+        "numbers": [
+          {
+            "label": "mean UTS, all 5 campaign B trials",
+            "values": [
+              35.98
+            ],
+            "tol": 0.1,
+            "unit": "MPa"
+          },
+          {
+            "label": "mean UTS, 4 included campaign B trials",
+            "values": [
+              33.92
+            ],
+            "tol": 0.1,
+            "unit": "MPa"
+          }
+        ],
+        "required_ids": [],
+        "any_of_ids": [
+          [
+            "T09"
+          ]
+        ],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q06",
+      "category": "aggregation",
+      "question": "At 30% diluent or above, how does tensile strength (UTS) compare between degassed and undegassed trials?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "Degassed (T13, T14): mean 50 MPa; undegassed (T06, T07, T08, T09, T10): mean 35.98 MPa (33.92 without excluded T09)",
+        "numbers": [
+          {
+            "label": "mean UTS degassed ≥30% (n=2)",
+            "values": [
+              50
+            ],
+            "tol": 0.1,
+            "unit": "MPa"
+          },
+          {
+            "label": "mean UTS undegassed ≥30% (n=5, or 4 excl. T09)",
+            "values": [
+              35.98,
+              33.92
+            ],
+            "tol": 0.1,
+            "unit": "MPa"
+          }
+        ],
+        "alt_number_sets": [
+          [
+            {
+              "label": "degassed UTS min",
+              "values": [
+                49.3
+              ],
+              "tol": 0.05,
+              "unit": "MPa"
+            },
+            {
+              "label": "degassed UTS max",
+              "values": [
+                50.7
+              ],
+              "tol": 0.05,
+              "unit": "MPa"
+            },
+            {
+              "label": "undegassed UTS min",
+              "values": [
+                30.7
+              ],
+              "tol": 0.05,
+              "unit": "MPa"
+            },
+            {
+              "label": "undegassed UTS max",
+              "values": [
+                44.2,
+                35.6
+              ],
+              "tol": 0.05,
+              "unit": "MPa"
+            }
+          ]
+        ],
+        "required_ids": [
+          "T13",
+          "T14"
+        ],
+        "any_of_ids": [
+          [
+            "T06",
+            "T07",
+            "T08",
+            "T09",
+            "T10"
+          ]
+        ],
+        "concepts": [
+          {
+            "label": "names degassing as the split",
+            "patterns": [
+              "degas"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q07",
+      "category": "aggregation",
+      "question": "How many trials reached the viscosity target of 1.5 Pa·s or lower, and which of those passed every guardrail?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "5 trials (T06, T07, T08, T09, T10); passed every guardrail: T09 (excluded)",
+        "numbers": [
+          {
+            "label": "count reaching target",
+            "values": [
+              5
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10"
+        ],
+        "concepts": [
+          {
+            "label": "T09 was excluded",
+            "patterns": [
+              "exclud"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q08",
+      "category": "aggregation",
+      "question": "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "Greeshma (T11, T12, T13, T14): 0.16%; campaign A (T01, T02, T03, T04, T05): 0.54%",
+        "numbers": [
+          {
+            "label": "Greeshma mean porosity",
+            "values": [
+              0.155
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          },
+          {
+            "label": "campaign A mean porosity",
+            "values": [
+              0.5359999999999999
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [],
+        "any_of_ids": [
+          [
+            "T11",
+            "T12",
+            "T13",
+            "T14"
+          ],
+          [
+            "T01",
+            "T02",
+            "T03",
+            "T04",
+            "T05"
+          ]
+        ],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q09",
+      "category": "log_timing",
+      "question": "How long did T09's resin rest between the end of mixing and the start of printing?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "18.17 h: mix ended T09-L05 2025-04-22T16:42:00 → print started T09-L07 2025-04-23T10:52:00",
+        "numbers": [
+          {
+            "label": "T09 rest (h)",
+            "values": [
+              18.2
+            ],
+            "tol": 0.25,
+            "unit": "h"
+          }
+        ],
+        "required_ids": [],
+        "any_of_ids": [
+          [
+            "T09-L05"
+          ],
+          [
+            "T09-L07"
+          ]
+        ],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q10",
+      "category": "protocol_diff",
+      "question": "Apart from the recipe, what was different about how T08 and T13 were processed?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "T13 was vacuum-degassed 10 min (T13-L06, manual worksheet entry); T08 had no degas step (0 min). Mix, post-cure, rest (0.4 vs 0.5 h) otherwise match.",
+        "numbers": [
+          {
+            "label": "degas minutes (T13)",
+            "values": [
+              10
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [
+          "T08",
+          "T13"
+        ],
+        "concepts": [
+          {
+            "label": "degassing",
+            "patterns": [
+              "degas"
+            ]
+          },
+          {
+            "label": "T08 not degassed",
+            "patterns": [
+              "no degas",
+              "not degassed",
+              "never degassed",
+              "undegassed",
+              "without degas",
+              "no vacuum",
+              "skipped",
+              "absent",
+              "didn't degas",
+              "did not degas",
+              "no such step",
+              "no degassing",
+              "lacks? (a |the )?degas",
+              "0 min"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q11",
+      "category": "ledger",
+      "question": "What's the current status of the high-diluent dead end in the findings ledger, and what evidence was it based on?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "L2, active, owner Cooper Shea, evidence T06, T07, T08, T10 (T09 excluded)",
+        "numbers": [],
+        "required_ids": [
+          "L2",
+          "T06",
+          "T07",
+          "T08",
+          "T10"
+        ],
+        "concepts": [
+          {
+            "label": "status active",
+            "patterns": [
+              "\\bactive\\b",
+              "in force",
+              "still stands",
+              "standing",
+              "not (been )?(disputed|revisited|overturned)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "q12",
+      "category": "abstain",
+      "question": "What's the supplier's price per kilogram for DiluentX?",
+      "should_abstain": true,
+      "expected": {
+        "summary": "Not in the notebook. DiluentX is only mentioned in T14's notes as an idea; no price is recorded.",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q13",
+      "category": "abstain",
+      "question": "What tensile strength did T17 reach, and did it pass the bend test?",
+      "should_abstain": true,
+      "expected": {
+        "summary": "Not in the notebook: there is no T17 (trials run T01–T14).",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "q14",
+      "category": "hero",
+      "question": "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "Yes: Cooper's campaign B (T06–T10) reached 1.19–1.44 Pa·s with the current diluent but failed strength. T08 vs T13 differs by an unintended 10-min degas. Every >30% failure was undegassed; T09 rested 18.17 h, passed, and was excluded. Propose T15: T15a degassed vs T15b undegassed control, nothing to order. Credit Greeshma.",
+        "numbers": [
+          {
+            "label": "a campaign B viscosity under the target",
+            "values": [
+              1.44,
+              1.36,
+              1.3,
+              1.28,
+              1.19
+            ],
+            "tol": 0.005,
+            "unit": "Pa·s"
+          }
+        ],
+        "required_ids": [
+          "T09"
+        ],
+        "any_of_ids": [
+          [
+            "T08",
+            "T06",
+            "T07",
+            "T10"
+          ],
+          [
+            "T13",
+            "T14",
+            "T11",
+            "T12"
+          ]
+        ],
+        "concepts": [
+          {
+            "label": "campaign B already went below 1.5 with the current diluent",
+            "patterns": [
+              "campaign B",
+              "T0[6-9]",
+              "T10"
+            ]
+          },
+          {
+            "label": "degassing",
+            "patterns": [
+              "degas"
+            ]
+          },
+          {
+            "label": "control arm",
+            "patterns": [
+              "control"
+            ]
+          }
+        ]
+      },
+      "allowed_extra_ids": [
+        "L4",
+        "L5",
+        "T15",
+        "T15a",
+        "T15b"
+      ],
+      "extra_legit_numbers": [
+        1.29,
+        0.41,
+        0.8,
+        1.29,
+        3.72,
+        0.25,
+        1.7,
+        1800,
+        6
+      ]
+    },
+    {
+      "id": "q15",
+      "category": "aggregation",
+      "question": "Across all the undegassed trials, what's the Pearson correlation between diluent % and porosity?",
+      "should_abstain": false,
+      "expected": {
+        "summary": "r = 0.754 over n = 10 (T01–T10); r = 0.941 without excluded T09",
+        "numbers": [
+          {
+            "label": "Pearson r, n=10 (or 9 without T09)",
+            "values": [
+              0.754,
+              0.941
+            ],
+            "tol": 0.01
+          }
+        ],
+        "required_ids": [],
+        "any_of_ids": [
+          [
+            "T01",
+            "T02",
+            "T03",
+            "T04",
+            "T05",
+            "T06",
+            "T07",
+            "T08",
+            "T09",
+            "T10"
+          ]
+        ],
+        "concepts": []
+      },
+      "extra_legit_numbers": [
+        28.5,
+        1.7150000000000003,
+        112.21499999999999,
+        826.5,
+        26.77825,
+        27.444444444444443,
+        1.8633333333333333,
+        126.30666666666667,
+        726.2222222222223,
+        24.798000000000002
+      ]
+    }
+  ]
+}

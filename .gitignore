@@ -1,0 +1,12 @@
+# local notes: kept on disk, not published
+PREP_NOTES.md
+BRIEF.md
+DEMO_WALKTHROUGH.md
+AGENT_PROMPTS.md
+node_modules/
+dist/
+.env.local
+.env*.local
+*.tsbuildinfo
+*.log
+.DS_Store

@@ -1,0 +1,30 @@
+{
+  "size": 1000,
+  "overnight_rest": "T568",
+  "postcure_delay": "T715",
+  "print_restart": "T762",
+  "near_dup": {
+    "ravi": "T541",
+    "lucia": "T586"
+  },
+  "prewarm_notes": [
+    "T586",
+    "T485",
+    "T491"
+  ],
+  "contradictions": {
+    "tensile": "T714",
+    "viscosity": "T848",
+    "porosity": "T688"
+  },
+  "whitford_44": "T935",
+  "pi_24": "T411",
+  "superseded": {
+    "old": "L1",
+    "new": "L3"
+  },
+  "mixer2_window": [
+    "2025-11-03",
+    "2026-02-13"
+  ]
+}

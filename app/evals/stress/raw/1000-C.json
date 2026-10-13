@@ -1,0 +1,2241 @@
+{
+ "size": 1000,
+ "config": "C",
+ "label": "Agent + tools · Haiku",
+ "model": "claude-haiku-5-5",
+ "status": "ran",
+ "records": {
+  "s01": {
+   "qid": "s01",
+   "template": "needle_overnight_rest",
+   "category": "needle",
+   "question": "Exactly one trial was printed from resin that had rested overnight: more than 12 hours between the end of mixing and the start of printing. Which trial was it, how long was the rest, and who ran it?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The only trial printed after more than 12 hours was [T568], run by Ravi. Its rest between mixing and printing was 19.6 h, the longest in the notebook; the next longest are [T413] at 5.1 h and [T689] at 5.5 h. [T568] passed every guardrail, but Ravi excluded it as \"probably a lucky specimen,\" and it had no degassing step. Ravi is a former member, so his note is the only explanation on file.",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "rest_h",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "rest time by person: Cooper: n=59, 0.3–3.8, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408, T416, T"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "rest_h",
+      "group_by": "campaign"
+     },
+     "status": "done",
+     "summary": "rest time by campaign: campaign A: n=37, 0.3–3.8, 37 of 37 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400]; campai"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T568"
+     },
+     "status": "done",
+     "summary": "T568 · Ravi · 33% diluent, 1.5% PI, no degas, rest 19.6 h → 1.44 Pa·s, porosity 0.06%, UTS 49.6 MPa; passed every guardrail · excluded: \"Anomalously strong for its recipe; probably a lucky specimen.\""
+    }
+   ],
+   "cost_usd": 0.00717548,
+   "latency_s": 9.635,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T568",
+     "T413",
+     "T689"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:15:31.065Z"
+  },
+  "s02": {
+   "qid": "s02",
+   "template": "needle_postcure_gap",
+   "category": "needle",
+   "question": "In one trial, the printed parts sat for more than a day between the end of printing and the start of post-cure. Which trial was it, and how long was the gap? Cite the two log entries.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I couldn't find that trial, so I can't give you the gap. The notebook tools have no way to filter trials by print-to-post-cure gap, and the ledger doesn't mention it ([L7], [L10], [L12] are unrelated). Checking every trial's log would mean roughly 1,000 `get_log` calls, which I can't do within this session's budget. The search output was too large to read in full, so I haven't reviewed all trial records either. If you can narrow the set, for example by owner or campaign, I can run `get_log` with `step=\"print\"` and `step=\"postcure\"` on those trials and compare the flagged gaps. The two entries you'd cite would be that trial's print and postcure lines in its log.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    }
+   ],
+   "cost_usd": 0.00282161,
+   "latency_s": 9.157,
+   "grade": {
+    "correct": false,
+    "citations_valid": false,
+    "abstained": true,
+    "cited_ids": [
+     "L7",
+     "L10",
+     "L12"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [
+     "T715-L09",
+     "T715-L10"
+    ],
+    "numbers_missing": [
+     "gap hours (31.2 h)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T715"
+    ],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "declined to answer · missing/wrong number: gap hours (31.2 h) · missing: names T715 · didn't cite T715-L09, T715-L10"
+   },
+   "ran_at": "2026-10-13T18:15:30.597Z"
+  },
+  "s03": {
+   "qid": "s03",
+   "template": "needle_print_restart",
+   "category": "needle",
+   "question": "One print job was aborted partway through and restarted. Which trial was that, and what did the printer log say caused it?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I couldn't find that job in the notebook. The notebook has no search across print-log text, and scanning the print log of all 1000 trials one by one is beyond what I can check here. I looked at three places. [T01-L07] and [T01-L08] show a normal print start and finish (80 min), with no abort. The ledger [L1]–[L17] doesn't mention an aborted or restarted print. Greeshma's campaign G trials [T907]–[T998] have no abort in their notes. If you have the trial id, or a rough date or recipe, I can pull its print log with `get_log` and tell you what the printer recorded.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at print. Rest before printing 0.6 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "campaign": "G"
+      }
+     },
+     "status": "done",
+     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+    }
+   ],
+   "cost_usd": 0.00393101,
+   "latency_s": 11.164,
+   "grade": {
+    "correct": false,
+    "citations_valid": false,
+    "abstained": false,
+    "cited_ids": [
+     "T01-L07",
+     "T01-L08",
+     "L1",
+     "L17",
+     "T907",
+     "T998"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [
+     "T762-L08"
+    ],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T762",
+     "vat film"
+    ],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "missing: names T762; vat film · didn't cite T762-L08"
+   },
+   "ran_at": "2026-10-13T18:15:32.606Z"
+  },
+  "s04": {
+   "qid": "s04",
+   "template": "needle_lookalike_log",
+   "category": "needle",
+   "question": "What did log entry T101-L14 record (event and value)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "[T101-L14] recorded a cross-section porosity reading of 0.37 % on 2024-04-09 at 10:58, from cross-section imaging (camera), logged by Dana Whitfield. This is a backfilled entry from instrument exports [T101].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T101"
+     },
+     "status": "done",
+     "summary": "T101: 15 log entries. Rest before printing 0.4 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.000836285,
+   "latency_s": 5.002,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T101-L14",
+     "T101"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:15:35.601Z"
+  },
+  "s05": {
+   "qid": "s05",
+   "template": "agg_total_pass",
+   "category": "aggregation",
+   "question": "How many trials are in the notebook, and how many of them passed every guardrail (count excluded trials too)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook has 1,000 trials, and 594 of them passed every guardrail, counting excluded trials. The other 406 failed at least one guardrail. Examples: [T02] passed all, [T01] failed. The count covers every trial the notebook lists, [T01] through [T1000].",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true,
+       "pass_all": true
+      }
+     },
+     "status": "done",
+     "summary": "result (356,435 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "pass_all",
+      "group_by": "pass_all",
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "guardrail pass rate by guardrail pass rate: failed one or more: 0/406 [T01, T04, T05, T06, T09, T14, T21, T27, T30, T33, T34, T44, T50, T56, T57, T62, T63, T64, T73, T89, T102, T107, T108, T114, T120, T147, T159, T160, T162, T166, T167, T168, T172, T175, T177, T178, T182, T183, T189, T191, T192, T19"
+    }
+   ],
+   "cost_usd": 0.00229552,
+   "latency_s": 5.94,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T02",
+     "T01",
+     "T1000"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:15:37.006Z"
+  },
+  "s06": {
+   "qid": "s06",
+   "template": "agg_mean_viscosity",
+   "category": "aggregation",
+   "question": "What is the mean viscosity across all 1000 trials, including excluded ones? Give it to two decimals.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The mean viscosity across all 1000 trials is about **1.66 Pa·s**. The notebook has no single overall-mean figure, so I weighted the two group means it returned: 21 excluded trials at 1.68 (range 0.98–2.51, [T775] to [T314]) and 979 included trials at 1.66 (range 0.94–2.74). The owner split gives the same result, 1.66 across 1000 trials, so the answer holds whichever grouping you use.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "excluded"
+     },
+     "status": "done",
+     "summary": "viscosity by excluded or not: excluded: n=21, 0.98–2.51, 10 of 21 passed all [T186, T232, T280, T314, T331, T361, T368, T476, T498, T526, T537, T568, T590, T689, T690, T695, T747, T775, T854, T872, T981]; included: n=979, 0.94–2.74, 584 of 979 passed all [T01, T02, T03, T04, T05, T06, T07, T08, T09,"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "viscosity by person: Cooper: n=59, 1.23–2.74, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408, T416,"
+    }
+   ],
+   "cost_usd": 0.00548942,
+   "latency_s": 13.302,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T775",
+     "T314"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:15:45.908Z"
+  },
+  "s07": {
+   "qid": "s07",
+   "template": "agg_per_person_counts",
+   "category": "aggregation",
+   "question": "How many trials has each person on the team run? Give a count for every person.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Counts by owner, including trials their owners excluded from conclusions: Tomás 227, Dana 360, Ravi 156, Lucia 100, Ines 79, Cooper 59, Greeshma 19. Together that's 1,000, every trial from T01 to T1000. The tool returned these by owner field, so a trial's count goes to whoever owns it.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "viscosity by person: Cooper: n=59, 1.23–2.74, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408, T416,"
+    }
+   ],
+   "cost_usd": 0.0030023800000000002,
+   "latency_s": 5.615,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [
+     "count Dana Whitfield 233",
+     "count Dana Whitford 127"
+    ],
+    "concepts_missing": [],
+    "pairs_missing": [
+     "Dana Whitfield 233",
+     "Dana Whitford 127"
+    ],
+    "failure": "wrong",
+    "diagnosis": "per-person counts wrong or missing: Dana Whitfield 233, Dana Whitford 127"
+   },
+   "ran_at": "2026-10-13T18:15:41.217Z"
+  },
+  "s08": {
+   "qid": "s08",
+   "template": "agg_whitford_uts",
+   "category": "aggregation",
+   "question": "How many trials has Dana Whitford run, and what is the mean tensile strength across all of them (excluded trials included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I can't give you a count for Dana Whitford. The notebook has no trials under her id, and the owner filter only accepts Cooper or Greeshma. The closest match is a single \"Dana\" owner group of 360 trials, with a mean tensile strength of 47.72 MPa (range 23.5–57.5), including excluded trials. That group is not labelled by surname, and the sample I checked, [T60], belongs to Dana Whitfield, so the group may be hers rather than Whitford's. Her own trials, if any, would need to be tagged with her id to be counted.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "tensile strength by person: Cooper: n=59, 32.8–55.9, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T60"
+     },
+     "status": "done",
+     "summary": "T60 · Dana · 15% diluent, 0.8% PI, no degas, rest 0.4 h → 2.66 Pa·s, porosity 0.25%, UTS 55.5 MPa; passed every guardrail"
+    }
+   ],
+   "cost_usd": 0.0038536350000000002,
+   "latency_s": 11.944,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T60"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "Whitford trial count (127)",
+     "Whitford mean UTS (41.949 MPa)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "declined to answer · missing/wrong number: Whitford trial count (127); Whitford mean UTS (41.949 MPa)"
+   },
+   "ran_at": "2026-10-13T18:15:48.951Z"
+  },
+  "s09": {
+   "qid": "s09",
+   "template": "agg_degas_porosity",
+   "category": "aggregation",
+   "question": "How many degassed trials passed the porosity guardrail, out of how many degassed trials in total? And the same two numbers for trials that were not degassed.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Degassed trials: 146 of 225 passed the porosity guardrail (rate 0.65) [T410], [T413], [T418] and the rest of the degassed group. Not degassed: 450 of 775 passed (rate 0.58) [T01], [T02], [T03] and the rest of that group. Both counts come from one `compare_groups` call on the porosity pass flag, grouped by degassing status.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pass",
+      "group_by": "degassed"
+     },
+     "status": "done",
+     "summary": "porosity_pass by degassing: degassed: 146/225 [T410, T413, T418, T432, T433, T435, T448, T452, T454, T460, T461, T462, T465, T466, T472, T475, T481, T486, T492, T495, T497, T509, T510, T513, T522, T524, T529, T532, T539, T548, T553, T559, T565, T567, T572, T577, T579, T582, T585, T588, T591, T608, T"
+    }
+   ],
+   "cost_usd": 0.0018044750000000003,
+   "latency_s": 4.173,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T410",
+     "T413",
+     "T418",
+     "T01",
+     "T02",
+     "T03"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:15:45.391Z"
+  },
+  "s10": {
+   "qid": "s10",
+   "template": "agg_mixer2_count",
+   "category": "aggregation",
+   "question": "How many trials were mixed on the loaner mixer (Planetary mixer #2)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "That isn't in the notebook. Every mix entry I checked, including [T01-L04] and [T998-L04], records the device only as \"Planetary mixer,\" with no unit number, so the logs can't tell mixer #2 apart from any other mixer. The ledger doesn't mention a loaner either. To get the count, the mixer's ID would need to be written into the mix log, or the mixer's instrument exports would need to be matched against trial timestamps.",
+   "tool_calls": 6,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T001",
+      "step": "mix"
+     },
+     "status": "error",
+     "summary": "No trial \"T001\". Trial ids run T01–T1000."
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T998",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T998: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). Degas logged: T998-L06 (manual)"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T998"
+     },
+     "status": "done",
+     "summary": "T998 · Greeshma · 31% diluent, 1.7% PI, degas 10 min, rest 0.6 h → 1.53 Pa·s, porosity 0.2%, UTS 51.7 MPa; passed every guardrail"
+    }
+   ],
+   "cost_usd": 0.00251545,
+   "latency_s": 14.68,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T01-L04",
+     "T998-L04"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "mixer #2 trials (103)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "declined to answer · missing/wrong number: mixer #2 trials (103)"
+   },
+   "ran_at": "2026-10-13T18:16:00.071Z"
+  },
+  "s11": {
+   "qid": "s11",
+   "template": "agg_highdil_uts",
+   "category": "aggregation",
+   "question": "How many trials used more than 35% diluent, and what is their mean tensile strength (excluded trials included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "**244 trials** used more than 35% diluent, counting excluded trials. That count is the sum of the per-campaign counts from [T408] through [T999], since the tool doesn't return a total. The overall mean tensile strength isn't returned by any tool, so I can't state it. The per-campaign means are below.\n\n| Evidence | Trials | Result |\n|---|---|---|\n| Campaign B, n=17 | [T408]–[T516] | mean 37.51 MPa |\n| Campaign E, n=127 | [T410]–[T983] | mean 41.95 MPa |\n| Campaign F, n=7 | [T159]–[T428] | mean 39.97 MPa |\n| Campaign H, n=23 | [T484]–[T809] | mean 34.6 MPa; low [T774] at 12.1 |\n| Campaign K, n=28 | [T491]–[T999] | mean 45.7 MPa |\n| Campaign P, n=42 | [T620]–[T986] | mean 47.11 MPa; high [T954] at 52.7 |\n\nThe filter excluded trials at exactly 35%, which the tool counted as at least 35. Had you meant \"at least 35%\", the count would be higher. Only 0 trials across the B, F and H campaigns passed every guardrail; this includes excluded trials.",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 35
+      }
+     },
+     "status": "done",
+     "summary": "result (169,034 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "campaign",
+      "filter": {
+       "diluent_min": 35
+      }
+     },
+     "status": "done",
+     "summary": "tensile strength by campaign (diluent ≥ 35%): campaign B: n=18, 32.8–45, 0 of 18 passed all [T408, T416, T438, T440, T441, T442, T445, T447, T456, T459, T467, T468, T469, T494, T499, T502, T503, T516]; campaign E: n=127, 23.5–50.6, 51 of 127 passed all [T410, T413, T418, T432, T433, T435, T448, T452"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "campaign",
+      "filter": {
+       "diluent_min": 35.001
+      }
+     },
+     "status": "done",
+     "summary": "tensile strength by campaign (diluent ≥ 35.001%): campaign B: n=17, 32.8–45, 0 of 17 passed all [T408, T416, T438, T440, T441, T442, T445, T447, T456, T459, T467, T469, T494, T499, T502, T503, T516]; campaign E: n=127, 23.5–50.6, 51 of 127 passed all [T410, T413, T418, T432, T433, T435, T448, T452, "
+    }
+   ],
+   "cost_usd": 0.0034677550000000003,
+   "latency_s": 15.806,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T408",
+     "T999",
+     "T516",
+     "T410",
+     "T983",
+     "T159",
+     "T428",
+     "T484",
+     "T809",
+     "T774",
+     "T491",
+     "T620",
+     "T986",
+     "T954"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "mean UTS (42.21 MPa)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "missing/wrong number: mean UTS (42.21 MPa)"
+   },
+   "ran_at": "2026-10-13T18:16:01.714Z"
+  },
+  "s12": {
+   "qid": "s12",
+   "template": "hop_restart_parent",
+   "category": "multi-hop",
+   "question": "What is the parent trial of the trial whose print job had to be restarted, and what was that parent's viscosity?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I couldn't find the restarted print job, so I can't name its parent or its viscosity. The notebook's search tools don't filter on print-step events, and restarts would sit in the device logs (print step) rather than the trial fields. I checked the ledger [L1]–[L17], Greeshma's 19 trials ([T907]–[T998]), and campaign B's 22 trials ([T408]–[T518]). None mention a restart. The full set of 1000 trials was too large to read in one pass. A per-trial `get_log` with step \"print\" across the campaigns (or a person who logged the print run) would settle it.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "greeshma"
+      }
+     },
+     "status": "done",
+     "summary": "19 trials with Greeshma's trials: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "campaign": "B"
+      }
+     },
+     "status": "done",
+     "summary": "22 trials with campaign B: T408, T416, T423, T438, T440–T442, T445, T447, T456, T459, T467–T469, T489, T494, T499, T502–T504, T516, T518 (Cooper, B). Viscosity 1.23–1.51 Pa·s"
+    }
+   ],
+   "cost_usd": 0.00455698,
+   "latency_s": 16.627,
+   "grade": {
+    "correct": false,
+    "citations_valid": false,
+    "abstained": false,
+    "cited_ids": [
+     "L1",
+     "L17",
+     "T907",
+     "T998",
+     "T408",
+     "T518"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [
+     "T756"
+    ],
+    "numbers_missing": [
+     "parent viscosity (1.57 Pa·s)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T756"
+    ],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "missing/wrong number: parent viscosity (1.57 Pa·s) · missing: names T756 · didn't cite T756"
+   },
+   "ran_at": "2026-10-13T18:16:05.578Z"
+  },
+  "s13": {
+   "qid": "s13",
+   "template": "hop_cytotox_child",
+   "category": "multi-hop",
+   "question": "Take the earliest trial (by date) that failed the cytotoxicity guardrail. Which trial lists it as its parent, and who ran that trial?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The earliest cytotoxicity failure is [T411], dated 2025-02-14, and its listed parent is [T406]. Tomás Herrera ran [T411]. It came from campaign N, the only campaign with cytotoxicity failures (the other campaigns were all 100% passing), and its viability was 68.2%, below the 70% guardrail. The other N failures were [T511], [T546], [T611] and [T613], all later.",
+   "tool_calls": 6,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "pass_all": false
+      }
+     },
+     "status": "done",
+     "summary": "result (249,481 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "cytotox_pass",
+      "group_by": "campaign"
+     },
+     "status": "done",
+     "summary": "cytotox_pass by campaign: campaign A: 37/37 [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400]; campaign B: 22/22 [T408, T416, T"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "campaign": "N",
+       "pass_all": false
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"A\",\n      \"B\",\n      \"G\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"campaign\"\n    ],\n    \"message"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "cytotox_pass",
+      "group_by": "pass_all",
+      "filter": {
+       "pass_all": false
+      }
+     },
+     "status": "done",
+     "summary": "cytotox_pass by guardrail pass rate (a guardrail fails): failed one or more: 401/406 [T01, T04, T05, T06, T09, T14, T21, T27, T30, T33, T34, T44, T50, T56, T57, T62, T63, T64, T73, T89, T102, T107, T108, T114, T120, T147, T159, T160, T162, T166, T167, T168, T172, T175, T177, T178, T182, T183, T189, "
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "ids": [
+        "T337",
+        "T338",
+        "T340",
+        "T342",
+        "T345",
+        "T348",
+        "T349",
+        "T355",
+        "T362",
+        "T366",
+        "T370",
+        "T371",
+        "T378",
+        "T381",
+        "T389",
+        "T391",
+        "T392",
+        "T399",
+        "T402",
+        "T406",
+        "T411",
+        "T415",
+        "T420",
+        "T422",
+        "T426",
+        "T430",
+        "T436",
+        "T439",
+        "T444",
+        "T446",
+        "T450",
+        "T451",
+        "T455",
+        "T463",
+        "T470",
+        "T471",
+        "T474",
+        "T480",
+        "T482",
+        "T487",
+        "T498",
+        "T506",
+        "T507",
+        "T508",
+        "T511",
+        "T521",
+        "T526",
+        "T527",
+        "T534",
+        "T545",
+        "T546",
+        "T561",
+        "T575",
+        "T578",
+        "T589",
+        "T594",
+        "T600",
+        "T603",
+        "T611",
+        "T613",
+        "T614",
+        "T628"
+       ]
+      }
+     },
+     "status": "done",
+     "summary": "62 trials with T337, T338, T340, T342, T345, T348, T349, T355, T362, T366, T370, T371, T378, T381, T389, T391, T392, T399, T402, T406, T411, T415, T420, T422, T426, T430, T436, T439, T444, T446, T450, T451, T455, T463, T470, T471, T474, T480, T482, T487, T498, T506, T507, T508, T511, T521, T526, T52"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T411"
+     },
+     "status": "done",
+     "summary": "T411 · Tomás · 34% diluent, 2.4% PI, no degas, rest 0.6 h → 1.31 Pa·s, porosity 2.03%, UTS 44.8 MPa; failed porosity, cytotox"
+    }
+   ],
+   "cost_usd": 0.007803805,
+   "latency_s": 18.225,
+   "grade": {
+    "correct": false,
+    "citations_valid": false,
+    "abstained": false,
+    "cited_ids": [
+     "T411",
+     "T406",
+     "T511",
+     "T546",
+     "T611",
+     "T613"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [
+     "T415"
+    ],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T415"
+    ],
+    "pairs_missing": [],
+    "failure": "wrong",
+    "diagnosis": "missing: names T415 · didn't cite T415"
+   },
+   "ran_at": "2026-10-13T18:16:18.297Z"
+  },
+  "s14": {
+   "qid": "s14",
+   "template": "hop_best_parent",
+   "category": "multi-hop",
+   "question": "Among trials that met the objective (every guardrail passed and viscosity at most 1.5 Pa·s, excluded trials included), which has the lowest viscosity? Who ran it, and what was the porosity of its parent trial?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The lowest viscosity among trials that met the objective is 1.03 Pa·s, from [T413], run by Dana Whitford. Its parent, [T410], had 1.28% porosity, which failed the ≤1% guardrail; [T413] itself measured 0.66%. The 1.03 figure comes from the grouped results, which include excluded trials, and [T413] is not excluded.",
+   "tool_calls": 5,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "meets_objective": true
+      }
+     },
+     "status": "done",
+     "summary": "result (102,401 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "meets_objective": true,
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "result (102,423 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "owner",
+      "filter": {
+       "meets_objective": true
+      }
+     },
+     "status": "done",
+     "summary": "viscosity by person (meets objective): Dana: n=52, 1.03–1.48, 52 of 52 passed all [T413, T432, T433, T452, T465, T466, T481, T486, T509, T510, T522, T524, T539, T559, T567, T572, T577, T579, T588, T608, T623, T632, T642, T647, T651, T673, T785, T797, T802, T804, T807, T819, T822, T825, T827, T830, T"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T413"
+     },
+     "status": "done",
+     "summary": "T413 · Dana · 44% diluent, 1.7% PI, degas 5 min, rest 5.1 h → 1.03 Pa·s, porosity 0.66%, UTS 43.2 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T410"
+     },
+     "status": "done",
+     "summary": "T410 · Dana · 42% diluent, 1.4% PI, degas 5 min, rest 0.7 h → 1.12 Pa·s, porosity 1.28%, UTS 43.2 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.00265922,
+   "latency_s": 10.795,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T413",
+     "T410"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:12.509Z"
+  },
+  "s15": {
+   "qid": "s15",
+   "template": "hop_overnight_ancestor",
+   "category": "multi-hop",
+   "question": "Start from the trial whose resin rested overnight before printing. Go to its parent, then to that parent's parent. Who ran that grandparent trial, and what was its tensile strength?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The trial with the overnight rest is [T568] (19.6 h, Ravi's campaign H), the longest rest in the notebook. Its parent is [T566], whose parent is [T558]. [T558] was run by Ravi Menon, and its tensile strength (UTS) was 45.4 MPa [T558]. It failed the porosity guardrail at 1.71%, so it isn't a passing trial. Ravi excluded [T568] from conclusions as \"probably a lucky specimen,\" which I'm noting but not evaluating.",
+   "tool_calls": 5,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "rest_h",
+      "group_by": "campaign",
+      "filter": {
+       "viscosity_min": 0
+      }
+     },
+     "status": "done",
+     "summary": "rest time by campaign (viscosity ≥ 0 Pa·s): campaign A: n=37, 0.3–3.8, 37 of 37 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T568"
+     },
+     "status": "done",
+     "summary": "T568 · Ravi · 33% diluent, 1.5% PI, no degas, rest 19.6 h → 1.44 Pa·s, porosity 0.06%, UTS 49.6 MPa; passed every guardrail · excluded: \"Anomalously strong for its recipe; probably a lucky specimen.\""
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T566"
+     },
+     "status": "done",
+     "summary": "T566 · Ravi · 34% diluent, 1.4% PI, no degas, rest 0.3 h → 1.43 Pa·s, porosity 2.61%, UTS 43.1 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T558"
+     },
+     "status": "done",
+     "summary": "T558 · Ravi · 31% diluent, 1.5% PI, no degas, rest 0.7 h → 1.54 Pa·s, porosity 1.71%, UTS 45.4 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.005107310000000001,
+   "latency_s": 11.673,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T568",
+     "T566",
+     "T558"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:17.251Z"
+  },
+  "s16": {
+   "qid": "s16",
+   "template": "contra_tensile",
+   "category": "contradiction",
+   "question": "Did T714 pass the tensile guardrail? Give its measured tensile strength.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "No, T714 failed the tensile guardrail. Its measured tensile strength is 35.6 MPa, below the 40 MPa floor [T714]. Dana's test note says the tensile \"looked solid, comfortably over the 40 MPa floor\" [T714-N3], but that doesn't match the measured value, so the measured 35.6 MPa is the one to use. T714 also failed the bend and porosity guardrails, passing only cytotoxicity [T714].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T714"
+     },
+     "status": "done",
+     "summary": "T714 · Dana · 34% diluent, 1.6% PI, no degas, rest 0.7 h → 1.38 Pa·s, porosity 4.64%, UTS 35.6 MPa; failed tensile, bend, porosity"
+    }
+   ],
+   "cost_usd": 0.0007542750000000001,
+   "latency_s": 4.854,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T714"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:17.363Z"
+  },
+  "s17": {
+   "qid": "s17",
+   "template": "contra_ines_target",
+   "category": "contradiction",
+   "question": "How many of Ines Kowalski's trials reached the viscosity target (at most 1.5 Pa·s)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Of Ines Kowalski's 79 trials, 66 reached the viscosity target of ≤1.5 Pa·s, with values from 1.05 [T982] to 1.48 [T659]. Of those 66, 63 also passed every guardrail, which is the same 63 that met the full objective [T616] [T1000]. The owner filter only accepts Cooper or Greeshma, so I took these counts from the per-person grouping in the notebook.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_max": 1.5,
+       "owner": "ines"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "result (257,236 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "meets_objective",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "objective met by person: Cooper: 0/59 [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408, T416, T423, T438, T440, T441, T44"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "owner",
+      "filter": {
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "viscosity by person (viscosity ≤ 1.5 Pa·s): Cooper: n=21, 1.23–1.43, 0 of 21 passed all [T408, T416, T423, T438, T440, T441, T442, T445, T447, T456, T459, T467, T468, T469, T489, T494, T499, T502, T503, T504, T516]; Dana: n=142, 0.94–1.5, 52 of 142 passed all [T410, T413, T418, T432, T433, T435, T44"
+    }
+   ],
+   "cost_usd": 0.004225315,
+   "latency_s": 14.557,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T982",
+     "T659",
+     "T616",
+     "T1000"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:31.809Z"
+  },
+  "s18": {
+   "qid": "s18",
+   "template": "contra_porosity",
+   "category": "contradiction",
+   "question": "What porosity was measured for T688, and did it pass the porosity guardrail?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "T688 was measured at 2.23% porosity and failed the porosity guardrail (limit ≤ 1%), so it did not pass every guardrail [T688]. The owner's notes disagree: one says \"Porosity 2.23% on the cross-section\" [T688-N2], while another says \"No bubbles visible in the cross-section; porosity basically zero\" [T688-N3]. The recorded value is 2.23%, and the guardrail failure follows from that number. Its tensile (48.3 MPa), bend and cytotoxicity guardrails all passed [T688].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T688"
+     },
+     "status": "done",
+     "summary": "T688 · Dana · 28% diluent, 1.5% PI, no degas, rest 0.5 h → 1.66 Pa·s, porosity 2.23%, UTS 48.3 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.0007739300000000001,
+   "latency_s": 4.706,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T688"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:22.070Z"
+  },
+  "s19": {
+   "qid": "s19",
+   "template": "contra_find_all",
+   "category": "contradiction",
+   "question": "Some trials have notebook entries (notes) that contradict that trial's own measured results. Find them, and for each one say what the note claims and what was measured.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "",
+   "tool_calls": null,
+   "cost_usd": 0.1,
+   "latency_s": 67.272,
+   "error": "stopped at the $0.1 per-question budget before answering",
+   "grade": {
+    "correct": false,
+    "citations_valid": false,
+    "abstained": false,
+    "cited_ids": [],
+    "invalid_ids": [],
+    "missing_ids": [
+     "T714",
+     "T848",
+     "T688"
+    ],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T714",
+     "names T848",
+     "names T688"
+    ],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "no answer · missing: names T714; names T848; names T688 · didn't cite T714, T848, T688"
+   },
+   "ran_at": "2026-10-13T18:17:25.569Z"
+  },
+  "s20": {
+   "qid": "s20",
+   "template": "abstain_whitfield_44",
+   "category": "abstain-trap",
+   "question": "What was the viscosity of the trial Dana Whitfield ran at 44% diluent?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook has no trial run by Dana Whitfield at 44% diluent. All 12 trials at 44% diluent are owned by Dana Whitford (printing), and their viscosities range from 1.02 to 1.07 Pa·s, under the 1.5 objective ([T413], [T461], [T495], [T529], [T565], [T646], [T707], [T721], [T770], [T784], [T935], [T960]). If you meant one of those, tell me which trial and I'll pull its details. If Dana Whitfield ran a 44% trial, it isn't in the notebook yet.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 44,
+       "diluent_max": 44
+      }
+     },
+     "status": "done",
+     "summary": "12 trials with diluent ≥ 44%, diluent ≤ 44%: T413, T461, T495, T529, T565, T646, T707, T721, T770, T784, T935, T960 (Dana, E). Viscosity 1.02–1.07 Pa·s"
+    }
+   ],
+   "cost_usd": 0.00156612,
+   "latency_s": 7.087,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T413",
+     "T461",
+     "T495",
+     "T529",
+     "T565",
+     "T646",
+     "T707",
+     "T721",
+     "T770",
+     "T784",
+     "T935",
+     "T960"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:29.158Z"
+  },
+  "s21": {
+   "qid": "s21",
+   "template": "abstain_pi_25",
+   "category": "abstain-trap",
+   "question": "Which trial used 2.5% photoinitiator, and what was its tensile strength?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "No trial in the notebook used exactly 2.5% photoinitiator, so there is no tensile strength to report for one. The nearest trials are seven at 2.4%, all owned by Tomás: [T411], [T470], [T511], [T546], [T600], [T611] and [T613]. Their tensile strengths (uts_mpa) run from 44.8 to 53.5 MPa, with [T600] at 53.5 MPa the highest. If you meant 2.4%, tell me which of those you need and I'll pull its full record.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "photoinit_min": 2.5,
+       "photoinit_max": 2.5
+      }
+     },
+     "status": "done",
+     "summary": "0 trials with PI ≥ 2.5%, PI ≤ 2.5%: none"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "photoinit_min": 2.4,
+       "photoinit_max": 2.6
+      }
+     },
+     "status": "done",
+     "summary": "7 trials with PI ≥ 2.4%, PI ≤ 2.6%: T411, T470, T511, T546, T600, T611, T613 (Tomás, N). Viscosity 1.31–1.81 Pa·s"
+    }
+   ],
+   "cost_usd": 0.001254295,
+   "latency_s": 6.542,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T411",
+     "T470",
+     "T511",
+     "T546",
+     "T600",
+     "T611",
+     "T613"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:35.700Z"
+  },
+  "s22": {
+   "qid": "s22",
+   "template": "abstain_cooper_degassed",
+   "category": "abstain-trap",
+   "question": "What porosity did Cooper Shea's degassed trials show?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Cooper Shea has no degassed trials in the notebook. The owner-plus-degassed filter returned none, and all 59 of Cooper's trials, from campaigns A and B, have degas_min 0 [T269]–[T518]. Their porosity still varied widely, from 0.18% in [T359] to 3.69% in [T494], so the porosity data here comes only from undegassed trials.",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "cooper",
+       "degassed": true
+      }
+     },
+     "status": "done",
+     "summary": "0 trials with Cooper's trials, degassed: none"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "cooper"
+      }
+     },
+     "status": "done",
+     "summary": "59 trials with Cooper's trials: T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310–T312, T316–T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363–T365, T373, T374, T376, T377, T379, T393, T396, T400 (Cooper, A); T408, T416, T423, T438, T440–T442, T445, T447, T456, T4"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "degassed": true
+      }
+     },
+     "status": "done",
+     "summary": "result (135,485 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    }
+   ],
+   "cost_usd": 0.0036208000000000004,
+   "latency_s": 9.759,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T269",
+     "T518",
+     "T359",
+     "T494"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:41.568Z"
+  },
+  "s23": {
+   "qid": "s23",
+   "template": "abstain_printer2",
+   "category": "abstain-trap",
+   "question": "Which trials were printed on the backup printer (DLP printer #2)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I can't find any trial in the notebook that was printed on the backup printer (DLP printer #2). That isn't in the notebook as far as these tools can show. The print entries I checked name only \"DLP printer\" with no unit number: [T01-L07] (backfilled from instrument exports), [T998-L08], [T999-L07] and [T1000-L07]. The ledger has no entry about a second printer either. I checked four trials out of 1000, so this doesn't rule out a backup-printer trial elsewhere. To settle it, the printer's device ID would need to appear in the print log entries, or someone would need to pull the printer's job history export and match it to trial ids.",
+   "tool_calls": 9,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T001",
+      "step": "print"
+     },
+     "status": "error",
+     "summary": "No trial \"T001\". Trial ids run T01–T1000."
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T001"
+     },
+     "status": "error",
+     "summary": "No trial \"T001\". Trial ids run T01–T1000."
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at print. Rest before printing 0.6 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T01"
+     },
+     "status": "done",
+     "summary": "T01 · Tomás · 30% diluent, 1.2% PI, no degas, rest 0.6 h → 1.6 Pa·s, porosity 1.61%, UTS 43.1 MPa; failed porosity"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "campaign": "G"
+      }
+     },
+     "status": "done",
+     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T998",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T998: 2 log entries at print. Rest before printing 0.6 h (typical 0.6 h). Degas logged: T998-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T999",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T999: 2 log entries at print. Rest before printing 0.4 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T1000",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T1000: 2 log entries at print. Rest before printing 0.4 h (typical 0.6 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.003388845,
+   "latency_s": 10.899,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T01-L07",
+     "T998-L08",
+     "T999-L07",
+     "T1000-L07"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:16:46.599Z"
+  },
+  "s24": {
+   "qid": "s24",
+   "template": "confound_winter_mixer",
+   "category": "confound",
+   "question": "Between November 2025 and February 2026, porosity went up across several people's trials even though nobody changed their recipes. What changed? Cite the evidence.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook points to a equipment change, not a recipe change. From 2025-11-03, several trials were mixed on \"Planetary mixer #2 (loaner unit)\" instead of the primary \"Planetary mixer,\" and none of those trials logged a degas step [T677], [T678], [T682], [T687]. The loaner was still in use on 2026-02-09 [T773].\n\n| Evidence | Trials | Result |\n|---|---|---|\n| Loaner mixer from Nov | [T677], [T678], [T682] | \"Planetary mixer #2 (loaner unit)\" |\n| Primary mixer before | [T671] | \"Planetary mixer,\" porosity 2.99% |\n| Degassed on same loaner | [T679] vs [T678] | 0.33% passed; 1.67% failed |\n| Rest time not the cause | [T677], [T678] | 0.4 h and 0.7 h both failed |\n| Group by degassing | all trials | degassed mean 0.93%; not degassed 1.17% |\n\nHypothesis: The loaner mixer may trap more air, and skipping degassing may leave those bubbles in the cured part. Resin this brittle is flaw-sensitive, so a bubble may start a crack. Ines's 10-minute degas [T679] passed on the same loaner, which fits this, and it is her habit of degassing that stands out.\n\nUncertain: I checked six trials across Dana, Ravi and Ines. The notebook doesn't record what the loaner does differently, and [T671] already had high porosity on the primary mixer, so the mixer may not be the whole story. Degassing is not in SOP v1 [T679], and the group gap is small, so this needs a controlled test.\n\nI haven't filed anything. The open question [L10] and the group finding [L14] are the places this belongs.",
+   "tool_calls": 19,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "result (606,310 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T677"
+     },
+     "status": "done",
+     "summary": "T677 · Dana · 24% diluent, 1% PI, no degas, rest 0.4 h → 1.98 Pa·s, porosity 1.43%, UTS 50.6 MPa; failed porosity"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T677"
+     },
+     "status": "done",
+     "summary": "T677: 15 log entries. Rest before printing 0.4 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "campaign"
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by campaign: campaign A: n=37, 0.18–0.74, 37 of 37 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T4"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T678"
+     },
+     "status": "done",
+     "summary": "T678 · Dana · 24% diluent, 1.5% PI, no degas, rest 0.7 h → 1.88 Pa·s, porosity 1.67%, UTS 50.8 MPa; failed porosity"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T678",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T678: 2 log entries at mix. Rest before printing 0.7 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T674"
+     },
+     "status": "done",
+     "summary": "T674 · Dana · 33% diluent, 1.1% PI, no degas, rest 0.6 h → 1.48 Pa·s, porosity 1.95%, UTS 46.6 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T679"
+     },
+     "status": "done",
+     "summary": "T679 · Ines · 31% diluent, 1.8% PI, degas 10 min, rest 0.7 h → 1.48 Pa·s, porosity 0.33%, UTS 51.3 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T679",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T679: 2 log entries at mix. Rest before printing 0.7 h (typical 0.6 h). Degas logged: T679-L06 (manual)"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "degassed",
+      "filter": {
+       "campaign": "D"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"A\",\n      \"B\",\n      \"G\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"campaign\"\n    ],\n    \"messag"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T687",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T687: 2 log entries at mix. Rest before printing 0.4 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T687"
+     },
+     "status": "done",
+     "summary": "T687 · Ravi · 39% diluent, 1.5% PI, no degas, rest 0.4 h → 1.23 Pa·s, porosity 9.14%, UTS 11.3 MPa; failed tensile, bend, porosity"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T671",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T671: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T682",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T682: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T773",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T773: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "degassed",
+      "filter": {
+       "owner": "dana_whitfield"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "degassed",
+      "filter": {
+       "owner": "ravi"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "degassed"
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by degassing: degassed: n=225, 0.1–4.66, 146 of 225 passed all [T410, T413, T418, T432, T433, T435, T448, T452, T454, T460, T461, T462, T465, T466, T472, T475, T481, T486, T492, T495, T497, T509, T510, T513, T522, T524, T529, T532, T539, T548, T553, T559, T565, T567, T572, T577, T"
+    }
+   ],
+   "cost_usd": 0.01171271,
+   "latency_s": 36.615,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T677",
+     "T678",
+     "T682",
+     "T687",
+     "T773",
+     "T671",
+     "T679",
+     "L10",
+     "L14"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:18.184Z"
+  },
+  "s25": {
+   "qid": "s25",
+   "template": "confound_prewarm",
+   "category": "confound",
+   "question": "T541 (Ravi Menon) and T586 (Lucia Ferreira) used the same recipe, but T586 came out with much lower porosity. What explains the difference? Cite the evidence.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook shows no logged process difference between [T541] and [T586]. Both used 34% diluent, 1.4% photoinitiator, no degas, a 0.6 h rest, 3000 rpm for 2 min, and 45 min post-cure [T541-L02], [T586-L02], [T541-L05], [T586-L05]. The only difference is a free-text note on [T586-N2]: Lucia warmed the resin to 40 °C for 20 min before loading the vat, \"as I always do.\" Porosity was 0.67% for [T586] and 2.08% for [T541], which failed the porosity guardrail [T541-N2]. Viscosity was similar (1.44 vs 1.4 Pa·s), and both passed tensile.\n\nHypothesis: Lucia's warm-up habit may let trapped air escape before printing, so fewer bubbles remain to act as cracks in this brittle resin. Degassing on the same recipe also cut porosity: [T887] with a 10-min vacuum degas reached 0.23% [T887-L06].\n\nUncertain: this rests on one pair of trials and one unlogged note. The warm-up is not in the device log, and its note is timestamped 13:44 [T586-N2], after the print job started at 12:14 [T586-L07], so I can't confirm when it happened. My group comparison of Lucia's trials at this recipe failed on an owner-filter error, so I have no cross-trial check of warming.",
+   "tool_calls": 6,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T541"
+     },
+     "status": "done",
+     "summary": "T541 · Ravi · 34% diluent, 1.4% PI, no degas, rest 0.6 h → 1.4 Pa·s, porosity 2.08%, UTS 42.4 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T586"
+     },
+     "status": "done",
+     "summary": "T586 · Lucia · 34% diluent, 1.4% PI, no degas, rest 0.6 h → 1.44 Pa·s, porosity 0.67%, UTS 47.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T541",
+      "b": "T586",
+      "study_vars": [
+       "diluent_wt",
+       "photoinit_wt"
+      ]
+     },
+     "status": "done",
+     "summary": "T541 vs T586: 0 intended differences; 0 unintended. Related: T887, T887 (a 10-min vacuum degas (T887-L06))"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T586",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T586: 2 log entries at print. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T541",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T541: 2 log entries at print. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "degassed",
+      "filter": {
+       "diluent_min": 33,
+       "diluent_max": 35,
+       "photoinit_min": 1.3,
+       "photoinit_max": 1.5,
+       "owner": "lucia"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+    }
+   ],
+   "cost_usd": 0.002641195,
+   "latency_s": 15.321,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T541",
+     "T586",
+     "T541-L02",
+     "T586-L02",
+     "T541-L05",
+     "T586-L05",
+     "T887",
+     "T887-L06",
+     "T586-L07"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:01.920Z"
+  },
+  "s26": {
+   "qid": "s26",
+   "template": "probe_median_porosity",
+   "category": "aggregation",
+   "question": "What is the median porosity across all 1000 trials (excluded ones included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook has no median figure, and I can't derive one from the tool outputs without computing a new number. The compare tool returned per-trial porosity for both groups, which together cover all 1000 trials. Excluded trials (n=21) have a mean of 1.34, ranging from 0.06 [T568] to 4.43 [T775], and 10 of 21 passed every guardrail. Included trials (n=979) have a mean of 1.12, ranging from 0.1 [T848] to 9.14 [T687], and 584 of 979 passed every guardrail. The porosity guardrail is 1% or less, so the mean sits above that limit in both groups even though most trials pass. Getting the true median would need a median option added to the compare tool, or someone to sort the 1000 values directly.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "excluded"
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by excluded or not: excluded: n=21, 0.06–4.43, 10 of 21 passed all [T186, T232, T280, T314, T331, T361, T368, T476, T498, T526, T537, T568, T590, T689, T690, T695, T747, T775, T854, T872, T981]; included: n=979, 0.1–9.14, 584 of 979 passed all [T01, T02, T03, T04, T05, T06, T07, T"
+    }
+   ],
+   "cost_usd": 0.003271945,
+   "latency_s": 9.49,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T568",
+     "T775",
+     "T848",
+     "T687"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "median porosity (0.8 %)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "missing/wrong number: median porosity (0.8 %)"
+   },
+   "ran_at": "2026-10-13T18:21:38.460Z"
+  },
+  "s27": {
+   "qid": "s27",
+   "template": "probe_postcure_waits",
+   "category": "needle",
+   "question": "List every trial where the printed parts waited more than 1 hour between the end of printing and the start of post-cure, with each wait.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "I can't give you a complete list from this session. The notebook has no filter for the print-to-post-cure gap, so the only way to find every trial over 1 hour is to pull each trial's log, and that's about 1,000 calls against this session's $0.10 budget. I checked one trial: [T01] went from print finished to post-cure start in 0.3 h ([T01-L08] to [T01-L09]), well under the threshold. That's one trial out of 1,000, so it doesn't establish a pattern either way.\n\nTo get the full list, the scan needs to run in batches by campaign or owner with a larger budget, or someone with access to the instrument exports can pull the print and post-cure timestamps directly.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01"
+     },
+     "status": "done",
+     "summary": "T01: 15 log entries. Rest before printing 0.6 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.0014159700000000001,
+   "latency_s": 9.251,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T01",
+     "T01-L08",
+     "T01-L09"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [
+     "names T43",
+     "names T54",
+     "names T56",
+     "names T61",
+     "names T139",
+     "names T168",
+     "names T180",
+     "names T302",
+     "names T306",
+     "names T406",
+     "names T501",
+     "names T522",
+     "names T527",
+     "names T634",
+     "names T674",
+     "names T715",
+     "names T718",
+     "names T754",
+     "names T796",
+     "names T834",
+     "names T875",
+     "names T942",
+     "names T971"
+    ],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "declined to answer · missing: names T43; names T54; names T56; names T61; names T139; names T168; names T180; names T302; names T306; names T406; names T501; names T522; names T527; names T634; names T674; names T715; names T718; names T754; names T796; names T834; names T875; names T942; names T971"
+   },
+   "ran_at": "2026-10-13T18:21:38.231Z"
+  },
+  "s28": {
+   "qid": "s28",
+   "template": "probe_parent_chain",
+   "category": "multi-hop",
+   "question": "Starting from T20, follow the parent links back until you reach a trial with no parent. How many trials are in that chain, counting T20 and the first one?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The chain has **20 trials**, counting T20 and T01. Every link runs one step back, from [T20] through [T19], [T18] and so on down to [T01], which has no parent. All 20 belong to Tomás's campaign M, so the chain is one unbroken run of his trials.",
+   "tool_calls": 20,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T20"
+     },
+     "status": "done",
+     "summary": "T20 · Tomás · 19% diluent, 1.4% PI, no degas, rest 0.6 h → 2.18 Pa·s, porosity 0.47%, UTS 50.4 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T19"
+     },
+     "status": "done",
+     "summary": "T19 · Tomás · 29% diluent, 0.8% PI, no degas, rest 0.3 h → 1.77 Pa·s, porosity 0.95%, UTS 45.9 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T18"
+     },
+     "status": "done",
+     "summary": "T18 · Tomás · 18% diluent, 1.4% PI, no degas, rest 0.7 h → 2.3 Pa·s, porosity 0.35%, UTS 52.3 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T17"
+     },
+     "status": "done",
+     "summary": "T17 · Tomás · 23% diluent, 1.1% PI, no degas, rest 0.4 h → 1.98 Pa·s, porosity 0.62%, UTS 49.2 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T16"
+     },
+     "status": "done",
+     "summary": "T16 · Tomás · 22% diluent, 1% PI, no degas, rest 0.3 h → 2.13 Pa·s, porosity 0.56%, UTS 48.9 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T15"
+     },
+     "status": "done",
+     "summary": "T15 · Tomás · 18% diluent, 1.2% PI, no degas, rest 0.4 h → 2.29 Pa·s, porosity 0.43%, UTS 51 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T14"
+     },
+     "status": "done",
+     "summary": "T14 · Tomás · 30% diluent, 0.9% PI, no degas, rest 0.7 h → 1.66 Pa·s, porosity 1.36%, UTS 43.4 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T13"
+     },
+     "status": "done",
+     "summary": "T13 · Tomás · 28% diluent, 0.8% PI, no degas, rest 0.6 h → 1.79 Pa·s, porosity 0.94%, UTS 42.8 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T12"
+     },
+     "status": "done",
+     "summary": "T12 · Tomás · 27% diluent, 0.9% PI, no degas, rest 0.6 h → 1.88 Pa·s, porosity 0.93%, UTS 46.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T11"
+     },
+     "status": "done",
+     "summary": "T11 · Tomás · 18% diluent, 0.9% PI, no degas, rest 0.5 h → 2.36 Pa·s, porosity 0.41%, UTS 48.8 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T10"
+     },
+     "status": "done",
+     "summary": "T10 · Tomás · 18% diluent, 1.4% PI, no degas, rest 0.3 h → 2.27 Pa·s, porosity 0.29%, UTS 51.3 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T09"
+     },
+     "status": "done",
+     "summary": "T09 · Tomás · 30% diluent, 1% PI, no degas, rest 0.7 h → 1.66 Pa·s, porosity 1.3%, UTS 44.8 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T08"
+     },
+     "status": "done",
+     "summary": "T08 · Tomás · 21% diluent, 1% PI, no degas, rest 0.5 h → 2.08 Pa·s, porosity 0.64%, UTS 51.2 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T07"
+     },
+     "status": "done",
+     "summary": "T07 · Tomás · 24% diluent, 1.3% PI, no degas, rest 0.6 h → 2 Pa·s, porosity 0.54%, UTS 48.2 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T06"
+     },
+     "status": "done",
+     "summary": "T06 · Tomás · 28% diluent, 1.3% PI, no degas, rest 0.6 h → 1.69 Pa·s, porosity 1.03%, UTS 48.4 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T05"
+     },
+     "status": "done",
+     "summary": "T05 · Tomás · 26% diluent, 1% PI, no degas, rest 0.4 h → 1.82 Pa·s, porosity 1.01%, UTS 47.2 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T04"
+     },
+     "status": "done",
+     "summary": "T04 · Tomás · 26% diluent, 1.3% PI, no degas, rest 0.5 h → 1.78 Pa·s, porosity 1.07%, UTS 45.6 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T03"
+     },
+     "status": "done",
+     "summary": "T03 · Tomás · 27% diluent, 1.3% PI, no degas, rest 0.4 h → 1.81 Pa·s, porosity 0.98%, UTS 46 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T02"
+     },
+     "status": "done",
+     "summary": "T02 · Tomás · 21% diluent, 0.9% PI, no degas, rest 0.5 h → 2.15 Pa·s, porosity 0.48%, UTS 51.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T01"
+     },
+     "status": "done",
+     "summary": "T01 · Tomás · 30% diluent, 1.2% PI, no degas, rest 0.6 h → 1.6 Pa·s, porosity 1.61%, UTS 43.1 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.006765655000000001,
+   "latency_s": 20.874,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T20",
+     "T19",
+     "T18",
+     "T01"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:21:49.852Z"
+  },
+  "s29": {
+   "qid": "s29",
+   "template": "probe_log_count",
+   "category": "aggregation",
+   "question": "How many instrument log entries does the notebook contain in total, across all trials?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook doesn't give a total. Its log tools return one trial at a time, so I can't count entries across all 1000 trials without fetching every log. I checked one trial as a sample: [T01] has 15 log entries, backfilled from instrument exports, and its owner is Tomás. Some entries are manual, not device-logged (for example the post-cure oven), so \"instrument\" needs defining before a count means anything. An exact total would need an aggregate count added to the notebook, or a full export of the logs.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01"
+     },
+     "status": "done",
+     "summary": "T01: 15 log entries. Rest before printing 0.6 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.0011043350000000001,
+   "latency_s": 6.201,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T01"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "log entries (15227)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "missing/wrong number: log entries (15227)"
+   },
+   "ran_at": "2026-10-13T18:21:44.433Z"
+  },
+  "s30": {
+   "qid": "s30",
+   "template": "ledger_superseded",
+   "category": "contradiction",
+   "question": "What post-cure time does the team's findings ledger currently stand behind, and which ledger entry says so?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The ledger currently stands behind 45 minutes of post-cure, per [L3], which Dana Whitfield recorded on 2025-01-20 and which is accepted. It corrects [L1], the earlier 30-minute finding that Tomás Herrera recorded, and [L1] is now marked superseded. [L3] cites [T01], [T02], [T181] and [T184] as evidence.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    }
+   ],
+   "cost_usd": 0.000939325,
+   "latency_s": 3.71,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "L3",
+     "L1",
+     "T01",
+     "T02",
+     "T181",
+     "T184"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:24:49.806Z"
+  }
+ },
+ "status_note": "per-question budget $0.1 (Agent SDK maxBudgetUsd)"
+}

@@ -1,0 +1,4940 @@
+{
+ "size": 50,
+ "config": "C",
+ "label": "Agent + tools · Haiku",
+ "model": "claude-haiku-5-5",
+ "status": "ran",
+ "records": {
+  "s01": {
+   "qid": "s01",
+   "template": "needle_overnight_rest",
+   "category": "needle",
+   "question": "Exactly one trial was printed from resin that had rested overnight: more than 12 hours between the end of mixing and the start of printing. Which trial was it, how long was the rest, and who ran it?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The overnight-rested trial was [T26], run by Cooper. Mixing ended at 16:30 on 2025-05-19 and printing started at 12:12 the next day, a rest of 19.7 h against a typical 0.5 h [T26-L05] [T26-L07]. No other trial rested more than 12 h; the next longest was 5.1 h [T29]. [T26] was excluded by Cooper as \"anomalously strong for its recipe,\" and its log has no degas step, so the rest is the only process difference I can see [T26]. Its log was backfilled from instrument exports, so the timing comes from device records rather than a manual entry.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26"
+     },
+     "status": "done",
+     "summary": "T26: 15 log entries. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.004737655,
+   "latency_s": 9.683,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T26",
+     "T26-L05",
+     "T26-L07",
+     "T29"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:11.748Z"
+  },
+  "s07": {
+   "qid": "s07",
+   "template": "agg_per_person_counts",
+   "category": "aggregation",
+   "question": "How many trials has each person on the team run? Give a count for every person.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Across the 50 trials [T01]–[T50], the counts are:\n\n- Tomás Herrera: 10 ([T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]). [T07] is excluded by its owner.\n- Ravi Menon: 8 ([T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29])\n- Cooper Shea: 8 ([T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]). [T26] is excluded by its owner.\n- Dana Whitfield: 7 ([T03], [T04], [T33], [T38], [T40], [T43], [T45])\n- Lucia Ferreira: 6 ([T27], [T31], [T32], [T34], [T41], [T48])\n- Ines Kowalski: 5 ([T37], [T42], [T44], [T46], [T50])\n- Dana Whitford: 4 ([T25], [T35], [T36], [T39])\n- Greeshma N.: 2 ([T47], [T49])\n\nThese totals include excluded trials. The two Danas are separate people in the roster, so I counted them separately.",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "cooper"
+      }
+     },
+     "status": "done",
+     "summary": "8 trials with Cooper's trials: T10, T13, T14, T16, T17, T19 (Cooper, A); T21, T26 (Cooper, B) (T26 excluded by its owner). Viscosity 1.35–2.49 Pa·s"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "greeshma"
+      }
+     },
+     "status": "done",
+     "summary": "2 trials with Greeshma's trials: T47, T49 (Greeshma, G). Viscosity 1.4–1.5 Pa·s"
+    },
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    }
+   ],
+   "cost_usd": 0.0050959099999999995,
+   "latency_s": 10.68,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T01",
+     "T50",
+     "T02",
+     "T05",
+     "T06",
+     "T07",
+     "T09",
+     "T15",
+     "T22",
+     "T23",
+     "T30",
+     "T08",
+     "T11",
+     "T12",
+     "T18",
+     "T20",
+     "T24",
+     "T28",
+     "T29",
+     "T10",
+     "T13",
+     "T14",
+     "T16",
+     "T17",
+     "T19",
+     "T21",
+     "T26",
+     "T03",
+     "T04",
+     "T33",
+     "T38",
+     "T40",
+     "T43",
+     "T45",
+     "T27",
+     "T31",
+     "T32",
+     "T34",
+     "T41",
+     "T48",
+     "T37",
+     "T42",
+     "T44",
+     "T46",
+     "T25",
+     "T35",
+     "T36",
+     "T39",
+     "T47",
+     "T49"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:12.750Z"
+  },
+  "s08": {
+   "qid": "s08",
+   "template": "agg_whitford_uts",
+   "category": "aggregation",
+   "question": "How many trials has Dana Whitford run, and what is the mean tensile strength across all of them (excluded trials included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Dana Whitford has run 4 trials, [T25], [T35], [T36] and [T39], and their mean tensile strength is 37.5 MPa across all four, excluded trials included (none of the four is excluded). Individual values were 46, 40.6, 34.9 and 28.5 MPa [T25] [T35] [T36] [T39]. Only [T25] passed every guardrail.\n\nNote that the notebook has a separate owner, Dana Whitfield, with different trials (for example [T03] and [T33]). I excluded those from this answer.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "owner",
+      "filter": {
+       "ids": [
+        "T25",
+        "T35",
+        "T36",
+        "T39"
+       ],
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "tensile strength by person (T25, T35, T36, T39): Dana: n=4, 28.5–46, 1 of 4 passed all [T25, T35, T36, T39]"
+    }
+   ],
+   "cost_usd": 0.0046323,
+   "latency_s": 8.844,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T25",
+     "T35",
+     "T36",
+     "T39",
+     "T03",
+     "T33"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:10.914Z"
+  },
+  "s19": {
+   "qid": "s19",
+   "template": "contra_find_all",
+   "category": "contradiction",
+   "question": "Some trials have notebook entries (notes) that contradict that trial's own measured results. Find them, and for each one say what the note claims and what was measured.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Three trials have notes that contradict their measured results. The other 47 notes match their recorded values.\n\n- [T08-N3] says \"No bubbles visible in the cross-section; porosity basically zero.\" The measured cross-section porosity was 1.76% [T08-L14], which failed the 1% limit, and the same trial's note says \"Failed porosity\" [T08-N2].\n- [T33-N3] says \"Tensile looked solid, comfortably over the 40 MPa floor.\" The measured tensile strength was 36.8 MPa [T33-L10], below the 40 MPa floor, so tensile failed.\n- [T42-N2] says \"Viscometer read about 1.3 Pa·s, finally under target!\" The device log recorded 1.72 Pa·s at 25 °C [T42-L07], which is above the 1.5 Pa·s objective.\n\nThe [T08] note was written on the day of testing, and its values were backfilled from instrument exports. The [T33] and [T42] values were logged directly by the instruments. I did not count [T26-N3], which calls the trial \"anomalously strong,\" because its measured strength of 48 MPa [T26-N2] is not clearly out of line with its neighbours.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "viscosity"
+     },
+     "status": "done",
+     "summary": "T42: 1 log entry at viscosity. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "test"
+     },
+     "status": "done",
+     "summary": "T08: 6 log entries at test. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "test"
+     },
+     "status": "done",
+     "summary": "T33: 6 log entries at test. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.0050896199999999996,
+   "latency_s": 16.003,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T08",
+     "T08-L14",
+     "T33",
+     "T33-L10",
+     "T42",
+     "T42-L07",
+     "T26"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:26.917Z"
+  },
+  "s20": {
+   "qid": "s20",
+   "template": "abstain_whitfield_44",
+   "category": "abstain-trap",
+   "question": "What was the viscosity of the trial Dana Whitfield ran at 44% diluent?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The only trial at 44% diluent is [T36], with a viscosity of 1.04 Pa·s. It was logged under \"Dana Whitford\" (printing), not Dana Whitfield (formulation), so check with the owner whether that's the trial you meant. No trial in the notebook is recorded at 44% diluent under Dana Whitfield. [T36] missed the objective: it failed the tensile, bend and porosity guardrails (porosity 2.98%).",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 44,
+       "diluent_max": 44
+      }
+     },
+     "status": "done",
+     "summary": "1 trial with diluent ≥ 44%, diluent ≤ 44%: T36 (Dana, E). Viscosity 1.04 Pa·s"
+    }
+   ],
+   "cost_usd": 0.00090482,
+   "latency_s": 6.006,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T36"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:17.754Z"
+  },
+  "s24": {
+   "qid": "s24",
+   "template": "confound_winter_mixer",
+   "category": "confound",
+   "question": "Between November 2025 and February 2026, porosity went up across several people's trials even though nobody changed their recipes. What changed? Cite the evidence.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The change that lines up with the window is the mixer. From 2025-11-05 to 2025-12-04, eight trials ran on a loaner planetary mixer, \"Planetary mixer #2 (loaner unit)\": [T33-L04], [T34-L04], [T35-L04], [T36-L04], [T37-L04], [T38-L04], [T39-L04], [T40-L04]. Seven of those eight failed a guardrail, with porosity 1.03–4.27% (mean 2.77) across [T33], [T34], [T35], [T36], [T38], [T39], [T40]. The one pass, [T37], had 0.71%. Trials after the loaner window used the regular mixer ([T41-L04], [T43-L04], [T45-L04]). [T41] passed at 0.57%, but [T43] (1.22%) and [T45] (2.13%) still failed.\n\nOther changes I found are weaker. Lucia's pre-print warming to 40 °C appears in the notes of [T27], [T31] and [T32] (\"as I always do\") and is absent from [T34] and [T41]. That is a note, not a logged step, and [T41] passed without it. Ines's [T37] was the only loaner-window pass, and she degassed 10 min ([T37-L06]), while [T38] had no degas step. Dana Whitford's 5-min degas trials on the loaner ([T35-L06], [T36-L06], [T39-L06]) still failed, so degassing may help but isn't enough alone.\n\nHypothesis: the loaner mixer may be whipping in more air, and bubbles may be acting as flaws in this brittle resin. Dana Whitfield's and Dana Whitford's trials are the ones that carry most of the signal here.\n\nUncertain: this rests on eight loaner trials, the mixer is confounded with the time window and with several people's recipes, and nothing has been run with the loaner mixer and the regular one side by side. Ravi's open question [L12] asks the same thing and is still unanswered.",
+   "tool_calls": 18,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {}
+     },
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34"
+     },
+     "status": "done",
+     "summary": "T34: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32"
+     },
+     "status": "done",
+     "summary": "T32: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41"
+     },
+     "status": "done",
+     "summary": "T41: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33"
+     },
+     "status": "done",
+     "summary": "T33: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35"
+     },
+     "status": "done",
+     "summary": "T35: 16 log entries. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40"
+     },
+     "status": "done",
+     "summary": "T40: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T36: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T38: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T39: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T37: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T43: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T45: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T31: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T38",
+      "b": "T37"
+     },
+     "status": "done",
+     "summary": "T38 vs T37: 2 intended differences (diluent 27% vs 38%, photoinitiator 1.2% vs 1.5%); 1 unintended (vacuum degas: none vs 10)"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "pass_all",
+      "filter": {
+       "ids": [
+        "T33",
+        "T34",
+        "T35",
+        "T36",
+        "T37",
+        "T38",
+        "T39",
+        "T40"
+       ]
+      }
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by guardrail pass rate (T33, T34, T35, T36, T37, T38, T39, T40): failed one or more: n=7, 1.03–4.27, 0 of 7 passed all [T33, T34, T35, T36, T38, T39, T40]; passed all: n=1, 0.71, 1 of 1 passed all [T37]"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "pass_all",
+      "filter": {
+       "ids": [
+        "T41",
+        "T42",
+        "T43",
+        "T44",
+        "T45",
+        "T46"
+       ]
+      }
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by guardrail pass rate (T41, T42, T43, T44, T45, T46): failed one or more: n=2, 1.22–2.13, 0 of 2 passed all [T43, T45]; passed all: n=4, 0.13–0.57, 4 of 4 passed all [T41, T42, T44, T46]"
+    }
+   ],
+   "cost_usd": 0.01091236,
+   "latency_s": 39.239,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T33-L04",
+     "T34-L04",
+     "T35-L04",
+     "T36-L04",
+     "T37-L04",
+     "T38-L04",
+     "T39-L04",
+     "T40-L04",
+     "T33",
+     "T34",
+     "T35",
+     "T36",
+     "T38",
+     "T39",
+     "T40",
+     "T37",
+     "T41-L04",
+     "T43-L04",
+     "T45-L04",
+     "T41",
+     "T43",
+     "T45",
+     "T27",
+     "T31",
+     "T32",
+     "T37-L06",
+     "T35-L06",
+     "T36-L06",
+     "T39-L06",
+     "L12"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:01:51.989Z"
+  },
+  "s02": {
+   "qid": "s02",
+   "template": "needle_postcure_gap",
+   "category": "needle",
+   "question": "In one trial, the printed parts sat for more than a day between the end of printing and the start of post-cure. Which trial was it, and how long was the gap? Cite the two log entries.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The trial was [T04], Dana Whitfield's May 2024 campaign C run. The gap from its print entry [T04-L08] to its post-cure entry [T04-L09] was 31.2 h, against a typical 0.3 h. Post-cure was logged at 60 °C for 45 min on 2024-05-21 at 18:35. T04 still passed every guardrail (porosity 0.89%, UTS 48.5 MPa), though its viscosity of 1.9 Pa·s missed the target. No other trial has a print-to-post-cure gap over a day; the next longest is 15 h in [T16] and [T17].",
+   "tool_calls": 50,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T01: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T02: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T03: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T04: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T05: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T06: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T08: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T09: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T10: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T11: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T12: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T13: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T14: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T15: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T16: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T17: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T18: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T19: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T20: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T21: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T22: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T23: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T24: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T25: 1 log entry at postcure. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T26: 1 log entry at postcure. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T27: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T28: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T29: 1 log entry at postcure. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T30: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T31: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T32: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T33: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T34: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T35: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T36: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T37: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T38: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T39: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T40: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T41: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T42: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T43: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T44: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T45: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T46: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T47: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T48: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T49: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T50: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.009278175,
+   "latency_s": 25.828,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T04",
+     "T04-L08",
+     "T04-L09",
+     "T16",
+     "T17"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:40.096Z"
+  },
+  "s03": {
+   "qid": "s03",
+   "template": "needle_print_restart",
+   "category": "needle",
+   "question": "One print job was aborted partway through and restarted. Which trial was that, and what did the printer log say caused it?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The aborted print was in [T20], Ravi Menon's trial. The printer log shows the job started at 10:23 and stopped at layer 212 with the event \"Print job aborted at layer 212: vat film torn\" [T20-L08]. It was restarted at 11:35 \"after replacing the vat film\" [T20-L09] and finished at 13:06 [T20-L10]. The log records the torn film as the cause but not why it tore. Ravi's trial notes don't mention the abort. I checked the print log for all 50 trials, and no other trial has an abort or restart entry. Despite the interruption, [T20] passed every guardrail (UTS 48.6 MPa, porosity 1%, viability 92.3%) at 1.7 Pa·s.",
+   "tool_calls": 51,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T27: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T31: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T32: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T47: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T49: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T50: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T02: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T03: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T04: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T05: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T06: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T07: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T08: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T09: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T10: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T11: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T12: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T13: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T14: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T15: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T16: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T17: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T18: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T19: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T20: 4 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T21: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T22: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T23: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T24: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T25: 2 log entries at print. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T26: 2 log entries at print. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T28: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T29: 2 log entries at print. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T30: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T33: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T34: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T35: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T36: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T37: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T38: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T39: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T40: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T41: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T42: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T43: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T44: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T45: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T46: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T48: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.010274410000000001,
+   "latency_s": 20.609,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T20",
+     "T20-L08",
+     "T20-L09",
+     "T20-L10"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:34.881Z"
+  },
+  "s04": {
+   "qid": "s04",
+   "template": "needle_lookalike_log",
+   "category": "needle",
+   "question": "What did log entry T41-L14 record (event and value)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "[T41-L14] recorded a cross-section porosity of 0.57 % on 2026-02-24 at 11:58, logged by the camera (cross-section imaging) for Lucia's trial [T41].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41"
+     },
+     "status": "done",
+     "summary": "T41: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.0008098599999999999,
+   "latency_s": 4.103,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T41-L14",
+     "T41"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:18.377Z"
+  },
+  "s05": {
+   "qid": "s05",
+   "template": "agg_total_pass",
+   "category": "aggregation",
+   "question": "How many trials are in the notebook, and how many of them passed every guardrail (count excluded trials too)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook holds 50 trials, [T01]–[T50]. Counting excluded trials, 29 passed every guardrail and 21 failed at least one. The two excluded trials are [T07], which failed porosity, and [T26], which passed all guardrails.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "pass_all",
+      "group_by": "pass_all"
+     },
+     "status": "done",
+     "summary": "guardrail pass rate by guardrail pass rate: failed one or more: 0/21 [T07, T08, T11, T12, T15, T18, T21, T22, T23, T24, T28, T30, T33, T34, T35, T36, T38, T39, T40, T43, T45]; passed all: 29/29 [T01, T02, T03, T04, T05, T06, T09, T10, T13, T14, T16, T17, T19, T20, T25, T26, T27, T29, T31, T32, T37, "
+    }
+   ],
+   "cost_usd": 0.0029832599999999997,
+   "latency_s": 4.707,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T01",
+     "T50",
+     "T07",
+     "T26"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:23.084Z"
+  },
+  "s06": {
+   "qid": "s06",
+   "template": "agg_mean_viscosity",
+   "category": "aggregation",
+   "question": "What is the mean viscosity across all 50 trials, including excluded ones? Give it to two decimals.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook doesn't return a single mean across all 50 trials, so the figure below is my arithmetic from two tool results. The two excluded trials, [T07] and [T26], average 1.49 Pa·s (n=2, range 1.35–1.62). The other 48 trials average 1.62 Pa·s (n=48, range 1.02–2.49). Weighting those group means by their counts gives about 1.61 Pa·s across all 50. That is approximate, since the group means are rounded to two decimals.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "excluded"
+     },
+     "status": "done",
+     "summary": "viscosity by excluded or not: excluded: n=2, 1.35–1.62, 1 of 2 passed all [T07, T26]; included: n=48, 1.02–2.49, 28 of 48 passed all [T01, T02, T03, T04, T05, T06, T08, T09, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T27, T28, T29, T30, T31, T32, T33, T34, T35, T"
+    }
+   ],
+   "cost_usd": 0.001230135,
+   "latency_s": 9.138,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T07",
+     "T26"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:32.223Z"
+  },
+  "s09": {
+   "qid": "s09",
+   "template": "agg_degas_porosity",
+   "category": "aggregation",
+   "question": "How many degassed trials passed the porosity guardrail, out of how many degassed trials in total? And the same two numbers for trials that were not degassed.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Degassed trials: 8 of 11 passed the porosity guardrail [T25], [T35], [T36], [T37], [T39], [T42], [T44], [T46], [T47], [T49], [T50]. Not degassed: 22 of 39 passed [T01]–[T24], [T26]–[T34], [T38], [T40], [T41], [T43], [T45], [T48]. These counts include trials their owners excluded from conclusions, since that is the default.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pass",
+      "group_by": "degassed"
+     },
+     "status": "done",
+     "summary": "porosity_pass by degassing: degassed: 8/11 [T25, T35, T36, T37, T39, T42, T44, T46, T47, T49, T50]; not degassed: 22/39 [T01, T02, T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T26, T27, T28, T29, T30, T31, T32, T33, T34, T38, T40, T41,"
+    }
+   ],
+   "cost_usd": 0.000739175,
+   "latency_s": 9.739,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T25",
+     "T35",
+     "T36",
+     "T37",
+     "T39",
+     "T42",
+     "T44",
+     "T46",
+     "T47",
+     "T49",
+     "T50",
+     "T01",
+     "T24",
+     "T26",
+     "T34",
+     "T38",
+     "T40",
+     "T41",
+     "T43",
+     "T45",
+     "T48"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:41.963Z"
+  },
+  "s10": {
+   "qid": "s10",
+   "template": "agg_mixer2_count",
+   "category": "aggregation",
+   "question": "How many trials were mixed on the loaner mixer (Planetary mixer #2)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Eight trials were mixed on the loaner Planetary mixer #2: [T33], [T34], [T35], [T36], [T37], [T38], [T39] and [T40]. Each mix log reads \"Mix started (loaner unit)\" on device \"Planetary mixer #2\" [T33-L04] [T40-L04]. They ran from 2025-11-05 to 2025-12-04. I checked the mix log of all 50 trials, and no other trial used the loaner.",
+   "tool_calls": 52,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    },
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T02: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T03: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T04: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T05: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T06: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T07: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T08: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T09: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T10: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T11: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T12: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T13: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T14: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T15: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T16: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T17: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T18: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T19: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T20: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T21: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T22: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T23: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T24: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T25: 2 log entries at mix. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T26: 2 log entries at mix. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T27: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T28: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T29: 2 log entries at mix. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T30: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T31: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T32: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T33: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T34: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T35: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T36: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T37: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T38: 2 log entries at mix. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T39: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T40: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T41: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T42: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T43: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T44: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T45: 2 log entries at mix. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T46: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T47: 2 log entries at mix. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T48: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T49: 2 log entries at mix. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T50: 2 log entries at mix. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.010167315,
+   "latency_s": 22.301,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T33",
+     "T34",
+     "T35",
+     "T36",
+     "T37",
+     "T38",
+     "T39",
+     "T40",
+     "T33-L04",
+     "T40-L04"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:57.182Z"
+  },
+  "s11": {
+   "qid": "s11",
+   "template": "agg_highdil_uts",
+   "category": "aggregation",
+   "question": "How many trials used more than 35% diluent, and what is their mean tensile strength (excluded trials included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Nine trials used more than 35% diluent, and their mean tensile strength is about 43.1 MPa, with excluded trials included. The notebook's tools don't return an overall mean, so I averaged the nine tool-returned values myself. The search counts 35% as \"at least,\" so I dropped the three trials at exactly 35% ([T21], [T27], [T29]). The nine are [T25], [T26], [T35], [T36], [T37], [T39], [T44], [T46] and [T50]. [T26] is excluded by its owner, Cooper, as \"anomalously strong for its recipe,\" and it is included in the mean. Two of the nine ([T36], [T39]) failed the tensile guardrail.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 35,
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "12 trials with diluent ≥ 35%: T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46, T50 (Ines, P) (T26 excluded by its owner). Viscosity: Cooper 1.35–1.36 Pa·s, Dana 1.02–1.15 Pa·s, Lucia 1.38 Pa·s, Ravi 1.32 Pa·s,"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "owner",
+      "filter": {
+       "diluent_min": 35,
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "tensile strength by person (diluent ≥ 35%): Cooper: n=2, 41.2–48, 1 of 2 passed all [T21, T26]; Dana: n=4, 28.5–46, 1 of 4 passed all [T25, T35, T36, T39]; Ines: n=4, 46.2–49.6, 4 of 4 passed all [T37, T44, T46, T50]; Lucia: n=1, 47.8, 1 of 1 passed all [T27]; Ravi: n=1, 46.4, 1 of 1 passed all [T29"
+    }
+   ],
+   "cost_usd": 0.002224495,
+   "latency_s": 11.727,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T21",
+     "T27",
+     "T29",
+     "T25",
+     "T26",
+     "T35",
+     "T36",
+     "T37",
+     "T39",
+     "T44",
+     "T46",
+     "T50"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:05:51.823Z"
+  },
+  "s12": {
+   "qid": "s12",
+   "template": "hop_restart_parent",
+   "category": "multi-hop",
+   "question": "What is the parent trial of the trial whose print job had to be restarted, and what was that parent's viscosity?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The parent trial is [T18], and its viscosity was 1.4 Pa·s. The restarted print is [T20]: its job was aborted at layer 212 when the vat film tore, then restarted after the film was replaced [T20-L08][T20-L09]. Ravi's note on [T20] says it is the same as [T18] but with 28% diluent and 1.4% photoinitiator. [T18] itself failed the porosity guardrail (1.85%), and [T20] passed every guardrail.",
+   "tool_calls": 52,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T27: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T31: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T32: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T33: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T34: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T35: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T36: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T37: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T38: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T39: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T40: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T41: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T42: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T43: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T44: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T45: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T46: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T47: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T48: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T49: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T50: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T02: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T03: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T04: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T05: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T06: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T07: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T08: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T09: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T10: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T11: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T12: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T13: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T14: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T15: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T16: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T17: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T18: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T19: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T20: 4 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T21: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T22: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T23: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T24: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T25: 2 log entries at print. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T26: 2 log entries at print. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T28: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T29: 2 log entries at print. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T30: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.010985165000000002,
+   "latency_s": 20.631,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T18",
+     "T20",
+     "T20-L08",
+     "T20-L09"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:02.594Z"
+  },
+  "s13": {
+   "qid": "s13",
+   "template": "hop_cytotox_child",
+   "category": "multi-hop",
+   "question": "Take the earliest trial (by date) that failed the cytotoxicity guardrail. What is its parent trial, and who ran the parent?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The earliest trial to fail cytotoxicity is [T30], dated 2025-08-06, with viability 64.8% against the 70% floor. Its parent is [T23], which Tomás Herrera ran. [T30] is the only cytotoxicity failure in the notebook, so it is the earliest by default. Its own log shows the failure at [T30-N2] (\"Failed cytotox\").",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "pass_all": false
+      }
+     },
+     "status": "done",
+     "summary": "21 trials with a guardrail fails: T07 (Tomás, M); T08, T11, T12 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); T28 (Ravi, H); T30 (Tomás, N); T33 (Dana, D); T34 (Lucia, K); T35, T36 (Dana, E); T38 (Dana, D); T39 (Dana, E); T40, T43, T45 (Dana, D) (T07 "
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T30"
+     },
+     "status": "done",
+     "summary": "T30 · Tomás · 27% diluent, 2.4% PI, no degas, rest 0.7 h → 1.7 Pa·s, porosity 0.99%, UTS 53 MPa; failed cytotox"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T23"
+     },
+     "status": "done",
+     "summary": "T23 · Tomás · 29% diluent, 2.1% PI, no degas, rest 0.5 h → 1.59 Pa·s, porosity 1.33%, UTS 50.3 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.002394925,
+   "latency_s": 10.632,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T30",
+     "T23"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:02.456Z"
+  },
+  "s14": {
+   "qid": "s14",
+   "template": "hop_best_parent",
+   "category": "multi-hop",
+   "question": "Among trials that met the objective (every guardrail passed and viscosity at most 1.5 Pa·s, excluded trials included), which has the lowest viscosity? Who ran it, and what was its porosity?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The lowest-viscosity trial that met the objective is [T25], at 1.08 Pa·s. Dana Whitford ran it, and its porosity was 0.75%, under the 1% guardrail. The next-lowest passing trials were [T44] and [T50] at 1.15 Pa·s, both run by Ines, and [T26] (excluded by its owner) was 1.35 Pa·s, so none of them change the answer.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "meets_objective": true
+      }
+     },
+     "status": "done",
+     "summary": "12 trials with meets objective: T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T32 (Lucia, K); T37, T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lucia, K); T49 (Greeshma, G); T50 (Ines, P) (T26 excluded by its owner). Viscosity: Dana 1.08 Pa·s, Cooper 1.35 Pa·s, Lucia 1.38–1.49 Pa·s, "
+    }
+   ],
+   "cost_usd": 0.0012775,
+   "latency_s": 4.882,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T25",
+     "T44",
+     "T50",
+     "T26"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:02.065Z"
+  },
+  "s15": {
+   "qid": "s15",
+   "template": "hop_overnight_ancestor",
+   "category": "multi-hop",
+   "question": "Start from the trial whose resin rested overnight before printing. Who ran its parent trial, and what was the parent's tensile strength?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The only trial rested overnight is [T26] (19.7 h before printing). Its parent is [T21], run by Cooper, and its tensile strength was 41.2 MPa [T21]. [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe\" with 48 MPa UTS [T26-N3].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    }
+   ],
+   "cost_usd": 0.003041375,
+   "latency_s": 6.362,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T26",
+     "T21"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:08.427Z"
+  },
+  "s16": {
+   "qid": "s16",
+   "template": "contra_tensile",
+   "category": "contradiction",
+   "question": "Did T33 pass the tensile guardrail? Give its measured tensile strength.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "No, T33 failed the tensile guardrail. Its measured tensile strength was 36.8 MPa, below the 40 MPa floor [T33]. The note from the test step says the tensile \"looked solid, comfortably over the 40 MPa floor\" [T33-N3], but the recorded value doesn't support that. T33 also failed the bend and porosity guardrails (flexural strength 56.7 MPa against a 65 MPa minimum, porosity 4.27% against a 1% limit) and missed the viscosity objective at 1.42 Pa·s, though that value is under 1.5 [T33]. Its fracture mode was recorded as brittle [T33]. Dana's campaign D, where T33 was the first trial, has no trials that passed every guardrail [L13]. Greeshma, you may want to confirm the 36.8 MPa figure against the raw test record before anyone relies on the note.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T33"
+     },
+     "status": "done",
+     "summary": "T33 · Dana · 34% diluent, 1.2% PI, no degas, rest 0.7 h → 1.42 Pa·s, porosity 4.27%, UTS 36.8 MPa; failed tensile, bend, porosity"
+    }
+   ],
+   "cost_usd": 0.000814225,
+   "latency_s": 5.186,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T33",
+     "L13"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:07.643Z"
+  },
+  "s17": {
+   "qid": "s17",
+   "template": "contra_ines_target",
+   "category": "contradiction",
+   "question": "How many of Ines Kowalski's trials reached the viscosity target (at most 1.5 Pa·s)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Four of Ines Kowalski's five trials reached the viscosity target: [T37] at 1.27, [T44] at 1.15, [T46] at 1.3 and [T50] at 1.15 Pa·s. The fifth, [T42], read 1.72 Pa·s in the device log [T42-L07], even though Ines's note on that trial says the viscometer read about 1.3 [T42-N2]. The notebook value is the one I'm counting.\n\nHypothesis: none needed; this is a lookup. The mismatch on [T42] is a transcription question for Ines to confirm, not a result.\n\nUncertain: the count rests on the five campaign-P trials I could find; the owner filter in the tools doesn't accept Ines's id, so I matched them by owner name across all 50 trials. If [T42] were really about 1.3, the count would be five of five.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "22 trials with viscosity ≤ 1.5 Pa·s: T08, T11 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T32 (Lucia, K); T33 (Dana, D); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lu"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "ines"
+      }
+     },
+     "status": "error",
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_min": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "29 trials with viscosity ≥ 1.5 Pa·s: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07, T09 (Tomás, M); T10 (Cooper, A); T12 (Ravi, F); T13, T14, T16, T17, T19 (Cooper, A); T20 (Ravi, F); T22, T23 (Tomás, N); T24 (Ravi, F); T30 (Tomás, N); T31, T34 (Lucia, K); T38, T40 (Dana, D); T41 (Lucia, K); T42 "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "viscosity"
+     },
+     "status": "done",
+     "summary": "T42: 1 log entry at viscosity. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.0043288250000000006,
+   "latency_s": 15.869,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T37",
+     "T44",
+     "T46",
+     "T50",
+     "T42",
+     "T42-L07"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:18.464Z"
+  },
+  "s18": {
+   "qid": "s18",
+   "template": "contra_porosity",
+   "category": "contradiction",
+   "question": "What porosity was measured for T08, and did it pass the porosity guardrail?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "T08 measured 1.76% porosity by cross-section imaging [T08-L14], which fails the guardrail of 1% or less, so it did not pass the porosity guardrail [T08]. The trial's other guardrails passed (tensile, bend, cytotox), but it failed overall. Ravi's note from the test step says \"No bubbles visible in the cross-section; porosity basically zero\" [T08-N3], which doesn't match the logged 1.76% value. The log was backfilled from instrument exports [T08-L14], so the number is the instrument record. The note may be a visual impression, but the discrepancy is unresolved and only one pore-imaging run is recorded.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T08"
+     },
+     "status": "done",
+     "summary": "T08 · Ravi · 33% diluent, 1.5% PI, no degas, rest 0.4 h → 1.46 Pa·s, porosity 1.76%, UTS 46.4 MPa; failed porosity"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "test"
+     },
+     "status": "done",
+     "summary": "T08: 6 log entries at test. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.001160435,
+   "latency_s": 7.633,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T08-L14",
+     "T08"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:15.277Z"
+  },
+  "s21": {
+   "qid": "s21",
+   "template": "abstain_pi_25",
+   "category": "abstain-trap",
+   "question": "Which trial used 2.5% photoinitiator, and what was its tensile strength?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "No trial in the notebook used exactly 2.5% photoinitiator. The closest is [T30] (Tomás, 2.4% photoinitiator), with a tensile strength of 53 MPa. [T30] failed the cytotoxicity guardrail (viability 64.8%, below 70%), and its viscosity was 1.7 Pa·s.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "photoinit_min": 2.5,
+       "photoinit_max": 2.5
+      }
+     },
+     "status": "done",
+     "summary": "0 trials with PI ≥ 2.5%, PI ≤ 2.5%: none"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "photoinit_min": 2.4,
+       "photoinit_max": 2.6
+      }
+     },
+     "status": "done",
+     "summary": "1 trial with PI ≥ 2.4%, PI ≤ 2.6%: T30 (Tomás, N). Viscosity 1.7 Pa·s"
+    }
+   ],
+   "cost_usd": 0.0008986850000000001,
+   "latency_s": 6.853,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T30"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:15.280Z"
+  },
+  "s22": {
+   "qid": "s22",
+   "template": "abstain_cooper_degassed",
+   "category": "abstain-trap",
+   "question": "What porosity did Cooper Shea's degassed trials show?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Cooper Shea has no vacuum-degassed trials in the notebook. All eight of Cooper's trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21] and [T26], have degas_min 0. Their cross-section porosities were 0.54, 0.53, 0.32, 0.9, 0.32, 0.71, 2 and 0.07 % respectively. [T21] failed the porosity guardrail at 2 %, and [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe.\"\n\nThe degassed trials in the notebook were run by others: Dana Whitford, Ines Kowalski and Greeshma N. Their porosities are in the notebook, and Greeshma's [T47] and [T49] both passed with porosity 0.24 % and 0.19 %.",
+   "tool_calls": 3,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "cooper",
+       "degassed": true
+      }
+     },
+     "status": "done",
+     "summary": "0 trials with Cooper's trials, degassed: none"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "owner": "cooper"
+      }
+     },
+     "status": "done",
+     "summary": "8 trials with Cooper's trials: T10, T13, T14, T16, T17, T19 (Cooper, A); T21, T26 (Cooper, B) (T26 excluded by its owner). Viscosity 1.35–2.49 Pa·s"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "degassed": true
+      }
+     },
+     "status": "done",
+     "summary": "11 trials with degassed: T25, T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T42, T44, T46 (Ines, P); T47, T49 (Greeshma, G); T50 (Ines, P). Viscosity: Dana 1.02–1.15 Pa·s, Ines 1.15–1.72 Pa·s, Greeshma 1.4–1.5 Pa·s"
+    }
+   ],
+   "cost_usd": 0.00196278,
+   "latency_s": 8.103,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T10",
+     "T13",
+     "T14",
+     "T16",
+     "T17",
+     "T19",
+     "T21",
+     "T26",
+     "T47",
+     "T49"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:23.381Z"
+  },
+  "s23": {
+   "qid": "s23",
+   "template": "abstain_printer2",
+   "category": "abstain-trap",
+   "question": "Which trials were printed on the backup printer (DLP printer #2)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook doesn't say which trials, if any, were printed on DLP printer #2. I checked the print log of all 50 trials, and every job is recorded only as \"DLP printer\" with source mhs, with no printer ID or backup label. The only print-step event that stands out is a torn vat film that aborted and then restarted the job in [T20-L08] and [T20-L09], which doesn't identify a printer. The printer ID would have to come from the instrument's own job history or from whoever ran each print.",
+   "tool_calls": 52,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T01: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T02: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T03: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T04: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T05: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T06: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T07: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T08: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T09: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T10: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T11: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T12: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T13: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T14: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T15: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T16: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T17: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T18: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T19: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T20: 4 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T21: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T22: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T23: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T24: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T25: 2 log entries at print. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T26: 2 log entries at print. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T27: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T28: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T29: 2 log entries at print. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T30: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T31: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T32: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T33: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T34: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T35: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T36: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T37: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T38: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T39: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T40: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T41: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T42: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T43: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T44: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T45: 2 log entries at print. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T46: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T47: 2 log entries at print. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T48: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T49: 2 log entries at print. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T50: 2 log entries at print. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    }
+   ],
+   "cost_usd": 0.01065349,
+   "latency_s": 20.914,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T20-L08",
+     "T20-L09"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:36.195Z"
+  },
+  "s25": {
+   "qid": "s25",
+   "template": "confound_prewarm",
+   "category": "confound",
+   "question": "T28 (Ravi Menon) and T32 (Lucia Ferreira) used the same recipe, but T32 came out with much lower porosity. What explains the difference? Cite the evidence.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Nothing in the logged steps explains it: [T28] and [T32] match on diluent, photoinitiator, mixing, 0.3 h rest, post-cure and no degas [T28-L02] [T32-L02]. The one difference is in Lucia's notes. She warmed the resin to 40 °C for 20 min before loading the vat, as she always does [T32-N2], and she recorded the same step in [T27-N2] and [T31-N2]. Ravi's trial has no such note [T28-N1]. Because the oven step is manual and unlogged, the diff could not show it. Results: [T28] porosity 2.56%, UTS 41.6 MPa; [T32] porosity 0.74%, UTS 46.6 MPa.\n\nHypothesis: warming may thin the resin and let trapped air escape before printing. Brittle resin is flaw-sensitive, so bubbles may be acting as flaws that pull [T28]'s UTS toward the 40 MPa floor.\n\nUncertain: only three of Lucia's six campaign K trials carry the warming note. The three without it ([T34], [T41], [T48]) ran 0.52–1.03% porosity, so warming is not the whole story. No trial pair isolates this, and [T29] (5.1 h rest, 0.87% porosity) hints that time alone may help but differs in recipe.",
+   "tool_calls": 8,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T28"
+     },
+     "status": "done",
+     "summary": "T28 · Ravi · 34% diluent, 1.4% PI, no degas, rest 0.3 h → 1.38 Pa·s, porosity 2.56%, UTS 41.6 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T32"
+     },
+     "status": "done",
+     "summary": "T32 · Lucia · 34% diluent, 1.4% PI, no degas, rest 0.3 h → 1.43 Pa·s, porosity 0.74%, UTS 46.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T28",
+      "b": "T32",
+      "study_vars": [
+       "diluent_wt",
+       "photoinit_wt"
+      ]
+     },
+     "status": "done",
+     "summary": "T28 vs T32: 0 intended differences; 0 unintended"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T28: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "print"
+     },
+     "status": "done",
+     "summary": "T32: 2 log entries at print. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T31"
+     },
+     "status": "done",
+     "summary": "T31 · Lucia · 29% diluent, 1.4% PI, no degas, rest 0.3 h → 1.66 Pa·s, porosity 0.34%, UTS 52.4 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 28,
+       "diluent_max": 36,
+       "degassed": false
+      }
+     },
+     "status": "done",
+     "summary": "24 trials with diluent ≥ 28%, diluent ≤ 36%, not degassed: T07 (Tomás, M); T08, T11, T12 (Ravi, F); T15 (Tomás, N); T18, T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T31, T32 (Lucia, K); T33 (Dana, D); T34 (Lucia, K); T40 (D"
+    }
+   ],
+   "cost_usd": 0.004858904999999999,
+   "latency_s": 20.691,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T28",
+     "T32",
+     "T28-L02",
+     "T32-L02",
+     "T27",
+     "T31",
+     "T34",
+     "T41",
+     "T48",
+     "T29"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:06:39.156Z"
+  },
+  "s26": {
+   "qid": "s26",
+   "template": "probe_median_porosity",
+   "category": "aggregation",
+   "question": "What is the median porosity across all 50 trials (excluded ones included)?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The median porosity across all 50 trials, excluded ones included, is 0.855%. No tool returns a median, so I sorted the 50 porosity values from the search results by hand. The two middle values are 0.84 [T06] and 0.87 [T29], so the median is their average. Excluded trials [T07] (1.24) and [T26] (0.07) are in that set.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    }
+   ],
+   "cost_usd": 0.004900855,
+   "latency_s": 10.635,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T06",
+     "T29",
+     "T07",
+     "T26"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:21:06.454Z"
+  },
+  "s27": {
+   "qid": "s27",
+   "template": "probe_postcure_waits",
+   "category": "needle",
+   "question": "List every trial where the printed parts waited more than 1 hour between the end of printing and the start of post-cure, with each wait.",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "Five trials had a logged wait of more than 1 hour between printing and post-cure. The other 45 were at or under 0.3 h.\n\n- [T04]: 31.2 h ([T04-L08] to [T04-L09])\n- [T16]: 15 h ([T16-L08] to [T16-L09])\n- [T17]: 15 h ([T17-L08] to [T17-L09])\n- [T31]: 2.6 h ([T31-L08] to [T31-L09])\n- [T49]: 2.7 h ([T49-L09] to [T49-L10]), your trial\n\nThe gaps come from the log's computed print-to-post-cure intervals. None of the five trials is excluded, and all five passed their guardrails except [T04] and [T16]/[T17], which are not in this list's scope. I did not check whether those long waits affected results.",
+   "tool_calls": 51,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T01: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "50 trials: T01, T02 (Tomás, M); T03, T04 (Dana, C); T05–T07 (Tomás, M); T08 (Ravi, F); T09 (Tomás, M); T10 (Cooper, A); T11, T12 (Ravi, F); T13, T14 (Cooper, A); T15 (Tomás, N); T16, T17 (Cooper, A); T18 (Ravi, F); T19 (Cooper, A); T20 (Ravi, F); T21 (Cooper, B); T22, T23 (Tomás, N); T24 (Ravi, F); "
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T02: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T03: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T04: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T05: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T06: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T07: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T08: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T09: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T10: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T11: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T12: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T13: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T14: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T15: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T16: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T17: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T18: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T19: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T20: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T21: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T22: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T23: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T24: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T25: 1 log entry at postcure. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T26: 1 log entry at postcure. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T27: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T28: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T29: 1 log entry at postcure. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T30: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T31: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T32: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T33: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T34: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T35: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T36: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T37: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T38: 1 log entry at postcure. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T39: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T40: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T41: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T42: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T43: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T44: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T45: 1 log entry at postcure. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T46: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T47: 1 log entry at postcure. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T48: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T49: 1 log entry at postcure. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50",
+      "step": "postcure"
+     },
+     "status": "done",
+     "summary": "T50: 1 log entry at postcure. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.010945165,
+   "latency_s": 23.82,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T04",
+     "T04-L08",
+     "T04-L09",
+     "T16",
+     "T16-L08",
+     "T16-L09",
+     "T17",
+     "T17-L08",
+     "T17-L09",
+     "T31",
+     "T31-L08",
+     "T31-L09",
+     "T49",
+     "T49-L09",
+     "T49-L10"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:21:19.643Z"
+  },
+  "s28": {
+   "qid": "s28",
+   "template": "probe_parent_chain",
+   "category": "multi-hop",
+   "question": "Starting from T09, follow the parent links back until you reach a trial with no parent. How many trials are in that chain, counting T09 and the first one?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The chain has **6 trials**: [T09], [T07], [T06], [T05], [T02], [T01]. [T01] is the root, since its parent is null.\n\nEach link is a parent-child pair. [T09] points to [T07], [T07] to [T06], [T06] to [T05], [T05] to [T02], and [T02] to [T01]. The chain passes through [T07], which was excluded by its owner, Tomás, for a drifting balance, but the parent link doesn't depend on that status.",
+   "tool_calls": 6,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T09"
+     },
+     "status": "done",
+     "summary": "T09 · Tomás · 25% diluent, 1.1% PI, no degas, rest 0.3 h → 1.89 Pa·s, porosity 0.74%, UTS 51.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T07"
+     },
+     "status": "done",
+     "summary": "T07 · Tomás · 30% diluent, 1.3% PI, no degas, rest 0.6 h → 1.62 Pa·s, porosity 1.24%, UTS 47.9 MPa; failed porosity · excluded: \"Balance drifted during weighing; recipe not trusted.\""
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T06"
+     },
+     "status": "done",
+     "summary": "T06 · Tomás · 25% diluent, 1.4% PI, no degas, rest 0.7 h → 1.85 Pa·s, porosity 0.84%, UTS 51.7 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T05"
+     },
+     "status": "done",
+     "summary": "T05 · Tomás · 24% diluent, 0.9% PI, no degas, rest 0.3 h → 1.94 Pa·s, porosity 0.61%, UTS 46.8 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T02"
+     },
+     "status": "done",
+     "summary": "T02 · Tomás · 24% diluent, 1.1% PI, no degas, rest 0.6 h → 1.96 Pa·s, porosity 0.72%, UTS 44.7 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T01"
+     },
+     "status": "done",
+     "summary": "T01 · Tomás · 19% diluent, 0.8% PI, no degas, rest 0.5 h → 2.36 Pa·s, porosity 0.39%, UTS 51.1 MPa; passed every guardrail"
+    }
+   ],
+   "cost_usd": 0.0033376399999999994,
+   "latency_s": 12.792,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T09",
+     "T07",
+     "T06",
+     "T05",
+     "T02",
+     "T01"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:21:08.619Z"
+  },
+  "s29": {
+   "qid": "s29",
+   "template": "probe_log_count",
+   "category": "aggregation",
+   "question": "How many instrument log entries does the notebook contain in total, across all trials?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The notebook holds **763** instrument log entries across T01–T50. No tool returns a total, so I summed each trial's log. Most trials have 15 entries, and 13 extra come from a degas step in [T25], [T35], [T36], [T37], [T39], [T42], [T44], [T46], [T47], [T49] and [T50], plus two extra print entries in [T20].",
+   "tool_calls": 50,
+   "trace": [
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T01"
+     },
+     "status": "done",
+     "summary": "T01: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T02"
+     },
+     "status": "done",
+     "summary": "T02: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T03"
+     },
+     "status": "done",
+     "summary": "T03: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T04"
+     },
+     "status": "done",
+     "summary": "T04: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T05"
+     },
+     "status": "done",
+     "summary": "T05: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T06"
+     },
+     "status": "done",
+     "summary": "T06: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T07"
+     },
+     "status": "done",
+     "summary": "T07: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T08"
+     },
+     "status": "done",
+     "summary": "T08: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09"
+     },
+     "status": "done",
+     "summary": "T09: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T10"
+     },
+     "status": "done",
+     "summary": "T10: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T11"
+     },
+     "status": "done",
+     "summary": "T11: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T12"
+     },
+     "status": "done",
+     "summary": "T12: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T13"
+     },
+     "status": "done",
+     "summary": "T13: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T14"
+     },
+     "status": "done",
+     "summary": "T14: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T15"
+     },
+     "status": "done",
+     "summary": "T15: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T16"
+     },
+     "status": "done",
+     "summary": "T16: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T17"
+     },
+     "status": "done",
+     "summary": "T17: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T18"
+     },
+     "status": "done",
+     "summary": "T18: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T19"
+     },
+     "status": "done",
+     "summary": "T19: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T20"
+     },
+     "status": "done",
+     "summary": "T20: 17 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T21"
+     },
+     "status": "done",
+     "summary": "T21: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T22"
+     },
+     "status": "done",
+     "summary": "T22: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T23"
+     },
+     "status": "done",
+     "summary": "T23: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T24"
+     },
+     "status": "done",
+     "summary": "T24: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T25"
+     },
+     "status": "done",
+     "summary": "T25: 16 log entries. Unusual gap: 2.9 h rest between mixing (T25-L05, 10:26) and printing (T25-L08, 13:21); typical 0.5 h. Degas logged: T25-L06 (manual). Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T26"
+     },
+     "status": "done",
+     "summary": "T26: 15 log entries. Unusual gap: 19.7 h rest between mixing (T26-L05, 16:30) and printing (T26-L07, 12:12 next day); typical 0.5 h. No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T27"
+     },
+     "status": "done",
+     "summary": "T27: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged. Backfilled from instrument exports"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T28"
+     },
+     "status": "done",
+     "summary": "T28: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T29"
+     },
+     "status": "done",
+     "summary": "T29: 15 log entries. Unusual gap: 5.1 h rest between mixing (T29-L05, 13:22) and printing (T29-L07, 18:29); typical 0.5 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T30"
+     },
+     "status": "done",
+     "summary": "T30: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T31"
+     },
+     "status": "done",
+     "summary": "T31: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T32"
+     },
+     "status": "done",
+     "summary": "T32: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T33"
+     },
+     "status": "done",
+     "summary": "T33: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T34"
+     },
+     "status": "done",
+     "summary": "T34: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T35"
+     },
+     "status": "done",
+     "summary": "T35: 16 log entries. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T35-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T36"
+     },
+     "status": "done",
+     "summary": "T36: 16 log entries. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T36-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T37"
+     },
+     "status": "done",
+     "summary": "T37: 16 log entries. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T37-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T38"
+     },
+     "status": "done",
+     "summary": "T38: 15 log entries. Rest before printing 0.3 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T39"
+     },
+     "status": "done",
+     "summary": "T39: 16 log entries. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T39-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T40"
+     },
+     "status": "done",
+     "summary": "T40: 15 log entries. Rest before printing 0.5 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T41"
+     },
+     "status": "done",
+     "summary": "T41: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T42"
+     },
+     "status": "done",
+     "summary": "T42: 16 log entries. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T42-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T43"
+     },
+     "status": "done",
+     "summary": "T43: 15 log entries. Rest before printing 0.7 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T44"
+     },
+     "status": "done",
+     "summary": "T44: 16 log entries. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T44-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T45"
+     },
+     "status": "done",
+     "summary": "T45: 15 log entries. Rest before printing 0.4 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T46"
+     },
+     "status": "done",
+     "summary": "T46: 16 log entries. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T46-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T47"
+     },
+     "status": "done",
+     "summary": "T47: 16 log entries. Rest before printing 0.5 h (typical 0.5 h). Degas logged: T47-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T48"
+     },
+     "status": "done",
+     "summary": "T48: 15 log entries. Rest before printing 0.6 h (typical 0.5 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T49"
+     },
+     "status": "done",
+     "summary": "T49: 16 log entries. Rest before printing 0.6 h (typical 0.5 h). Degas logged: T49-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T50"
+     },
+     "status": "done",
+     "summary": "T50: 16 log entries. Rest before printing 0.7 h (typical 0.5 h). Degas logged: T50-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.044589825,
+   "latency_s": 22.254,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T25",
+     "T35",
+     "T36",
+     "T37",
+     "T39",
+     "T42",
+     "T44",
+     "T46",
+     "T47",
+     "T49",
+     "T50",
+     "T20"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:21:28.713Z"
+  },
+  "s30": {
+   "qid": "s30",
+   "template": "ledger_superseded",
+   "category": "contradiction",
+   "question": "What post-cure time does the team's findings ledger currently stand behind, and which ledger entry says so?",
+   "config": "C",
+   "model": "claude-haiku-5-5",
+   "answer": "The ledger currently stands behind a 45-minute post-cure. [L4], recorded by Dana Whitfield on 2025-01-20 and still accepted, says matched recipes post-cured 45 min are stronger in tension than at 30 min and tells the team to use 45 min, as in SOP v1. It supersedes [L2], Tomás's earlier 30-minute finding, which is now marked superseded. [L4] cites [T01], [T02], [T06] and [T07] as evidence.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Dana, accepted); L2 finding (Tomás, accepted); L3 finding (Tomás, accepted); L4 finding (Dana, accepted); L5 finding (Cooper, accepted); L6 finding (Ravi, accepted); L7 finding (Cooper, accepted); L8 dead end (Cooper, active); L9 finding (Ravi, accepted); L10 finding (To"
+    }
+   ],
+   "cost_usd": 0.00098139,
+   "latency_s": 4.539,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "L4",
+     "L2",
+     "T01",
+     "T02",
+     "T06",
+     "T07"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:24:34.743Z"
+  }
+ },
+ "status_note": "per-question budget $0.1 (Agent SDK maxBudgetUsd)"
+}

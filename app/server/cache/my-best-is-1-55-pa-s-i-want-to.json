@@ -1,0 +1,1679 @@
+{
+ "question": "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?",
+ "key": "my best is 1 55 pa s i want to order diluentx 1 800 6 weeks to get under 1 5 has anyone tried something like this",
+ "recorded_at": "2026-10-13T17:52:48.665Z",
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.0871534,
+ "ms": 20424,
+ "entries": [
+  {
+   "dt": 2248,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01Q7JgqsXMS3hWXA3wicwb2N",
+     "label": "Searched trials that reached the viscosity target",
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 8,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01JhKEmp8XwZmehddhxytNNG",
+     "label": "Read the findings ledger",
+     "tool": "get_ledger",
+     "input": {},
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 3,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01WtPrcYjFZcvfa5d6Rhxcn5",
+     "label": "Searched all trials",
+     "tool": "search_trials",
+     "input": {},
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 23,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01Q7JgqsXMS3hWXA3wicwb2N",
+     "label": "Searched trials that reached the viscosity target",
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "viscosity_max": 1.5
+      }
+     },
+     "status": "done",
+     "summary": "5 trials with viscosity ≤ 1.5 Pa·s: T06–T10 (Cooper, B) (T09 excluded by its owner). Viscosity 1.19–1.44 Pa·s",
+     "citations": [
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10"
+     ],
+     "ms": 34
+    }
+   }
+  },
+  {
+   "dt": 2,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01JhKEmp8XwZmehddhxytNNG",
+     "label": "Read the findings ledger",
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "3 ledger items: L1 finding (Cooper, accepted); L2 dead end (Cooper, active); L3 question (Greeshma, open)",
+     "citations": [
+      "L1",
+      "L2",
+      "L3"
+     ],
+     "ms": 28
+    }
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01WtPrcYjFZcvfa5d6Rhxcn5",
+     "label": "Searched all trials",
+     "tool": "search_trials",
+     "input": {},
+     "status": "done",
+     "summary": "14 trials: T01–T05 (Cooper, A); T06–T10 (Cooper, B); T11–T14 (Greeshma, G) (T09 excluded by its owner). Viscosity: Cooper 1.19–2.6 Pa·s, Greeshma 1.55–1.85 Pa·s",
+     "citations": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T11",
+      "T12",
+      "T13",
+      "T14"
+     ],
+     "ms": 25
+    }
+   }
+  },
+  {
+   "dt": 2932,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01MSWJdG76pdDb27ubSmrh9k",
+     "label": "Diffed protocols, T08 against T13",
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T08",
+      "b": "T13"
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 10,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01MSWJdG76pdDb27ubSmrh9k",
+     "label": "Diffed protocols, T08 against T13",
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T08",
+      "b": "T13"
+     },
+     "status": "done",
+     "summary": "T08 vs T13: 2 intended differences (diluent 38% vs 30%, photoinitiator 1% vs 1.7%); 1 unintended (vacuum degas: none vs 10). Related: T09 (a logged rest of 18.2 h between mixing (T09-L05, 2025-04-22 16:42) and printing (T09-L07, 2025-04-23 10:52))",
+     "citations": [
+      "T08",
+      "T13",
+      "T13-L06",
+      "T09",
+      "T09-L05",
+      "T09-L07"
+     ],
+     "ms": 10
+    }
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "diff",
+    "diff": {
+     "a": "T08",
+     "b": "T13",
+     "study_vars": [
+      "diluent_wt",
+      "photoinit_wt"
+     ],
+     "rows": [
+      {
+       "step": "weigh",
+       "field": "diluent_wt",
+       "label": "Diluent (wt %)",
+       "a": 38,
+       "b": 30,
+       "kind": "intended",
+       "note": "Varied on purpose (a study variable).",
+       "log_ids": [
+        "T08-L02",
+        "T13-L02"
+       ]
+      },
+      {
+       "step": "weigh",
+       "field": "photoinit_wt",
+       "label": "Photoinitiator (wt %)",
+       "a": 1,
+       "b": 1.7,
+       "kind": "intended",
+       "note": "Varied on purpose (a study variable).",
+       "log_ids": [
+        "T08-L03",
+        "T13-L03"
+       ]
+      },
+      {
+       "step": "mix",
+       "field": "mix_rpm",
+       "label": "Mixer speed (rpm)",
+       "a": 3000,
+       "b": 3000,
+       "kind": "same",
+       "log_ids": [
+        "T08-L04",
+        "T13-L04"
+       ]
+      },
+      {
+       "step": "mix",
+       "field": "mix_min",
+       "label": "Mix time (min)",
+       "a": 2,
+       "b": 2,
+       "kind": "same",
+       "log_ids": [
+        "T08-L05",
+        "T13-L05"
+       ]
+      },
+      {
+       "step": "degas",
+       "field": "degas_min",
+       "label": "Vacuum degas (min)",
+       "a": null,
+       "b": 10,
+       "kind": "unintended",
+       "note": "Greeshma degassed 10 min (T13-L06, from her worksheet); T08's log has no degas step. Degassing is not in SOP v1.",
+       "log_ids": [
+        "T13-L06"
+       ]
+      },
+      {
+       "step": "viscosity",
+       "field": "viscosity_measured",
+       "label": "Viscosity measured at 25 °C",
+       "a": "logged",
+       "b": "logged",
+       "kind": "same",
+       "log_ids": [
+        "T08-L06",
+        "T13-L07"
+       ]
+      },
+      {
+       "step": "print",
+       "field": "rest_h",
+       "label": "Rest between mixing and printing (h)",
+       "a": 0.4,
+       "b": 0.5,
+       "kind": "same",
+       "note": "Minor difference (0.4 vs 0.5 h), both printed within the hour.",
+       "log_ids": [
+        "T08-L05",
+        "T08-L07",
+        "T13-L05",
+        "T13-L08"
+       ]
+      },
+      {
+       "step": "postcure",
+       "field": "postcure_min",
+       "label": "UV post-cure (min)",
+       "a": 45,
+       "b": 45,
+       "kind": "same",
+       "log_ids": [
+        "T08-L09",
+        "T13-L10"
+       ]
+      },
+      {
+       "step": "test",
+       "field": "tests_run",
+       "label": "Guardrail tests run",
+       "a": "6 results logged",
+       "b": "6 results logged",
+       "kind": "same",
+       "log_ids": [
+        "T08-L10",
+        "T08-L15",
+        "T13-L11",
+        "T13-L16"
+       ]
+      }
+     ],
+     "related": [
+      {
+       "trial": "T09",
+       "text": "Same recipe as T08 (38% diluent, 1% PI), but a logged rest of 18.2 h between mixing (T09-L05, 2025-04-22 16:42) and printing (T09-L07, 2025-04-23 10:52). Porosity 0.38% vs 3.74%, UTS 44.2 vs 34.4 MPa; passed every guardrail. Excluded at the time by Cooper: \"Anomalous, likely a lucky specimen.\"",
+       "log_ids": [
+        "T09-L05",
+        "T09-L07"
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "dt": 308,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01GrHLaaVS3BBTR8rM1dSU7H",
+     "label": "Compared tensile strength by degassing (diluent ≥ 30%)",
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "degassed",
+      "filter": {
+       "diluent_min": 30
+      }
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 6,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01GrHLaaVS3BBTR8rM1dSU7H",
+     "label": "Compared tensile strength by degassing (diluent ≥ 30%)",
+     "tool": "compare_groups",
+     "input": {
+      "metric": "uts_mpa",
+      "group_by": "degassed",
+      "filter": {
+       "diluent_min": 30
+      }
+     },
+     "status": "done",
+     "summary": "tensile strength by degassing (diluent ≥ 30%): degassed: n=2, 49.3–50.7, 2 of 2 passed all [T13, T14]; not degassed: n=5, 30.7–44.2, 1 of 5 passed all [T06, T07, T08, T09, T10]",
+     "citations": [
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T13",
+      "T14"
+     ],
+     "ms": 6
+    }
+   }
+  },
+  {
+   "dt": 167,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_016Una8TTx3kuAL6xdKJLSf7",
+     "label": "Pulled T09's log",
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09"
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 16,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_016Una8TTx3kuAL6xdKJLSf7",
+     "label": "Pulled T09's log",
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09"
+     },
+     "status": "done",
+     "summary": "T09: 15 log entries. Unusual gap: 18.2 h rest between mixing (T09-L05, 16:42) and printing (T09-L07, 10:52 next day); typical 0.4 h. No degas step logged. Backfilled from instrument exports",
+     "citations": [
+      "T09-L05",
+      "T09-L07"
+     ],
+     "ms": 16
+    }
+   }
+  },
+  {
+   "dt": 5520,
+   "event": {
+    "type": "answer",
+    "text": "Cooper already got under 1.5 Pa·s with the existing diluent, at 1.19–1.44 Pa·s in [T06]–[T10], and your 1.55 in [T14] is the closest you have come.\n\n| Evidence |",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": " Trials | Result |\n|",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "---|---|---|\n|",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " Under",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " 1.5,",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " failed str",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ength or",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " b",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ubbles | [T06],",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " [T07], [T08]",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " | U",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "TS 34",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": ".4–35.6 M",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "Pa; porosity 2",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": ".38–3.74% |",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": "\n| Unintended difference",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": ": deg",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "as |",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " [T08], [T13]",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " | none",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " vs 10 min |",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "\n| Excluded outl",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ier: 18.2 h",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " rest | [T09],",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " [T09-L07",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "] | 1.28 ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": "Pa·s; porosity",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " 0.38%;",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " pass",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ed all |\n| U",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "TS at",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " ≥30% di",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "luent, by",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " degass",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ing | [T13",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "], [T14] | degass",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ed 49.3–50.",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "7; 1 of 5",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " und",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "egassed pass",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ed |\n\nHypothes",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": "is: your",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " rout",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ine ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "10-min",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ute degas, or",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " Cooper's acc",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "id",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ental long rest in [T09",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "], may let",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " bubbles esc",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ape, so",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " the brittle resin has",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " fewer flaws to cr",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ack from.\n\nUncert",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": "ain: only",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "2 degassed trials s",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "it at",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "30% di",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "luent or more, and the ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "38",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "% rec",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ipe has not",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " been deg",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "assed.\n\nProposal",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": ": T15a is",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " 38% diluent, ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": "1.7% PI and ",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "10-min degas,",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " and T15b,",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " the control, is identical without",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " the",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " degas. Nothing to",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " order, so it",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " tak",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "es an afternoon instead",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " of 6 weeks and",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " $1,800. I'd",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " also m",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ark [L2] disputed",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " and add a candidate finding",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": " under you:",
+    "delta": true
+   }
+  },
+  {
+   "dt": 1,
+   "event": {
+    "type": "answer",
+    "text": " degassing removes the str",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ength barrier at high dilu",
+    "delta": true
+   }
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "answer",
+    "text": "ent.",
+    "delta": true
+   }
+  },
+  {
+   "dt": 7,
+   "event": {
+    "type": "citations",
+    "items": [
+     {
+      "id": "T06",
+      "kind": "trial",
+      "label": "T06 · Cooper · 34% diluent, 0.8% PI, no degas"
+     },
+     {
+      "id": "T10",
+      "kind": "trial",
+      "label": "T10 · Cooper · 40% diluent, 1.2% PI, no degas"
+     },
+     {
+      "id": "T14",
+      "kind": "trial",
+      "label": "T14 · Greeshma · 32% diluent, 1.6% PI, degas 10 min"
+     },
+     {
+      "id": "T07",
+      "kind": "trial",
+      "label": "T07 · Cooper · 36% diluent, 0.9% PI, no degas"
+     },
+     {
+      "id": "T08",
+      "kind": "trial",
+      "label": "T08 · Cooper · 38% diluent, 1% PI, no degas"
+     },
+     {
+      "id": "T13",
+      "kind": "trial",
+      "label": "T13 · Greeshma · 30% diluent, 1.7% PI, degas 10 min"
+     },
+     {
+      "id": "T09",
+      "kind": "trial",
+      "label": "T09 · Cooper · 38% diluent, 1% PI, no degas"
+     },
+     {
+      "id": "T09-L07",
+      "kind": "log",
+      "label": "T09-L07 · 2025-04-23 10:52 · Print job started: 6 dogbones + 3 bend bars"
+     },
+     {
+      "id": "L2",
+      "kind": "ledger",
+      "label": "L2 · dead end · Dead end: high diluent (> 30%) too brittle."
+     }
+    ]
+   }
+  },
+  {
+   "dt": 2652,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_012CYMCPtHjFgXms4f78yhA9",
+     "label": "Proposed a ledger change (needs approval)",
+     "tool": "propose_ledger_update",
+     "input": {
+      "changes": [
+       {
+        "op": "update",
+        "id": "L2",
+        "status": "disputed",
+        "status_note": "reason disputed: confounded by degassing (see T09, T13)",
+        "add_evidence": [
+         "T09",
+         "T13"
+        ],
+        "reason": "The dead end's brittleness reason is undermined: a degassed or long-rested resin at high diluent passed every guardrail."
+       },
+       {
+        "op": "add",
+        "kind": "finding",
+        "owner": "greeshma",
+        "status": "candidate",
+        "text": "Degassing removes the strength barrier at high diluent.",
+        "evidence": [
+         "T13",
+         "T14",
+         "T09"
+        ],
+        "pending_on": "T15",
+        "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+       }
+      ]
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 5,
+   "event": {
+    "type": "ledger_proposal",
+    "proposal": {
+     "id": "p-ledger-mv6zb25l-1",
+     "kind": "ledger",
+     "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma N.): Degassing removes the strength barrier at high diluent. · pending T15",
+     "payload": [
+      {
+       "op": "update",
+       "id": "L2",
+       "patch": {
+        "status": "disputed",
+        "status_note": "reason disputed: confounded by degassing (see T09, T13)",
+        "evidence": [
+         "T06",
+         "T07",
+         "T08",
+         "T10",
+         "T09",
+         "T13"
+        ]
+       },
+       "reason": "The dead end's brittleness reason is undermined: a degassed or long-rested resin at high diluent passed every guardrail."
+      },
+      {
+       "op": "add",
+       "item": {
+        "id": "L4",
+        "kind": "finding",
+        "text": "Degassing removes the strength barrier at high diluent.",
+        "owner": "greeshma",
+        "evidence": [
+         "T13",
+         "T14",
+         "T09"
+        ],
+        "status": "candidate",
+        "recorded_at": "2026-10-13",
+        "pending_on": "T15",
+        "history": [
+         {
+          "at": "2026-10-13",
+          "by": "agent",
+          "change": "proposed"
+         }
+        ]
+       },
+       "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+      }
+     ],
+     "status": "pending"
+    }
+   }
+  },
+  {
+   "dt": 1509,
+   "await_decision": "p-ledger-mv6zb25l-1",
+   "decision": "approve"
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "ledger_proposal",
+    "proposal": {
+     "id": "p-ledger-mv6zb25l-1",
+     "kind": "ledger",
+     "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma N.): Degassing removes the strength barrier at high diluent. · pending T15",
+     "payload": [
+      {
+       "op": "update",
+       "id": "L2",
+       "patch": {
+        "status": "disputed",
+        "status_note": "reason disputed: confounded by degassing (see T09, T13)",
+        "evidence": [
+         "T06",
+         "T07",
+         "T08",
+         "T10",
+         "T09",
+         "T13"
+        ]
+       },
+       "reason": "The dead end's brittleness reason is undermined: a degassed or long-rested resin at high diluent passed every guardrail."
+      },
+      {
+       "op": "add",
+       "item": {
+        "id": "L4",
+        "kind": "finding",
+        "text": "Degassing removes the strength barrier at high diluent.",
+        "owner": "greeshma",
+        "evidence": [
+         "T13",
+         "T14",
+         "T09"
+        ],
+        "status": "candidate",
+        "recorded_at": "2026-10-13",
+        "pending_on": "T15",
+        "history": [
+         {
+          "at": "2026-10-13",
+          "by": "agent",
+          "change": "proposed"
+         }
+        ]
+       },
+       "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+      }
+     ],
+     "status": "approved"
+    }
+   }
+  },
+  {
+   "dt": 16,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_012CYMCPtHjFgXms4f78yhA9",
+     "label": "Proposed a ledger change (needs approval)",
+     "tool": "propose_ledger_update",
+     "input": {
+      "changes": [
+       {
+        "op": "update",
+        "id": "L2",
+        "status": "disputed",
+        "status_note": "reason disputed: confounded by degassing (see T09, T13)",
+        "add_evidence": [
+         "T09",
+         "T13"
+        ],
+        "reason": "The dead end's brittleness reason is undermined: a degassed or long-rested resin at high diluent passed every guardrail."
+       },
+       {
+        "op": "add",
+        "kind": "finding",
+        "owner": "greeshma",
+        "status": "candidate",
+        "text": "Degassing removes the strength barrier at high diluent.",
+        "evidence": [
+         "T13",
+         "T14",
+         "T09"
+        ],
+        "pending_on": "T15",
+        "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+       }
+      ]
+     },
+     "status": "done",
+     "summary": "Approved by Greeshma N.",
+     "ms": 1530
+    }
+   }
+  },
+  {
+   "dt": 525,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01E8x2hd8WnM2dyupb9GA4R9",
+     "label": "Drafted an experiment (needs approval)",
+     "tool": "draft_trial",
+     "input": {
+      "title": "Does degassing rescue the 38% diluent recipe?",
+      "owner": "greeshma",
+      "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
+      "linked_trials": [
+       "T08",
+       "T13",
+       "T09"
+      ],
+      "citations": [
+       "T09-L05",
+       "T09-L07",
+       "T13-L06",
+       "L2"
+      ],
+      "arms": [
+       {
+        "label": "T15a: 38% diluent + 1.7% PI + 10-min degas",
+        "role": "treatment",
+        "diluent_wt": 38,
+        "photoinit_wt": 1.7,
+        "degas_min": 10
+       },
+       {
+        "label": "T15b control: 38% diluent + 1.7% PI, no degas",
+        "role": "control",
+        "diluent_wt": 38,
+        "photoinit_wt": 1.7,
+        "degas_min": 0
+       }
+      ]
+     },
+     "status": "running"
+    }
+   }
+  },
+  {
+   "dt": 3,
+   "event": {
+    "type": "draft",
+    "proposal": {
+     "id": "p-draft-mv6zb3qn-2",
+     "kind": "draft",
+     "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma N.",
+     "payload": {
+      "id": "T15",
+      "title": "Does degassing rescue the 38% diluent recipe?",
+      "owner": "greeshma",
+      "linked_trials": [
+       "T08",
+       "T13",
+       "T09"
+      ],
+      "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
+      "arms": [
+       {
+        "id": "T15a",
+        "label": "T15a: 38% diluent + 1.7% PI + 10-min degas",
+        "role": "treatment",
+        "recipe": {
+         "diluent_wt": 38,
+         "photoinit_wt": 1.7,
+         "degas_min": 10,
+         "rest_h": 0.5,
+         "mix_rpm": 3000,
+         "mix_min": 2,
+         "postcure_min": 45
+        },
+        "estimate": {
+         "viscosity_pa_s": 1.29,
+         "porosity_pct": 0.41,
+         "p_pass": 0.8,
+         "uts_mpa": 47.8,
+         "flex_strength_mpa": 75.8,
+         "viability_pct": 83.1,
+         "basis": "fitted to 14 trials; extrapolated beyond 32% diluent for degassed resin"
+        }
+       },
+       {
+        "id": "T15b",
+        "label": "T15b control: 38% diluent + 1.7% PI, no degas",
+        "role": "control",
+        "recipe": {
+         "diluent_wt": 38,
+         "photoinit_wt": 1.7,
+         "degas_min": 0,
+         "rest_h": 0.5,
+         "mix_rpm": 3000,
+         "mix_min": 2,
+         "postcure_min": 45
+        },
+        "estimate": {
+         "viscosity_pa_s": 1.29,
+         "porosity_pct": 3.72,
+         "p_pass": 0.25,
+         "uts_mpa": 38.6,
+         "flex_strength_mpa": 63.2,
+         "viability_pct": 83.1,
+         "basis": "fitted to 14 trials"
+        }
+       }
+      ],
+      "steps": [
+       "Weigh one 50 g batch per arm: T15a 38% diluent / 1.7% photoinitiator; T15b 38% diluent / 1.7% photoinitiator.",
+       "Mix each at 3000 rpm for 2 min (SOP v1).",
+       "Degas T15a under vacuum for 10 min; do not degas T15b (control). Log it on the worksheet so the degasser step is recorded.",
+       "Measure viscosity at 25 °C.",
+       "Print each arm within an hour of mixing, so rest time isn't a second variable.",
+       "Post-cure 45 min, then run all four guardrails: tensile, 3-pt bend, porosity (cross-section), cytotoxicity."
+      ],
+      "materials": [
+       {
+        "item": "Base monomer",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14)"
+       },
+       {
+        "item": "Reactive diluent (the current one)",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14); no new diluent needed"
+       },
+       {
+        "item": "Photoinitiator",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14)"
+       },
+       {
+        "item": "Vacuum degasser",
+        "in_stock": true,
+        "note": "on the bench; used in T11–T14"
+       }
+      ],
+      "nothing_to_order": true,
+      "citations": [
+       "T08",
+       "T13",
+       "T09",
+       "T09-L05",
+       "T09-L07",
+       "T13-L06",
+       "L2"
+      ]
+     },
+     "status": "pending"
+    }
+   }
+  },
+  {
+   "dt": 1503,
+   "await_decision": "p-draft-mv6zb3qn-2",
+   "decision": "approve"
+  },
+  {
+   "dt": 0,
+   "event": {
+    "type": "draft",
+    "proposal": {
+     "id": "p-draft-mv6zb3qn-2",
+     "kind": "draft",
+     "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma N.",
+     "payload": {
+      "id": "T15",
+      "title": "Does degassing rescue the 38% diluent recipe?",
+      "owner": "greeshma",
+      "linked_trials": [
+       "T08",
+       "T13",
+       "T09"
+      ],
+      "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
+      "arms": [
+       {
+        "id": "T15a",
+        "label": "T15a: 38% diluent + 1.7% PI + 10-min degas",
+        "role": "treatment",
+        "recipe": {
+         "diluent_wt": 38,
+         "photoinit_wt": 1.7,
+         "degas_min": 10,
+         "rest_h": 0.5,
+         "mix_rpm": 3000,
+         "mix_min": 2,
+         "postcure_min": 45
+        },
+        "estimate": {
+         "viscosity_pa_s": 1.29,
+         "porosity_pct": 0.41,
+         "p_pass": 0.8,
+         "uts_mpa": 47.8,
+         "flex_strength_mpa": 75.8,
+         "viability_pct": 83.1,
+         "basis": "fitted to 14 trials; extrapolated beyond 32% diluent for degassed resin"
+        }
+       },
+       {
+        "id": "T15b",
+        "label": "T15b control: 38% diluent + 1.7% PI, no degas",
+        "role": "control",
+        "recipe": {
+         "diluent_wt": 38,
+         "photoinit_wt": 1.7,
+         "degas_min": 0,
+         "rest_h": 0.5,
+         "mix_rpm": 3000,
+         "mix_min": 2,
+         "postcure_min": 45
+        },
+        "estimate": {
+         "viscosity_pa_s": 1.29,
+         "porosity_pct": 3.72,
+         "p_pass": 0.25,
+         "uts_mpa": 38.6,
+         "flex_strength_mpa": 63.2,
+         "viability_pct": 83.1,
+         "basis": "fitted to 14 trials"
+        }
+       }
+      ],
+      "steps": [
+       "Weigh one 50 g batch per arm: T15a 38% diluent / 1.7% photoinitiator; T15b 38% diluent / 1.7% photoinitiator.",
+       "Mix each at 3000 rpm for 2 min (SOP v1).",
+       "Degas T15a under vacuum for 10 min; do not degas T15b (control). Log it on the worksheet so the degasser step is recorded.",
+       "Measure viscosity at 25 °C.",
+       "Print each arm within an hour of mixing, so rest time isn't a second variable.",
+       "Post-cure 45 min, then run all four guardrails: tensile, 3-pt bend, porosity (cross-section), cytotoxicity."
+      ],
+      "materials": [
+       {
+        "item": "Base monomer",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14)"
+       },
+       {
+        "item": "Reactive diluent (the current one)",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14); no new diluent needed"
+       },
+       {
+        "item": "Photoinitiator",
+        "in_stock": true,
+        "note": "used in every trial (T01–T14)"
+       },
+       {
+        "item": "Vacuum degasser",
+        "in_stock": true,
+        "note": "on the bench; used in T11–T14"
+       }
+      ],
+      "nothing_to_order": true,
+      "citations": [
+       "T08",
+       "T13",
+       "T09",
+       "T09-L05",
+       "T09-L07",
+       "T13-L06",
+       "L2"
+      ]
+     },
+     "status": "approved"
+    }
+   }
+  },
+  {
+   "dt": 9,
+   "event": {
+    "type": "trace",
+    "step": {
+     "id": "toolu_01E8x2hd8WnM2dyupb9GA4R9",
+     "label": "Drafted an experiment (needs approval)",
+     "tool": "draft_trial",
+     "input": {
+      "title": "Does degassing rescue the 38% diluent recipe?",
+      "owner": "greeshma",
+      "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
+      "linked_trials": [
+       "T08",
+       "T13",
+       "T09"
+      ],
+      "citations": [
+       "T09-L05",
+       "T09-L07",
+       "T13-L06",
+       "L2"
+      ],
+      "arms": [
+       {
+        "label": "T15a: 38% diluent + 1.7% PI + 10-min degas",
+        "role": "treatment",
+        "diluent_wt": 38,
+        "photoinit_wt": 1.7,
+        "degas_min": 10
+       },
+       {
+        "label": "T15b control: 38% diluent + 1.7% PI, no degas",
+        "role": "control",
+        "diluent_wt": 38,
+        "photoinit_wt": 1.7,
+        "degas_min": 0
+       }
+      ]
+     },
+     "status": "done",
+     "summary": "Approved by Greeshma N.",
+     "ms": 1515
+    }
+   }
+  },
+  {
+   "dt": 2946,
+   "event": {
+    "type": "done",
+    "cached": false,
+    "model": "claude-sonnet-5-5",
+    "cost_usd": 0.0872,
+    "ms": 20424
+   }
+  }
+ ]
+}

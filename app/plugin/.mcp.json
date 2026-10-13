@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "notebook": {
+      "command": "sh",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/notebook-mcp.sh"],
+      "env": {
+        "NOTEBOOK_USER": "greeshma"
+      }
+    }
+  }
+}

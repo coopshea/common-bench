@@ -1,0 +1,123 @@
+/* Anatomy figures: kit tokens (light theme, warmed to the app canvas) + bench, zoom and specimen layout. */
+
+.iso {
+  --anatomy-paper: #fbfaf7; --anatomy-face: #ffffff; --anatomy-top: #ffffff;
+  --anatomy-shade-0: #d9d5cc; --anatomy-shade-1: #e3dfd6; --anatomy-shade-2: #ece9e1; --anatomy-shade-3: #f4f2ec;
+  --anatomy-lit-top: #ffffff; --anatomy-lit-shade: #eeebe4;
+  --anatomy-hi: #2b2925; --anatomy-mid: #8d877c; --anatomy-lo: #b6b0a5; --anatomy-faint: #d6d1c7; --anatomy-lit: #000;
+  --anatomy-weight: 0.9px;
+  --resin: #ece2c8; --resin-top: #f6efdc;
+  --uv: #6fd0df;
+  --printed: #e9dfc2;
+  overflow: visible;
+}
+.iso path { vector-effect: non-scaling-stroke; }
+.iso-fill { fill: var(--anatomy-paper); stroke: none; }
+.iso-shade, .iso-top { stroke: none; }
+.iso-shade[data-shade="0"] { fill: var(--anatomy-shade-0); }
+.iso-shade[data-shade="1"] { fill: var(--anatomy-shade-1); }
+.iso-shade[data-shade="2"] { fill: var(--anatomy-shade-2); }
+.iso-shade[data-shade="3"] { fill: var(--anatomy-shade-3); }
+.iso-top { fill: var(--anatomy-top); }
+.iso-line { fill: none; stroke: var(--anatomy-lo); stroke-width: var(--anatomy-weight); stroke-linecap: round; stroke-linejoin: round; }
+.iso-line[data-tone="hi"] { stroke: var(--anatomy-hi); }
+.iso-line[data-tone="mid"] { stroke: var(--anatomy-mid); }
+.iso-line[data-tone="lo"] { stroke: var(--anatomy-lo); }
+.iso-line[data-tone="faint"] { stroke: var(--anatomy-faint); }
+.iso-edge { stroke-width: calc(var(--anatomy-weight) * 1.15); }
+
+/* materials */
+.iso .resin > .iso-fill, .iso .resin > .iso-shade { fill: var(--resin); }
+.iso .resin > .iso-top { fill: var(--resin-top); }
+.iso .printed > .iso-fill, .iso .printed > .iso-shade { fill: var(--printed); }
+.iso .printed > .iso-top { fill: #f5eedb; }
+.iso .glass > .iso-fill { fill: #d6e6ea; fill-opacity: 0.22; }
+.iso .glass > .iso-shade { fill: #c9dde2; fill-opacity: 0.16; }
+.iso .glass > .iso-top { fill: #e8f2f4; fill-opacity: 0.25; }
+.iso .screen { fill: var(--anatomy-shade-0); stroke: var(--anatomy-mid); stroke-width: 0.6; }
+.iso .screen.lit { fill: #d7f0f4; stroke: var(--anatomy-hi); }
+.iso .window { fill: #6f6a60; fill-opacity: 0.18; stroke: var(--anatomy-mid); stroke-width: 0.6; }
+.iso .uv { fill: var(--uv); fill-opacity: 0.55; stroke: none; }
+.iso .printed-sil { fill: var(--anatomy-hi); fill-opacity: 0.25; stroke: none; }
+.iso .dial-face { fill: #fff; stroke: var(--anatomy-mid); stroke-width: 0.6; }
+.iso .bubble { fill: #fff; stroke: var(--anatomy-mid); stroke-width: 0.5; }
+.iso .needle { stroke-width: 1.3; }
+.iso .progress .bar { stroke-width: 1.6; }
+
+/* off-SOP: every edge dashed; not run: a ghost */
+.iso.optional .iso-line { stroke-dasharray: 2.2 2; }
+.iso[data-status="skipped"] { opacity: 0.32; filter: grayscale(1); }
+
+/* ---------- bench row ---------- */
+.bench3d { position: relative; display: flex; align-items: center; gap: 10px; }
+.bench3d.top { z-index: 16; }
+.bench-clock { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; flex: none; font-size: 11px; color: var(--ink-3); min-width: 92px; }
+.bench-clock b { font-size: 12px; }
+.bench-play {
+  width: 26px; height: 22px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--panel);
+  font-size: 10px; color: var(--ink-2); cursor: pointer; line-height: 1; padding: 0;
+}
+.bench-play:hover { border-color: var(--ink-3); }
+.bench-row { display: flex; flex: 1; min-width: 0; margin: 0; padding: 0; list-style: none; gap: 2px; }
+.inst-cell { flex: 1; min-width: 0; display: flex; }
+.inst-cell + .inst-cell::before { content: ""; width: 1px; align-self: stretch; margin: 10px 0; background: var(--line); flex: none; }
+.inst-cell > button {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; padding: 3px 6px; border: 1px solid transparent;
+  border-radius: 8px; background: none; cursor: pointer; text-align: left; font: inherit; color: inherit;
+}
+.inst-cell > button:hover { background: var(--panel); border-color: var(--line); }
+.inst-cell.active > button { background: var(--panel); border-color: var(--ink-3); }
+.inst-cell > button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.inst-cell .iso { flex: none; }
+.inst-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; position: relative; padding-bottom: 4px; }
+.inst-text b { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+.inst-text .ro { font-size: 11px; color: var(--ink-3); white-space: nowrap; min-height: 14px; font-variant-numeric: tabular-nums; }
+.inst-cell[data-status="running"] .ro { color: var(--ink); }
+.inst-cell[data-status="skipped"] .inst-text b { color: var(--ink-4); }
+.inst-text .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--ink); transform-origin: left; border-radius: 1px; }
+
+/* drawer variant: stacked cells, wraps */
+.bench3d.in-drawer { align-items: flex-start; flex-wrap: wrap; }
+.bench3d.in-drawer .bench-clock { flex-direction: row; align-items: center; gap: 8px; width: 100%; }
+.bench3d.in-drawer .inst-cell > button { flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px; text-align: center; }
+.bench3d.in-drawer .inst-text { align-items: center; }
+.bench3d.in-drawer .inst-text b { font-size: 11px; }
+
+/* ---------- zoom (visual SOP card) ---------- */
+.station-zoom {
+  display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; margin-top: 8px; width: 100%;
+  background: var(--panel); border: 1px solid var(--line-2); border-radius: 10px;
+}
+.station-zoom.floating {
+  position: absolute; top: calc(100% + 6px); left: 102px; width: min(720px, calc(100% - 102px)); margin: 0; z-index: 15;
+  box-shadow: 0 12px 40px rgba(27, 26, 23, 0.16); animation: fade-in 0.15s ease-out both;
+}
+.station-zoom .iso { flex: none; }
+.zoom-body { flex: 1; min-width: 0; }
+.zoom-head { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.zoom-card { font-size: 12.5px; color: var(--ink-2); margin: 6px 0 8px; line-height: 1.45; }
+.zoom-log { list-style: none; margin: 0; padding: 0; font-size: 12px; display: grid; gap: 3px; }
+.zoom-log li { display: grid; grid-template-columns: 44px 1fr auto; gap: 8px; padding: 2px 6px; border-radius: 5px; transition: opacity 0.2s; }
+.zoom-log li.future { opacity: 0.3; }
+.zoom-log li.now { background: var(--hl); }
+.zoom-log li.none { display: block; color: var(--ink-4); }
+.zoom-log .when { color: var(--ink-3); }
+
+/* ---------- specimens ---------- */
+.spec-play { display: flex; align-items: center; gap: 8px; }
+.spec-play input[type="range"] { flex: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .station-zoom.floating { animation: none; }
+}
+.iso .crack { stroke-width: 1.6; }
+.iso .cut-face { fill: #f4ecd8; stroke: var(--anatomy-hi); stroke-width: 0.9; }
+.iso .void { fill: #3b3830; fill-opacity: 0.85; stroke: none; }
+.iso .ghost { stroke-dasharray: 2 2.5; }
+.ct { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.ct-read { display: flex; flex-direction: column; gap: 2px; }
+.ct-read b { font-size: 20px; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ct-read span { font-size: 11.5px; color: var(--ink-3); }
+.ct-read span.over { color: var(--fail-ink); font-weight: 600; }
+.spec-play .bench-play { flex: none; }
+.live-inst { display: inline-flex; flex: none; }

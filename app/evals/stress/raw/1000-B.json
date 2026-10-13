@@ -1,0 +1,488 @@
+{
+ "size": 1000,
+ "config": "B",
+ "label": "Agent + tools · Sonnet",
+ "model": "claude-sonnet-5-5",
+ "status": "ran",
+ "records": {
+  "s01": {
+   "qid": "s01",
+   "template": "needle_overnight_rest",
+   "category": "needle",
+   "question": "Exactly one trial was printed from resin that had rested overnight: more than 12 hours between the end of mixing and the start of printing. Which trial was it, how long was the rest, and who ran it?",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "The trial was [T568]. The notebook shows a rest of 19.6 h between the end of mixing and the start of printing, and Ravi ran it. The next longest rest was 5.5 h, for [T689], so [T568] is the only trial over 12 hours.\n\nI read these figures from the per-trial rest times and didn't open the step log for [T568].",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "rest_h",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "rest time by person: Cooper: n=59, 0.3–3.8, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T408, T416, T"
+    }
+   ],
+   "cost_usd": 0.0762098,
+   "latency_s": 7.755,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T568",
+     "T689"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:41.974Z"
+  },
+  "s06": {
+   "qid": "s06",
+   "template": "agg_mean_viscosity",
+   "category": "aggregation",
+   "question": "What is the mean viscosity across all 1000 trials, including excluded ones? Give it to two decimals.",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "The mean viscosity across all 1000 trials, excluded ones included, is about **1.66 Pa·s**.\n\nThe notebook returns means by group, not one overall figure. The 979 included trials average 1.66 Pa·s, and the 21 excluded trials average 1.68 Pa·s. Weighting those two means by trial count gives 1.66. Both group means are already rounded to two decimals, so the third digit could shift slightly, but the excluded trials are too few to move it.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "excluded",
+      "filter": {
+       "include_excluded": true
+      }
+     },
+     "status": "done",
+     "summary": "viscosity by excluded or not: excluded: n=21, 0.98–2.51, 10 of 21 passed all [T186, T232, T280, T314, T331, T361, T368, T476, T498, T526, T537, T568, T590, T689, T690, T695, T747, T775, T854, T872, T981]; included: n=979, 0.94–2.74, 584 of 979 passed all [T01, T02, T03, T04, T05, T06, T07, T08, T09,"
+    }
+   ],
+   "cost_usd": 0.07912519999999999,
+   "latency_s": 10.564,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:44.789Z"
+  },
+  "s10": {
+   "qid": "s10",
+   "template": "agg_mixer2_count",
+   "category": "aggregation",
+   "question": "How many trials were mixed on the loaner mixer (Planetary mixer #2)?",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "That isn't in the notebook, so I can't give you a count.\n\nThe logs name the device only as \"Planetary mixer\". The mix entries I checked, such as [T09-L04] and [T09-L05], have no unit number. No tool can filter or group trials by mixer, and the ledger doesn't mention a loaner mixer either, for example in [L10].\n\nTwo things would settle it. One is a mixer-ID field added to the mix log entries. The other is the loaner mixer's booking or run sheet, which would list the trial IDs it mixed.",
+   "tool_calls": 2,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T09",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T09: 2 log entries at mix. Rest before printing 0.7 h (typical 0.6 h). No degas step logged. Backfilled from instrument exports"
+    }
+   ],
+   "cost_usd": 0.0406815,
+   "latency_s": 7.033,
+   "grade": {
+    "correct": false,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T09-L04",
+     "T09-L05",
+     "L10"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [
+     "mixer #2 trials (103)"
+    ],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "declined",
+    "diagnosis": "declined to answer · missing/wrong number: mixer #2 trials (103)"
+   },
+   "ran_at": "2026-10-13T18:17:41.264Z"
+  },
+  "s14": {
+   "qid": "s14",
+   "template": "hop_best_parent",
+   "category": "multi-hop",
+   "question": "Among trials that met the objective (every guardrail passed and viscosity at most 1.5 Pa·s, excluded trials included), which has the lowest viscosity? Who ran it, and what was the porosity of its parent trial?",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "Among the trials that met the objective, the lowest viscosity is [T413], at 1.03 Pa·s. It passed every guardrail, and it was not excluded.\n\n- **Who ran it:** Dana Whitford. The notebook's owner grouping labels it \"Dana\", and the trial record lists the owner as Dana Whitford (id dana_whitford).\n- **Parent trial:** [T410], which has a porosity of 1.28%. That failed the porosity guardrail. [T413] then reached 0.66% porosity.\n\nThe grouping is every trial that met the objective, excluded ones included. Within it, Dana's lowest value is 1.03, below the lowest for Ines (1.05), Lucia (1.21), you (1.39) and Ravi (1.44). That makes [T413] the overall minimum.",
+   "tool_calls": 4,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "meets_objective": true
+      }
+     },
+     "status": "done",
+     "summary": "result (102,401 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "viscosity_pa_s",
+      "group_by": "owner",
+      "filter": {
+       "meets_objective": true
+      }
+     },
+     "status": "done",
+     "summary": "viscosity by person (meets objective): Dana: n=52, 1.03–1.48, 52 of 52 passed all [T413, T432, T433, T452, T465, T466, T481, T486, T509, T510, T522, T524, T539, T559, T567, T572, T577, T579, T588, T608, T623, T632, T642, T647, T651, T673, T785, T797, T802, T804, T807, T819, T822, T825, T827, T830, T"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T413"
+     },
+     "status": "done",
+     "summary": "T413 · Dana · 44% diluent, 1.7% PI, degas 5 min, rest 5.1 h → 1.03 Pa·s, porosity 0.66%, UTS 43.2 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T410"
+     },
+     "status": "done",
+     "summary": "T410 · Dana · 42% diluent, 1.4% PI, degas 5 min, rest 0.7 h → 1.12 Pa·s, porosity 1.28%, UTS 43.2 MPa; failed porosity"
+    }
+   ],
+   "cost_usd": 0.0316794,
+   "latency_s": 14.017,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T413",
+     "T410"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:55.282Z"
+  },
+  "s20": {
+   "qid": "s20",
+   "template": "abstain_whitfield_44",
+   "category": "abstain-trap",
+   "question": "What was the viscosity of the trial Dana Whitfield ran at 44% diluent?",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "The notebook has no 44% diluent trial owned by Dana Whitfield. All 12 trials at 44% belong to Dana Whitford, the printing scientist, and their viscosities run from 1.02 to 1.07 Pa·s.\n\nSome examples:\n- [T413]: 1.03 Pa·s. It is the only one of the 12 that passed every guardrail.\n- [T461]: 1.02 Pa·s\n- [T495]: 1.02 Pa·s\n- [T529]: 1.07 Pa·s\n- [T565]: 1.07 Pa·s\n- [T935]: 1.06 Pa·s\n\nThe other six are [T646], [T707], [T721], [T770], [T784] and [T960]. Their viscosities are between 1.02 and 1.04 Pa·s.\n\nIf you meant Dana Whitford, tell me which trial and I'll pull its full record. If you meant Dana Whitfield's own trials, I can't find any under her name at this diluent level.",
+   "tool_calls": 1,
+   "trace": [
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "diluent_min": 44,
+       "diluent_max": 44
+      }
+     },
+     "status": "done",
+     "summary": "12 trials with diluent ≥ 44%, diluent ≤ 44%: T413, T461, T495, T529, T565, T646, T707, T721, T770, T784, T935, T960 (Dana, E). Viscosity 1.02–1.07 Pa·s"
+    }
+   ],
+   "cost_usd": 0.022649700000000002,
+   "latency_s": 8.492,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": true,
+    "cited_ids": [
+     "T413",
+     "T461",
+     "T495",
+     "T529",
+     "T565",
+     "T935",
+     "T646",
+     "T707",
+     "T721",
+     "T770",
+     "T784",
+     "T960"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:17:50.466Z"
+  },
+  "s24": {
+   "qid": "s24",
+   "template": "confound_winter_mixer",
+   "category": "confound",
+   "question": "Between November 2025 and February 2026, porosity went up across several people's trials even though nobody changed their recipes. What changed? Cite the evidence.",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "The most likely change is that the team started mixing on a loaner unit, \"Planetary mixer #2\", in early November 2025. The ledger already has this as an open question: porosity jumped \"this winter\" with the same recipes as autumn [L10]. The evidence is suggestive, not conclusive.\n\n- **Switch to the loaner:** Dana Whitfield's [T674] on 2025-10-30 logged \"Planetary mixer\" [T674-L04]. Her [T677] on 2025-11-03 logged \"Mix started (loaner unit)\" on mixer #2 [T677-L04]. Rpm and mix time were unchanged, at 3000 rpm for 2 min. [T677] failed porosity at 1.43%.\n- **Spread across people:** Ines's [T679] used the same loaner [T679-L04], and so did Dana Whitford's [T754] [T754-L04]. Dana Whitford's [T754] had porosity of 4.66% even though a degas step was logged [T754-L06].\n- **Bubbles may escape with time or degassing:** Ines's [T679] was degassed for 10 min [T679-L06] and had 0.33% porosity. Dana Whitfield's [T689] was on the loaner with no degas but rested 5.5 h before printing, a notable gap [T689-L05] [T689-L07], and had 0.7% porosity.\n- **Return to the regular mixer:** Dana Whitford's [T797] in March 2026 logged \"Planetary mixer\" [T797-L04] and had 0.41% porosity. It also had a 4.1 h rest and a degas step.\n- **Group figures:** Ravi's mean porosity was 2.25% (n=156), with a maximum of 9.14%. Ines's was 0.4% (n=79), Lucia's 0.73% (n=100), and your trials' 0.17% (n=19). I couldn't group by date or mixer, so these are per-person figures only.\n\nHypothesis: the loaner mixer may trap more air in thin resin at the same speed, and trials that were degassed or rested a long time let that air escape.\n\nUncertain: the mixer is only logged in the few trials I read, and I could not search by date. [T674] already had 1.95% porosity on the regular mixer, so the mixer may not be the whole story.",
+   "tool_calls": 12,
+   "trace": [
+    {
+     "tool": "get_ledger",
+     "input": {},
+     "status": "done",
+     "summary": "17 ledger items: L1 finding (Tomás, accepted); L2 finding (Tomás, accepted); L3 finding (Dana, accepted); L4 finding (Cooper, accepted); L5 finding (Ravi, accepted); L6 finding (Dana, accepted); L7 dead end (Cooper, active); L8 finding (Cooper, accepted); L9 finding (Tomás, accepted); L10 question ("
+    },
+    {
+     "tool": "compare_groups",
+     "input": {
+      "metric": "porosity_pct",
+      "group_by": "owner"
+     },
+     "status": "done",
+     "summary": "bubbles (porosity) by person: Cooper: n=59, 0.18–3.69, 37 of 59 passed all [T269, T273, T277, T286, T293, T297, T298, T300, T302, T304, T308, T310, T311, T312, T316, T317, T318, T321, T324, T335, T343, T351, T352, T356, T358, T359, T363, T364, T365, T373, T374, T376, T377, T379, T393, T396, T400, T4"
+    },
+    {
+     "tool": "search_trials",
+     "input": {
+      "filter": {
+       "pass_all": false
+      }
+     },
+     "status": "done",
+     "summary": "result (249,481 characters across 1 line) exceeds maximum allowed tokens. Output has been saved to ~/.claude/projects/-local-project"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T677"
+     },
+     "status": "done",
+     "summary": "T677 · Dana · 24% diluent, 1% PI, no degas, rest 0.4 h → 1.98 Pa·s, porosity 1.43%, UTS 50.6 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T678"
+     },
+     "status": "done",
+     "summary": "T678 · Dana · 24% diluent, 1.5% PI, no degas, rest 0.7 h → 1.88 Pa·s, porosity 1.67%, UTS 50.8 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T679"
+     },
+     "status": "done",
+     "summary": "T679 · Ines · 31% diluent, 1.8% PI, degas 10 min, rest 0.7 h → 1.48 Pa·s, porosity 0.33%, UTS 51.3 MPa; passed every guardrail"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T677"
+     },
+     "status": "done",
+     "summary": "T677: 15 log entries. Rest before printing 0.4 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T679"
+     },
+     "status": "done",
+     "summary": "T679: 16 log entries. Rest before printing 0.7 h (typical 0.6 h). Degas logged: T679-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T674",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T674: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T689",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T689: 2 log entries at mix. Unusual gap: 5.5 h rest between mixing (T689-L05, 12:04) and printing (T689-L07, 17:33); typical 0.6 h. No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T797",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T797: 2 log entries at mix. Unusual gap: 4.1 h rest between mixing (T797-L05, 11:32) and printing (T797-L08, 15:40); typical 0.6 h. Degas logged: T797-L06 (manual)"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T754",
+      "step": "mix"
+     },
+     "status": "done",
+     "summary": "T754: 2 log entries at mix. Rest before printing 0.6 h (typical 0.6 h). Degas logged: T754-L06 (manual)"
+    }
+   ],
+   "cost_usd": 0.1137176,
+   "latency_s": 22.688,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "L10",
+     "T674",
+     "T674-L04",
+     "T677",
+     "T677-L04",
+     "T679",
+     "T679-L04",
+     "T754",
+     "T754-L04",
+     "T754-L06",
+     "T679-L06",
+     "T689",
+     "T689-L05",
+     "T689-L07",
+     "T797",
+     "T797-L04"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:18:07.478Z"
+  },
+  "s25": {
+   "qid": "s25",
+   "template": "confound_prewarm",
+   "category": "confound",
+   "question": "T541 (Ravi Menon) and T586 (Lucia Ferreira) used the same recipe, but T586 came out with much lower porosity. What explains the difference? Cite the evidence.",
+   "config": "B",
+   "model": "claude-sonnet-5-5",
+   "answer": "The logs don't show a difference, and the notebook has no measurement that settles the cause. The most likely explanation is a step Lucia did that never reached the device log.\n\n- **Recipe and process match.** [T541] and [T586] both used 34% diluent, 1.4% photoinitiator, 3000 rpm for 2 min, no degas, and a 0.6 h rest. The protocol diff found 0 intended and 0 unintended differences, and both logs have the same steps and normal gaps.\n- **Results differ.** [T541] had porosity 2.08%, which failed the guardrail, and UTS 42.4 MPa. [T586] had porosity 0.67% and UTS 47.6 MPa, and passed every guardrail.\n- **Lucia's note.** Her note [T586-N2] says she warmed the resin to 40 °C in the oven for 20 min before loading the vat, \"as I always do\". Neither log has an entry for this [T586-L07], and Ravi's notes [T541-N1] and [T541-N2] don't mention it.\n- **Degassing also helps.** The related trial [T887] used the same recipe with a 10-min vacuum degas [T887-L06]. It reached porosity 0.23% and UTS 50.6 MPa, so removing trapped air clearly lowers porosity here.\n\nHypothesis: warming may have thinned the resin enough for trapped bubbles to escape before printing, which would make it a quiet stand-in for degassing.\n\nUncertain: this rests on one pair of trials and one note. No trial isolates the warming step, so it is untested.",
+   "tool_calls": 5,
+   "trace": [
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T541"
+     },
+     "status": "done",
+     "summary": "T541 · Ravi · 34% diluent, 1.4% PI, no degas, rest 0.6 h → 1.4 Pa·s, porosity 2.08%, UTS 42.4 MPa; failed porosity"
+    },
+    {
+     "tool": "get_trial",
+     "input": {
+      "id": "T586"
+     },
+     "status": "done",
+     "summary": "T586 · Lucia · 34% diluent, 1.4% PI, no degas, rest 0.6 h → 1.44 Pa·s, porosity 0.67%, UTS 47.6 MPa; passed every guardrail"
+    },
+    {
+     "tool": "diff_protocols",
+     "input": {
+      "a": "T541",
+      "b": "T586"
+     },
+     "status": "done",
+     "summary": "T541 vs T586: 0 intended differences; 0 unintended. Related: T887, T887 (a 10-min vacuum degas (T887-L06))"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T586"
+     },
+     "status": "done",
+     "summary": "T586: 15 log entries. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    },
+    {
+     "tool": "get_log",
+     "input": {
+      "trial_id": "T541"
+     },
+     "status": "done",
+     "summary": "T541: 15 log entries. Rest before printing 0.6 h (typical 0.6 h). No degas step logged"
+    }
+   ],
+   "cost_usd": 0.0336489,
+   "latency_s": 11.537,
+   "grade": {
+    "correct": true,
+    "citations_valid": true,
+    "abstained": false,
+    "cited_ids": [
+     "T541",
+     "T586",
+     "T586-L07",
+     "T887",
+     "T887-L06"
+    ],
+    "invalid_ids": [],
+    "missing_ids": [],
+    "numbers_missing": [],
+    "wrong_numbers": [],
+    "concepts_missing": [],
+    "pairs_missing": [],
+    "failure": "none",
+    "diagnosis": ""
+   },
+   "ran_at": "2026-10-13T18:18:02.003Z"
+  }
+ },
+ "status_note": "per-question budget $0.25 (Agent SDK maxBudgetUsd)"
+}

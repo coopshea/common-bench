@@ -1,0 +1,50 @@
+{
+  "note": "Hidden ground truth for evals and sanity checks. Never shown in the UI or given to the agent.",
+  "seed": 5,
+  "true_best_degassed": {
+    "d": 41.2,
+    "p": 1.7,
+    "v": 1.17
+  },
+  "near_best_region": {
+    "diluent": [
+      39.3,
+      41.2
+    ],
+    "photoinit": [
+      0.7,
+      2
+    ]
+  },
+  "T15a": {
+    "recipe": {
+      "diluent_wt": 38,
+      "photoinit_wt": 1.7,
+      "degas_min": 10
+    },
+    "outcome": {
+      "viscosity_pa_s": 1.29,
+      "porosity_pct": 0.38,
+      "uts_mpa": 46.2,
+      "flex_strength_mpa": 73.9,
+      "viability_pct": 88,
+      "pass": true
+    }
+  },
+  "T15b": {
+    "recipe": {
+      "diluent_wt": 38,
+      "photoinit_wt": 1.7,
+      "degas_min": 0
+    },
+    "outcome": {
+      "viscosity_pa_s": 1.29,
+      "porosity_pct": 3.55,
+      "uts_mpa": 34.5,
+      "flex_strength_mpa": 55.3,
+      "viability_pct": 88,
+      "pass": false
+    }
+  },
+  "mechanism": "Pores are flaws; brittle (high-diluent) resin is flaw-sensitive. Undegassed thin resin holds 2–5% bubbles after <1 h, which drops strength below the floor above ~30% diluent. Degassing (or an 18 h rest, T09) removes the bubbles and the barrier."
+}

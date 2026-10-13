@@ -1,0 +1,988 @@
+{
+  "size": 250,
+  "generated_from": "evals/stress/data/notebook-250.json",
+  "questions": [
+    {
+      "id": "s01",
+      "template": "needle_overnight_rest",
+      "category": "needle",
+      "question": "Exactly one trial was printed from resin that had rested overnight: more than 12 hours between the end of mixing and the start of printing. Which trial was it, how long was the rest, and who ran it?",
+      "should_abstain": false,
+      "why_hard": "One rest of 19.48 h among 250 trials, with a few 2–5.5 h lunch-break rests as distractors.",
+      "expected": {
+        "summary": "T63 (Ravi Menon): 19.48 h, T63-L05 → T63-L07",
+        "numbers": [
+          {
+            "label": "rest hours",
+            "values": [
+              19.48,
+              19.5
+            ],
+            "tol": 0.25,
+            "unit": "h"
+          }
+        ],
+        "required_ids": [
+          "T63"
+        ],
+        "concepts": [
+          {
+            "label": "names T63",
+            "patterns": [
+              "\\bT63\\b"
+            ]
+          },
+          {
+            "label": "names Ravi Menon",
+            "patterns": [
+              "Ravi",
+              "Menon"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "template": "needle_postcure_gap",
+      "category": "needle",
+      "question": "In one trial, the printed parts sat for more than a day between the end of printing and the start of post-cure. Which trial was it, and how long was the gap? Cite the two log entries.",
+      "should_abstain": false,
+      "why_hard": "Only in the log (no input field, no note). Distractors: a few 1.5–4 h and two 14–18 h post-cure delays.",
+      "expected": {
+        "summary": "T241: 31.2 h, T241-L09 → T241-L10",
+        "numbers": [
+          {
+            "label": "gap hours",
+            "values": [
+              31.2
+            ],
+            "tol": 0.25,
+            "unit": "h"
+          }
+        ],
+        "required_ids": [
+          "T241-L09",
+          "T241-L10"
+        ],
+        "concepts": [
+          {
+            "label": "names T241",
+            "patterns": [
+              "\\bT241\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "template": "needle_print_restart",
+      "category": "needle",
+      "question": "One print job was aborted partway through and restarted. Which trial was that, and what did the printer log say caused it?",
+      "should_abstain": false,
+      "why_hard": "Two log events among ~3813 entries; nothing in inputs or notes.",
+      "expected": {
+        "summary": "T46: Print job aborted at layer 212: vat film torn [T46-L08]",
+        "numbers": [],
+        "required_ids": [
+          "T46-L08"
+        ],
+        "concepts": [
+          {
+            "label": "names T46",
+            "patterns": [
+              "\\bT46\\b"
+            ]
+          },
+          {
+            "label": "vat film",
+            "patterns": [
+              "vat film",
+              "film (?:was )?torn",
+              "torn film"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "template": "needle_lookalike_log",
+      "category": "needle",
+      "question": "What did log entry T101-L14 record (event and value)?",
+      "should_abstain": false,
+      "why_hard": "Lookalike ids exist: T110, T11, T10; same log index in every trial.",
+      "expected": {
+        "summary": "T101-L14: Cross-section porosity, 1.1 %",
+        "numbers": [
+          {
+            "label": "logged value",
+            "values": [
+              1.1
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [
+          "T101-L14"
+        ],
+        "concepts": [
+          {
+            "label": "porosity",
+            "patterns": [
+              "porosity|pores|bubbles"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "template": "agg_total_pass",
+      "category": "aggregation",
+      "question": "How many trials are in the notebook, and how many of them passed every guardrail (count excluded trials too)?",
+      "should_abstain": false,
+      "why_hard": "Count over 250 rows.",
+      "expected": {
+        "summary": "250 trials; 148 passed every guardrail",
+        "numbers": [
+          {
+            "label": "trial count",
+            "values": [
+              250
+            ],
+            "tol": 0
+          },
+          {
+            "label": "passed all",
+            "values": [
+              148
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s06",
+      "template": "agg_mean_viscosity",
+      "category": "aggregation",
+      "question": "What is the mean viscosity across all 250 trials, including excluded ones? Give it to two decimals.",
+      "should_abstain": false,
+      "why_hard": "Exact mean of 250 values; no tool returns an ungrouped mean.",
+      "expected": {
+        "summary": "1.634 Pa·s",
+        "numbers": [
+          {
+            "label": "mean viscosity",
+            "values": [
+              1.634
+            ],
+            "tol": 0.01,
+            "unit": "Pa·s"
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s07",
+      "template": "agg_per_person_counts",
+      "category": "aggregation",
+      "question": "How many trials has each person on the team run? Give a count for every person.",
+      "should_abstain": false,
+      "why_hard": "Eight exact counts; two people are both named Dana (Whitfield and Whitford), and the owner grouping in the tools keys on first name.",
+      "expected": {
+        "summary": "Tomás Herrera 57, Dana Whitfield 48, Ravi Menon 39, Cooper Shea 17, Dana Whitford 35, Lucia Ferreira 28, Ines Kowalski 24, Greeshma N. 2",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [],
+        "pairs": [
+          {
+            "label": "Tomás Herrera",
+            "name_patterns": [
+              "Tom[aá]s",
+              "Herrera"
+            ],
+            "value": 57
+          },
+          {
+            "label": "Dana Whitfield",
+            "name_patterns": [
+              "Whitfield"
+            ],
+            "value": 48
+          },
+          {
+            "label": "Ravi Menon",
+            "name_patterns": [
+              "Ravi",
+              "Menon"
+            ],
+            "value": 39
+          },
+          {
+            "label": "Cooper Shea",
+            "name_patterns": [
+              "Cooper"
+            ],
+            "value": 17
+          },
+          {
+            "label": "Dana Whitford",
+            "name_patterns": [
+              "Whitford"
+            ],
+            "value": 35
+          },
+          {
+            "label": "Lucia Ferreira",
+            "name_patterns": [
+              "Lucia",
+              "Ferreira"
+            ],
+            "value": 28
+          },
+          {
+            "label": "Ines Kowalski",
+            "name_patterns": [
+              "In[eé]s",
+              "Kowalski"
+            ],
+            "value": 24
+          },
+          {
+            "label": "Greeshma N.",
+            "name_patterns": [
+              "Greeshma"
+            ],
+            "value": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "template": "agg_whitford_uts",
+      "category": "aggregation",
+      "question": "How many trials has Dana Whitford run, and what is the mean tensile strength across all of them (excluded trials included)?",
+      "should_abstain": false,
+      "why_hard": "Similar-sounding person (Dana Whitfield); owner grouping by first name merges them.",
+      "expected": {
+        "summary": "35 trials; mean UTS 43.169 MPa",
+        "numbers": [
+          {
+            "label": "Whitford trial count",
+            "values": [
+              35
+            ],
+            "tol": 0
+          },
+          {
+            "label": "Whitford mean UTS",
+            "values": [
+              43.169
+            ],
+            "tol": 0.06,
+            "unit": "MPa"
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s09",
+      "template": "agg_degas_porosity",
+      "category": "aggregation",
+      "question": "How many degassed trials passed the porosity guardrail, out of how many degassed trials in total? And the same two numbers for trials that were not degassed.",
+      "should_abstain": false,
+      "why_hard": "Four exact counts over 250 rows.",
+      "expected": {
+        "summary": "degassed 40/61; not degassed 110/189",
+        "numbers": [
+          {
+            "label": "degassed passing",
+            "values": [
+              40
+            ],
+            "tol": 0
+          },
+          {
+            "label": "degassed total",
+            "values": [
+              61
+            ],
+            "tol": 0
+          },
+          {
+            "label": "undegassed passing",
+            "values": [
+              110
+            ],
+            "tol": 0
+          },
+          {
+            "label": "undegassed total",
+            "values": [
+              189
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s10",
+      "template": "agg_mixer2_count",
+      "category": "aggregation",
+      "question": "How many trials were mixed on the loaner mixer (Planetary mixer #2)?",
+      "should_abstain": false,
+      "why_hard": "Count that exists only in log device names; no input field records the mixer.",
+      "expected": {
+        "summary": "30 trials (T161–T190)",
+        "numbers": [
+          {
+            "label": "mixer #2 trials",
+            "values": [
+              30
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s11",
+      "template": "agg_highdil_uts",
+      "category": "aggregation",
+      "question": "How many trials used more than 35% diluent, and what is their mean tensile strength (excluded trials included)?",
+      "should_abstain": false,
+      "why_hard": "Filtered mean over 73 rows.",
+      "expected": {
+        "summary": "73 trials; mean UTS 42.455 MPa",
+        "numbers": [
+          {
+            "label": "count >35% diluent",
+            "values": [
+              73
+            ],
+            "tol": 0
+          },
+          {
+            "label": "mean UTS",
+            "values": [
+              42.455
+            ],
+            "tol": 0.06,
+            "unit": "MPa"
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s12",
+      "template": "hop_restart_parent",
+      "category": "multi-hop",
+      "question": "What is the parent trial of the trial whose print job had to be restarted, and what was that parent's viscosity?",
+      "should_abstain": false,
+      "why_hard": "Log-only needle, then a hop to the parent.",
+      "expected": {
+        "summary": "T46 → parent T45: 2.14 Pa·s",
+        "numbers": [
+          {
+            "label": "parent viscosity",
+            "values": [
+              2.14
+            ],
+            "tol": 0.006,
+            "unit": "Pa·s"
+          }
+        ],
+        "required_ids": [
+          "T45"
+        ],
+        "concepts": [
+          {
+            "label": "names T45",
+            "patterns": [
+              "\\bT45\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "template": "hop_cytotox_child",
+      "category": "multi-hop",
+      "question": "Take the earliest trial (by date) that failed the cytotoxicity guardrail. Which trial lists it as its parent, and who ran that trial?",
+      "should_abstain": false,
+      "why_hard": "Find the earliest failure, then the reverse parent link (search results don't show parents).",
+      "expected": {
+        "summary": "T81 → child T83 (Tomás Herrera)",
+        "numbers": [],
+        "required_ids": [
+          "T83"
+        ],
+        "concepts": [
+          {
+            "label": "names T83",
+            "patterns": [
+              "\\bT83\\b"
+            ]
+          },
+          {
+            "label": "names Tomás Herrera",
+            "patterns": [
+              "Tom[aá]s",
+              "Herrera"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "template": "hop_best_parent",
+      "category": "multi-hop",
+      "question": "Among trials that met the objective (every guardrail passed and viscosity at most 1.5 Pa·s, excluded trials included), which has the lowest viscosity? Who ran it, and what was the porosity of its parent trial?",
+      "should_abstain": false,
+      "why_hard": "Arg-min over 50 qualifying trials, then a hop.",
+      "expected": {
+        "summary": "T154 (Dana Whitford, 1.12 Pa·s) → parent T152 porosity 0.66%",
+        "numbers": [
+          {
+            "label": "parent porosity",
+            "values": [
+              0.66
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [
+          "T154",
+          "T152"
+        ],
+        "concepts": [
+          {
+            "label": "names T154",
+            "patterns": [
+              "\\bT154\\b"
+            ]
+          },
+          {
+            "label": "names Dana Whitford",
+            "patterns": [
+              "Whitford"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s15",
+      "template": "hop_overnight_ancestor",
+      "category": "multi-hop",
+      "question": "Start from the trial whose resin rested overnight before printing. Go to its parent, then to that parent's parent. Who ran that grandparent trial, and what was its tensile strength?",
+      "should_abstain": false,
+      "why_hard": "Needle, then two hops up the parent chain.",
+      "expected": {
+        "summary": "T63 → T61 → T54: Ravi Menon, UTS 45.8 MPa",
+        "numbers": [
+          {
+            "label": "ancestor UTS",
+            "values": [
+              45.8
+            ],
+            "tol": 0.06,
+            "unit": "MPa"
+          }
+        ],
+        "required_ids": [
+          "T54"
+        ],
+        "concepts": [
+          {
+            "label": "names T54",
+            "patterns": [
+              "\\bT54\\b"
+            ]
+          },
+          {
+            "label": "names Ravi Menon",
+            "patterns": [
+              "Ravi",
+              "Menon"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s16",
+      "template": "contra_tensile",
+      "category": "contradiction",
+      "question": "Did T129 pass the tensile guardrail? Give its measured tensile strength.",
+      "should_abstain": false,
+      "why_hard": "Note T129-N3 says it was \"comfortably over the 40 MPa floor\"; the test frame logged 33.4 MPa.",
+      "expected": {
+        "summary": "No: UTS 33.4 MPa < 40 (note T129-N3 claims otherwise)",
+        "numbers": [
+          {
+            "label": "UTS",
+            "values": [
+              33.4
+            ],
+            "tol": 0.06,
+            "unit": "MPa"
+          }
+        ],
+        "required_ids": [
+          "T129"
+        ],
+        "concepts": [
+          {
+            "label": "says it failed",
+            "patterns": [
+              "did ?n[o’']t pass|not pass|fail|below|under (?:the )?(?:40|1\\.0|floor|limit)|short of|no[,.]"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s17",
+      "template": "contra_ines_target",
+      "category": "contradiction",
+      "question": "How many of Ines Kowalski's trials reached the viscosity target (at most 1.5 Pa·s)?",
+      "should_abstain": false,
+      "why_hard": "Her note T194-N2 on T194 says \"about 1.3 Pa·s, finally under target\"; the viscometer logged 1.7.",
+      "expected": {
+        "summary": "20 of 24 (not T194: measured 1.7)",
+        "numbers": [
+          {
+            "label": "Ines trials ≤ 1.5",
+            "values": [
+              20
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s18",
+      "template": "contra_porosity",
+      "category": "contradiction",
+      "question": "What porosity was measured for T133, and did it pass the porosity guardrail?",
+      "should_abstain": false,
+      "why_hard": "Note T133-N3 says \"porosity basically zero\"; imaging logged 3.81%.",
+      "expected": {
+        "summary": "3.81%: failed (limit 1.0%)",
+        "numbers": [
+          {
+            "label": "porosity",
+            "values": [
+              3.81
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [
+          "T133"
+        ],
+        "concepts": [
+          {
+            "label": "says it failed",
+            "patterns": [
+              "did ?n[o’']t pass|not pass|fail|below|under (?:the )?(?:40|1\\.0|floor|limit)|short of|no[,.]"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s19",
+      "template": "contra_find_all",
+      "category": "contradiction",
+      "question": "Some trials have notebook entries (notes) that contradict that trial's own measured results. Find them, and for each one say what the note claims and what was measured.",
+      "should_abstain": false,
+      "why_hard": "Three planted notes among ~512; no tool searches notes.",
+      "expected": {
+        "summary": "T129, T194, T133",
+        "numbers": [],
+        "required_ids": [
+          "T129",
+          "T194",
+          "T133"
+        ],
+        "concepts": [
+          {
+            "label": "names T129",
+            "patterns": [
+              "\\bT129\\b"
+            ]
+          },
+          {
+            "label": "names T194",
+            "patterns": [
+              "\\bT194\\b"
+            ]
+          },
+          {
+            "label": "names T133",
+            "patterns": [
+              "\\bT133\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s20",
+      "template": "abstain_whitfield_44",
+      "category": "abstain-trap",
+      "question": "What was the viscosity of the trial Dana Whitfield ran at 44% diluent?",
+      "should_abstain": true,
+      "why_hard": "Dana Whitford ran T115 at 44%; Whitfield's highest is 33%.",
+      "expected": {
+        "summary": "No such trial (Whitford's T115 is at 44%)",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [],
+        "decline_patterns": [
+          "Whitfield (?:did ?n[o’']t|never|has no|had no|ran no|has not|hasn[’']t)",
+          "not (?:by |from |Dana )?Whitfield",
+          "(?:none|no trials?) (?:of |by |from )?(?:Dana )?Whitfield",
+          "Whitfield[^.]{0,80}(?:never|no trial|none)[^.]{0,40}44"
+        ]
+      }
+    },
+    {
+      "id": "s21",
+      "template": "abstain_pi_25",
+      "category": "abstain-trap",
+      "question": "Which trial used 2.5% photoinitiator, and what was its tensile strength?",
+      "should_abstain": true,
+      "why_hard": "No trial at 2.5%; T81, T91, T93 at 2.4%.",
+      "expected": {
+        "summary": "No such trial (nearest 2.4%: T81, T91, T93)",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [],
+        "decline_patterns": [
+          "no (?:trial|run|one) (?:in the notebook )?(?:used|uses|at|with|ran at|was run at) (?:exactly )?2\\.5",
+          "none (?:of the trials )?(?:used|at|with) (?:exactly )?2\\.5",
+          "(?:highest|maximum|max|top) (?:photoinitiator|PI)[^.]{0,60}2\\.4",
+          "2\\.5\\s*%[^.]{0,60}(?:not|never|isn[’']t|wasn[’']t|no trial|none)"
+        ]
+      }
+    },
+    {
+      "id": "s22",
+      "template": "abstain_cooper_degassed",
+      "category": "abstain-trap",
+      "question": "What porosity did Cooper Shea's degassed trials show?",
+      "should_abstain": true,
+      "why_hard": "Cooper never degassed; Greeshma, Ines and Dana Whitford did.",
+      "expected": {
+        "summary": "Cooper has no degassed trials",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [],
+        "decline_patterns": [
+          "Cooper(?: Shea)? (?:never|did ?n[o’']t|has no|had no|ran no)[^.]{0,30}degass?",
+          "none of Cooper(?:[’']s| Shea[’']s)? (?:\\d+ )?(?:trials )?(?:were|was|is|are) degassed",
+          "Cooper(?:[’']s| Shea[’']s) (?:\\d+ )?trials (?:were|are) (?:all )?(?:un-?degassed|not degassed|never degassed)",
+          "no degassed trials"
+        ]
+      }
+    },
+    {
+      "id": "s23",
+      "template": "abstain_printer2",
+      "category": "abstain-trap",
+      "question": "Which trials were printed on the backup printer (DLP printer #2)?",
+      "should_abstain": true,
+      "why_hard": "There is no printer #2; there is a Planetary mixer #2.",
+      "expected": {
+        "summary": "None: only one DLP printer appears in the logs",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [],
+        "decline_patterns": [
+          "no (?:DLP )?printer #?\\s?2",
+          "only (?:one|a single) (?:DLP )?printer",
+          "(?:recorded|logged|listed) (?:only )?as [\"“]?DLP printer[\"”]?",
+          "(?:isn[’']t|is not|wasn[’']t|no) (?:a |any )?(?:backup|second) printer",
+          "printer #?\\s?2[^.]{0,80}(?:not|never|doesn[’']t|does not|no )"
+        ]
+      }
+    },
+    {
+      "id": "s24",
+      "template": "confound_winter_mixer",
+      "category": "confound",
+      "question": "Between November 2025 and February 2026, porosity went up across several people's trials even though nobody changed their recipes. What changed? Cite the evidence.",
+      "should_abstain": false,
+      "why_hard": "The cause (a loaner mixer) appears only in the log's device field; inputs say 3000 rpm / 2 min as always.",
+      "expected": {
+        "summary": "Planetary mixer #2 (loaner) on 30 trials, T161–T190",
+        "numbers": [],
+        "required_ids": [],
+        "any_of_ids": [
+          [
+            "T161",
+            "T162",
+            "T163",
+            "T164",
+            "T165",
+            "T166",
+            "T167",
+            "T168",
+            "T169",
+            "T170",
+            "T171",
+            "T172",
+            "T173",
+            "T174",
+            "T175",
+            "T176",
+            "T177",
+            "T178",
+            "T179",
+            "T180",
+            "T181",
+            "T182",
+            "T183",
+            "T184",
+            "T185",
+            "T186",
+            "T187",
+            "T188",
+            "T189",
+            "T190"
+          ]
+        ],
+        "concepts": [
+          {
+            "label": "names the loaner mixer",
+            "patterns": [
+              "mixer\\s*(?:#|no\\.?\\s*|number\\s*)?2",
+              "loaner",
+              "second mixer",
+              "different mixer",
+              "another mixer",
+              "backup mixer",
+              "replacement mixer"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s25",
+      "template": "confound_prewarm",
+      "category": "confound",
+      "question": "T123 (Ravi Menon) and T147 (Lucia Ferreira) used the same recipe, but T147 came out with much lower porosity. What explains the difference? Cite the evidence.",
+      "should_abstain": false,
+      "why_hard": "Identical inputs and device logs; the only trace is Lucia's note T147-N2 (pre-warming), which no device logs.",
+      "expected": {
+        "summary": "T147 was pre-warmed to 40 °C before printing (T147-N2); porosity 2.56% vs 0.6%",
+        "numbers": [],
+        "required_ids": [
+          "T123",
+          "T147"
+        ],
+        "concepts": [
+          {
+            "label": "names pre-warming",
+            "patterns": [
+              "warm",
+              "heat",
+              "40\\s*°?\\s*C"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s26",
+      "template": "probe_median_porosity",
+      "category": "aggregation",
+      "question": "What is the median porosity across all 250 trials (excluded ones included)?",
+      "should_abstain": false,
+      "why_hard": "Order statistic over 250 values; no tool returns a median.",
+      "expected": {
+        "summary": "0.82%",
+        "numbers": [
+          {
+            "label": "median porosity",
+            "values": [
+              0.82
+            ],
+            "tol": 0.006,
+            "unit": "%"
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s27",
+      "template": "probe_postcure_waits",
+      "category": "needle",
+      "question": "List every trial where the printed parts waited more than 1 hour between the end of printing and the start of post-cure, with each wait.",
+      "should_abstain": false,
+      "why_hard": "Full recall of 8 trials, found only by subtracting two log timestamps in each of 250 trials.",
+      "expected": {
+        "summary": "T26 3.02 h, T35 2.32 h, T55 17.78 h, T72 3.62 h, T90 2.78 h, T100 2.98 h, T206 16.57 h, T241 31.2 h",
+        "numbers": [],
+        "required_ids": [],
+        "concepts": [
+          {
+            "label": "names T26",
+            "patterns": [
+              "\\bT26\\b"
+            ]
+          },
+          {
+            "label": "names T35",
+            "patterns": [
+              "\\bT35\\b"
+            ]
+          },
+          {
+            "label": "names T55",
+            "patterns": [
+              "\\bT55\\b"
+            ]
+          },
+          {
+            "label": "names T72",
+            "patterns": [
+              "\\bT72\\b"
+            ]
+          },
+          {
+            "label": "names T90",
+            "patterns": [
+              "\\bT90\\b"
+            ]
+          },
+          {
+            "label": "names T100",
+            "patterns": [
+              "\\bT100\\b"
+            ]
+          },
+          {
+            "label": "names T206",
+            "patterns": [
+              "\\bT206\\b"
+            ]
+          },
+          {
+            "label": "names T241",
+            "patterns": [
+              "\\bT241\\b"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s28",
+      "template": "probe_parent_chain",
+      "category": "multi-hop",
+      "question": "Starting from T26, follow the parent links back until you reach a trial with no parent. How many trials are in that chain, counting T26 and the first one?",
+      "should_abstain": false,
+      "why_hard": "19 hops.",
+      "expected": {
+        "summary": "20 trials (T26 back to T01)",
+        "numbers": [
+          {
+            "label": "chain length",
+            "values": [
+              20
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s29",
+      "template": "probe_log_count",
+      "category": "aggregation",
+      "question": "How many instrument log entries does the notebook contain in total, across all trials?",
+      "should_abstain": false,
+      "why_hard": "Count of 3813 entries (14–17 per trial).",
+      "expected": {
+        "summary": "3813",
+        "numbers": [
+          {
+            "label": "log entries",
+            "values": [
+              3813
+            ],
+            "tol": 0
+          }
+        ],
+        "required_ids": [],
+        "concepts": []
+      }
+    },
+    {
+      "id": "s30",
+      "template": "ledger_superseded",
+      "category": "contradiction",
+      "question": "What post-cure time does the team's findings ledger currently stand behind, and which ledger entry says so?",
+      "should_abstain": false,
+      "why_hard": "L1 (still status \"accepted\") says 30 min is enough; L4 corrects it to 45 min.",
+      "expected": {
+        "summary": "45 min, L4 (supersedes L1)",
+        "numbers": [
+          {
+            "label": "post-cure minutes",
+            "values": [
+              45
+            ],
+            "tol": 0,
+            "unit": "min"
+          }
+        ],
+        "required_ids": [
+          "L4"
+        ],
+        "concepts": [
+          {
+            "label": "names L4",
+            "patterns": [
+              "\\bL4\\b"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,639 @@
+{
+  "config": "A",
+  "label": "Whole notebook in context · Sonnet",
+  "model": "claude-sonnet-5-5",
+  "status": "ran",
+  "records": {
+    "q01": {
+      "qid": "q01",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What was T14's viscosity?",
+      "answer": "T14's viscosity was 1.55 Pa·s [T14-L07], measured at 25 °C. That is above the 1.5 Pa·s target, by 0.05 Pa·s (1.55 − 1.5). It was your trial, and the closest yet to the target.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 16,
+        "output_tokens": 90,
+        "cache_creation_input_tokens": 34073,
+        "cache_read_input_tokens": 0
+      },
+      "cost_usd": 0.0861145,
+      "latency_s": 2.844,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T14-L07"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:20:51.332Z"
+    },
+    "q02": {
+      "qid": "q02",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "Who ran T09, and on what date?",
+      "answer": "Cooper Shea ran T09 on 2025-04-22 [T09]. The log shows the mix and viscosity measurement happened that afternoon (16:40 to 16:48), but the print didn't start until 2025-04-23 at 10:52 [T09-L07]. So the printing, post-cure and testing happened on later days.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 18,
+        "output_tokens": 109,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0079406,
+      "latency_s": 2.049,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T09",
+          "T09-L07"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:20:53.384Z"
+    },
+    "q03": {
+      "qid": "q03",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What porosity did T08 have, and did it pass the porosity guardrail?",
+      "answer": "T08 had 3.74% porosity [T08-L14]. It did not pass the porosity guardrail, which requires ≤ 1% [T08]. It exceeded the limit by 2.74 percentage points (3.74 − 1).",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 30,
+        "output_tokens": 78,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0076546,
+      "latency_s": 2.416,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T08-L14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:20:53.751Z"
+    },
+    "q04": {
+      "qid": "q04",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "Which trials were excluded from the team's conclusions, and why?",
+      "answer": "Only one trial is flagged as excluded: T09. Cooper Shea's note on it says \"Anomalous, likely a lucky specimen\" [T09]. It was a replicate of T08, with the same recipe of 38% diluent and 1.0% photoinitiator. Its results were very different from T08's: UTS 44.2 MPa vs 34.4 MPa, and porosity 0.38% vs 3.74% [T09] [T08]. The ledger's dead-end entry L2 also counts only the four included trials (T06, T07, T08, T10) and says T09 was excluded as anomalous [L2].\n\nThe exclusion may not be sound, because the logs show an unintended protocol difference. T09's rest time between mixing and printing was 18.2 h (inputs rest_h 18.2). The mixer ended at 16:42 on 2025-04-22 and printing started at 10:52 the next day [T09-L05] [T09-L07]. Every other Cooper trial printed about 0.4–0.5 h after mixing, T08 included [T08-L05] [T08-L07]. No degas step was logged for T08 or T09, and the degas_min input is 0 for both [T08] [T09]. So rest time is the only logged difference I can see. It's a candidate explanation for the low porosity and better strength, and it would make T09 a real signal rather than a lucky specimen. I can't prove that from one trial.\n\nT09 also wasn't clean on every measure. Its bend modulus was 2608 MPa, but its elongation was only 1.6% and the fracture was brittle, and viability was 83.0% [T09]. It passed all guardrails and met the 1.5 Pa·s objective at 1.28 Pa·s [T09].\n\nYour degas results fit this. Your trials T11–T14 used a 10 min degas and had porosity of 0.12–0.22% [T11] [T14]. That is consistent with trapped air being the main cause of the porosity.\n\nThe cheapest test would be to repeat the T08 recipe, 38% diluent and 1.0% PI, in two arms. One arm would print at the usual ~0.4 h rest and the other after an 18 h rest, each with a logged degas step. The 0.4 h arm is the control. I'd propose that a human approve the test before L2 is revised.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 26,
+        "output_tokens": 753,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0143966,
+      "latency_s": 8.192,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T08",
+          "T08-L05",
+          "T08-L07",
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T11",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:20:59.525Z"
+    },
+    "q05": {
+      "qid": "q05",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What was the mean tensile strength (UTS) of Cooper's campaign B, with and without the excluded trial?",
+      "answer": "This is a lookup, so I'll keep it short. Campaign B is T06 to T10, all Cooper's.\n\nUTS values: T06 35.6 [T06], T07 35.0 [T07], T08 34.4 [T08], T09 44.2 [T09], T10 30.7 [T10].\n\nWithout the excluded trial (T09, excluded as \"anomalous, likely a lucky specimen\" [T09]): (35.6 + 35.0 + 34.4 + 30.7) / 4 = 135.7 / 4 = 33.9 MPa (33.925). This matches the four included trials cited in the dead-end entry [L2].\n\nWith T09: (135.7 + 44.2) / 5 = 179.9 / 5 = 36.0 MPa (35.98).\n\nBoth means fall below the 40 MPa floor, but T09 alone clears it at 44.2 MPa.\n\nOne caveat: T09 differs from T08, its stated replicate, in more than specimen luck. The log shows the resin sat from mixing (16:42) until printing started the next day at 10:52 [T09-L05, T09-L07], and rest_h is 18.2 versus 0.4 for the other trials [T09]. T08 went from mix end to print start in about 24 minutes [T08-L05, T08-L07]. So the exclusion may have hidden a real protocol effect, not just noise. I'd treat the without-T09 mean as describing the standard-protocol trials only.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 42,
+        "output_tokens": 477,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.011668600000000001,
+      "latency_s": 4.053,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T06",
+          "T07",
+          "T08",
+          "T08-L05",
+          "T08-L07",
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T10"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:20:57.438Z"
+    },
+    "q06": {
+      "qid": "q06",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "At 30% diluent or above, how does tensile strength (UTS) compare between degassed and undegassed trials?",
+      "answer": "Degassed trials at 30% diluent or above had clearly higher UTS, but the comparison is confounded.\n\nDegassed (10 min): T13 (30%) had 49.3 MPa [T13] and T14 (32%) had 50.7 MPa [T14]. Their mean is (49.3 + 50.7) / 2 = 50.0 MPa. Both are your trials, and the degas step is recorded from your worksheet [T13-L06], [T14-L06].\n\nUndegassed (degas_min 0): Cooper Shea's T06 (34%) had 35.6 MPa [T06], T07 (36%) had 35.0 [T07], T08 (38%) had 34.4 [T08], and T10 (40%) had 30.7 [T10]. Their mean is 135.7 / 4 ≈ 33.9 MPa, all below the 40 MPa floor. T09 (38%) had 44.2 MPa [T09], but it was excluded as a \"lucky specimen\". Including it, the mean is 179.9 / 5 ≈ 36.0 MPa.\n\nCaveats:\n- No degassed and undegassed trials overlap in diluent. The degassed ones sit at 30–32% and the undegassed at 34–40%, so degassing is confounded with diluent level. Photoinitiator (1.6–1.7% vs 0.8–1.2%) and the operator also differ.\n- T09 may not be a fluke. Its log shows the resin sat from 16:48 on 22 April [T09-L06] until the print started at 10:52 the next day [T09-L07]. That is the 18.2 h rest, versus 0.4 h in T08, its recipe twin. Its porosity was 0.38% [T09], against 3.74% for T08 [T08]. A long rest may have let bubbles escape, which would be a passive degas. This is a hypothesis, not something the notebook establishes.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 42,
+        "output_tokens": 1282,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0197186,
+      "latency_s": 9.606,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T09-L06",
+          "T09-L07",
+          "T10",
+          "T13",
+          "T13-L06",
+          "T14",
+          "T14-L06"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:03.358Z"
+    },
+    "q07": {
+      "qid": "q07",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "How many trials reached the viscosity target of 1.5 Pa·s or lower, and which of those passed every guardrail?",
+      "answer": "Five trials reached 1.5 Pa·s or lower: T06 (1.44) [T06], T07 (1.36) [T07], T08 (1.3) [T08], T09 (1.28) [T09] and T10 (1.19) [T10]. Your best, T14 at 1.55 Pa·s, is just above the target [T14].\n\nOnly T09 passed every guardrail, with UTS 44.2 MPa, flex strength 67.9 MPa, flex modulus 2608 MPa, porosity 0.38% and viability 83% [T09]. T06, T07, T08 and T10 each failed tensile, bend and porosity [T06][T07][T08][T10].\n\nT09 is marked excluded as \"anomalous, likely a lucky specimen\" [T09], and the ledger dead end counts only 4 included trials [L2]. But its log shows an unplanned protocol difference from its parent T08. The resin was mixed, then sat from 16:42 on 22 April until printing started at 10:52 the next day [T09-L05][T09-L07]. That is about 18.2 h, against 0.4 h in T08 [T08-L07]. Neither trial was degassed [T08][T09]. So the exclusion may have hidden a real rest-time effect, but a single trial can't settle that.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 45,
+        "output_tokens": 839,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0152946,
+      "latency_s": 7.64,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T06",
+          "T07",
+          "T08",
+          "T08-L07",
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T10",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:05.079Z"
+    },
+    "q08": {
+      "qid": "q08",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+      "answer": "Lookup: mean porosity, your trials vs Cooper's campaign A.\n\nYour trials (T11-T14): 0.12 [T11], 0.13 [T12], 0.15 [T13], 0.22 [T14]. Sum = 0.62, so the mean is 0.155%, about 0.16%.\n\nCooper's campaign A (T01-T05): 0.27 [T01], 0.46 [T02], 0.51 [T03], 0.69 [T04], 0.75 [T05]. Sum = 2.68, so the mean is 0.536%, about 0.54%.\n\nSo your mean is roughly a third of campaign A's (0.155 / 0.536 ≈ 0.29), and your highest value (0.22 in T14) is below Cooper's lowest (0.27 in T01).\n\nThe notebook shows a likely confound: all your trials include a 10-minute vacuum degas [T11-L06], and all of Cooper's campaign A trials had degas_min of 0 [T01]. Degas isn't in SOP v1, and the degasser has no data interface, so it appears only because you wrote it on your worksheet. The difference is therefore not attributable to chemistry alone. Your diluent range (26-32%) also sits higher than campaign A's (15-24%), which makes the lower porosity more notable, but one trial set can't separate degas from formulation effects.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 37,
+        "output_tokens": 450,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0113886,
+      "latency_s": 3.965,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05",
+          "T11",
+          "T11-L06",
+          "T12",
+          "T13",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:03.494Z"
+    },
+    "q09": {
+      "qid": "q09",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "How long did T09's resin rest between the end of mixing and the start of printing?",
+      "answer": "Roughly 18 hours. T09's mixer log shows mixing ended at 16:42 on 2025-04-22 [T09-L05], and the print job started at 10:52 on 2025-04-23 [T09-L07]. That is 18 h 10 min, or about 18.2 h, which matches the rest_h input of 18.2 recorded for T09 [T09].\n\nThis is a protocol difference worth noting. Every other trial rested 0.4 to 0.6 h between mixing and printing, and T08, the trial T09 was meant to replicate, rested 0.4 h (mix ended 10:32 [T08-L05], print started 10:56 [T08-L07]).\n\nTwo other points from the logs. The viscosity reading was taken at 16:48 [T09-L06], so the overnight rest came after that measurement and before printing. No degas step is logged for T09 (degas_min is 0 [T09]), though the degasser is only logged when someone writes it on a worksheet, so I can't rule out an unrecorded step.\n\nThe notebook doesn't say why the rest was so long, or whether it was deliberate. T09 was excluded as \"anomalous, likely a lucky specimen\" [T09], and the rest-time difference isn't mentioned in that note. Whether the rest explains T09's lower porosity (0.38% against 3.74% in T08 [T08]) is not something the notebook can settle.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 30,
+        "output_tokens": 456,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0114346,
+      "latency_s": 4.551,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T08-L05",
+          "T08-L07",
+          "T09",
+          "T09-L05",
+          "T09-L06",
+          "T09-L07"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:07.911Z"
+    },
+    "q10": {
+      "qid": "q10",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "Apart from the recipe, what was different about how T08 and T13 were processed?",
+      "answer": "The main difference is that T13 had a 10-minute vacuum degas and T08 had none. T13 logs \"Vacuum degas, 10 min (from worksheet)\" [T13-L06], while T08 has no degas entry and its input is degas_min 0 [T08]. Degas isn't in SOP v1 and is only logged when someone writes it on the worksheet, so T08's missing entry reads as no degas, though the log can't prove it.\n\nOther differences:\n- **Rest before printing:** T08 rested 24 min, from mix end at 10:32 to print start at 10:56 [T08-L05, T08-L07]. T13 rested 30 min, from 10:22 to 10:52 [T13-L05, T13-L08]. These match the rest_h inputs of 0.4 and 0.5.\n- **Viscosity timing:** T08 was measured 6 min after mixing [T08-L06]. T13 was measured 16 min after mixing, following the degas [T13-L07].\n- **Operator:** T08 was Cooper Shea's run and T13 was yours.\n\nMixing (3000 rpm, 2 min), print time (85 min) and post-cure (45 min) were identical.\n\nPorosity was 3.74% in T08 and 0.15% in T13. The degas is confounded with the recipe change (38% vs 30% diluent), so these logs can't separate the two effects. Cooper's T09 (no degas, 18.2 h rest, 0.38% porosity) was excluded as a \"lucky specimen\" [T09], and it may be worth revisiting in this light.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 31,
+        "output_tokens": 1042,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0172966,
+      "latency_s": 8.118,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T08-L05",
+          "T08-L06",
+          "T08-L07",
+          "T09",
+          "T13-L05",
+          "T13-L06",
+          "T13-L07",
+          "T13-L08"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:11.614Z"
+    },
+    "q11": {
+      "qid": "q11",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What's the current status of the high-diluent dead end in the findings ledger, and what evidence was it based on?",
+      "answer": "The dead end is L2, recorded by Cooper Shea on 2025-06-10. Its status is active, and the entry reads \"Dead end: high diluent (> 30%) too brittle\" [L2]. It covers diluent 30–45% and photoinitiator 0.5–1.3% [L2].\n\nThe evidence is T06 (34% diluent), T07 (36%), T08 (38%) and T10 (40%) [L2]. All four were porous, fractured brittle and had UTS of 30.7–35.6 MPa, below the 40 MPa floor [T06] [T07] [T08] [T10]. T09, a replicate of T08, was excluded as anomalous [T09].\n\nTwo caveats come from the logs:\n\n- T09 differs from T08 in a logged step. It rested 18.2 h before printing, against 0.4 h in the others [T09-L06] [T09-L07]. It also had porosity of 0.38% and UTS of 44.2 MPa, both passing [T09]. The exclusion as a \"lucky specimen\" didn't consider this gap, so the rest time is an unexamined alternative explanation.\n- All the evidence trials had no degas step (degas_min 0) [T06] [T07] [T08] [T10]. Your trials used a 10 min degas, and T13 (30%) and T14 (32%) pass every guardrail with porosity of 0.15% and 0.22% [T13] [T14]. Their photoinitiator (1.7% and 1.6%) is outside L2's stated range, so this doesn't strictly contradict L2. Still, \"too brittle\" may really mean \"too porous without degas.\"",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 39,
+        "output_tokens": 1137,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.018262599999999997,
+      "latency_s": 10.106,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T09-L06",
+          "T09-L07",
+          "T10",
+          "T13",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:15.187Z"
+    },
+    "q12": {
+      "qid": "q12",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What's the supplier's price per kilogram for DiluentX?",
+      "answer": "The notebook doesn't contain a supplier price for DiluentX, or any pricing at all. The only mention of DiluentX is in your note on T14, which says the batch \"might need a lower-viscosity diluent (DiluentX?)\" [T14]. That is a question, and the notebook records no supplier, grade, cost or other data for it. The ledger doesn't have an entry on it either [L3].\n\nYou would need to get the price from the supplier or from whoever handles purchasing.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 26,
+        "output_tokens": 154,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0084066,
+      "latency_s": 2.817,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": true,
+        "cited_ids": [
+          "L3",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:10.728Z"
+    },
+    "q13": {
+      "qid": "q13",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "What tensile strength did T17 reach, and did it pass the bend test?",
+      "answer": "T17 isn't in the notebook, so I can't give its tensile strength or bend result. The trials recorded run from T01 to T14, and the most recent one is your T14 from 2026-09-22 [T14].\n\nIf you meant T14, its tensile strength (UTS) was 50.7 MPa, above the 40 MPa floor [T14-L11]. It also passed the bend guardrail, with flexural strength of 82 MPa [T14-L13] and flexural modulus of 2594 MPa [T14-L14]. Those clear the 65 MPa and 2000 MPa thresholds.\n\nIf T17 is a trial you ran but haven't entered yet, it will need to be added to the notebook before I can say anything about it.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 29,
+        "output_tokens": 236,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0092326,
+      "latency_s": 3.102,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": true,
+        "cited_ids": [
+          "T14",
+          "T14-L11",
+          "T14-L13",
+          "T14-L14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:13.830Z"
+    },
+    "q14": {
+      "qid": "q14",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?",
+      "answer": "Nobody has tried DiluentX; it isn't in the notebook beyond your note in [T14]. You may not need it. Cooper Shea's dead end [L2] (high diluent too porous and brittle) was run with no degas: T06, T07, T08 and T10 all show degas_min 0. Your trials degas 10 minutes and stay at 0.22% porosity at 32% diluent [T14]. Cooper's excluded replicate [T09] had an 18.2 h rest before printing, versus about 0.4 h elsewhere, and its porosity was 0.38% against 3.74% in T08. That looks like an unlogged degas-like difference, not a lucky specimen.\n\nCheapest test: rerun Cooper's T06 recipe (34% diluent, 1.44 Pa·s, 2.38% porosity [T06]) with a 10-minute degas, using T06 as the control arm. If porosity and UTS recover, you're under 1.5 without buying anything. I'd propose a note on [L2] about the degas confound, for you to approve.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 61,
+        "output_tokens": 750,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0144366,
+      "latency_s": 7.682,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T06",
+          "T09",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "hero": {
+          "names_degas_confound": true,
+          "names_T09": true,
+          "proposes_control_arm": true,
+          "pass": true
+        },
+        "diagnosis": ""
+      },
+      "judge": {
+        "control_arm": {
+          "pass": true,
+          "evidence": "Proposes rerunning Cooper's T06 recipe with a 10-minute degas, using T06 (no degas) as the control arm, isolating degassing."
+        },
+        "cheapest_experiment": {
+          "pass": true,
+          "evidence": "Proposes rerunning the T06 recipe with a 10-minute degas, which uses existing materials and is a short test, before ordering DiluentX."
+        },
+        "credits_greeshma": {
+          "pass": false,
+          "evidence": "Presents the degas insight as the assistant's finding ('That looks like an unlogged degas-like difference', 'I'd propose a note on [L2]') and never credits Greeshma's degassing step or trials as the source of the insight."
+        },
+        "uncertainty_stated": {
+          "pass": false,
+          "evidence": "States conclusions firmly ('That looks like...', 'If porosity and UTS recover, you're under 1.5') without noting that few trials support it, that T09 is a single specimen, or that the rerun is needed to confirm the degas effect."
+        },
+        "score": 2,
+        "cost_usd": 0.000397
+      },
+      "ran_at": "2026-10-13T17:21:22.359Z"
+    },
+    "q15": {
+      "qid": "q15",
+      "config": "A",
+      "model": "claude-sonnet-5-5",
+      "question": "Across all the undegassed trials, what's the Pearson correlation between diluent % and porosity?",
+      "answer": "Using the ten undegassed trials (degas_min = 0, T01-T10), Pearson r between diluent % and porosity % is about 0.75. If you drop T09, which is flagged as excluded, it rises to about 0.94.\n\nComputed from the diluent/porosity pairs in the trial outputs:\n- T01 15/0.27, T02 18/0.46, T03 20/0.51, T04 22/0.69, T05 24/0.75\n- T06 34/2.38, T07 36/2.75, T08 38/3.74, T09 38/0.38, T10 40/5.22\n\nAll ten (n=10): Sxy = 112.2, Sxx = 826.5, Syy = 26.78, so r = 112.2 / √(826.5 × 26.78) ≈ 0.75.\n\nWithout T09 (n=9): Sxy = 126.3, Sxx = 726.2, Syy = 24.80, so r ≈ 0.94.\n\nT09 is probably not a lucky specimen. It is a replicate of T08, with the same recipe, but its rest_h is 18.2 versus 0.4 for the others. The log shows the viscosity reading at 16:48 on 04-22 [T09-L06] and the print start at 10:52 on 04-23 [T09-L07]. So the resin sat overnight before printing, a protocol difference Cooper's notes don't mention [T09]. Its porosity was 0.38% against 3.74% for T08 [T08], which fits trapped bubbles escaping during the rest. That is a plausible explanation, not a proven one.\n\nTwo caveats. First, the dataset is clustered: five points at 15-24% diluent and four at 34-40%, with nothing between them. Second, photoinitiator also varied across these trials, so diluent is not isolated.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 37,
+        "output_tokens": 2504,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 34073
+      },
+      "cost_usd": 0.0319286,
+      "latency_s": 16.833,
+      "stop_reason": "end_turn",
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T09",
+          "T09-L06",
+          "T09-L07"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:30.664Z"
+    }
+  }
+}

@@ -1,0 +1,466 @@
+{
+  "generated_at": "2026-10-13T17:38:52.070Z",
+  "question_count": 15,
+  "configs": [
+    {
+      "id": "A",
+      "label": "Whole notebook in context · Sonnet",
+      "model": "claude-sonnet-5-5",
+      "n": 15,
+      "accuracy": 1,
+      "citation_validity": 1,
+      "abstention": 1,
+      "wrong_numbers": 0,
+      "hero_pass": true,
+      "cost_per_q_usd": 0.019,
+      "p50_latency_s": 4.6
+    },
+    {
+      "id": "B",
+      "label": "Agent + tools · Sonnet",
+      "model": "claude-sonnet-5-5",
+      "n": 15,
+      "accuracy": 1,
+      "citation_validity": 1,
+      "abstention": 1,
+      "wrong_numbers": 0,
+      "hero_pass": true,
+      "cost_per_q_usd": 0.018,
+      "p50_latency_s": 7
+    },
+    {
+      "id": "C",
+      "label": "Agent + tools · Haiku",
+      "model": "claude-haiku-5-5",
+      "n": 15,
+      "accuracy": 1,
+      "citation_validity": 1,
+      "abstention": 1,
+      "wrong_numbers": 0,
+      "hero_pass": true,
+      "cost_per_q_usd": 0.0015,
+      "p50_latency_s": 5.4
+    }
+  ],
+  "per_question": [
+    {
+      "qid": "q01",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0861,
+      "latency_s": 2.8
+    },
+    {
+      "qid": "q02",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0079,
+      "latency_s": 2
+    },
+    {
+      "qid": "q03",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0077,
+      "latency_s": 2.4
+    },
+    {
+      "qid": "q04",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0144,
+      "latency_s": 8.2
+    },
+    {
+      "qid": "q05",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0117,
+      "latency_s": 4.1
+    },
+    {
+      "qid": "q06",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0197,
+      "latency_s": 9.6
+    },
+    {
+      "qid": "q07",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0153,
+      "latency_s": 7.6
+    },
+    {
+      "qid": "q08",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0114,
+      "latency_s": 4
+    },
+    {
+      "qid": "q09",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0114,
+      "latency_s": 4.6
+    },
+    {
+      "qid": "q10",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0173,
+      "latency_s": 8.1
+    },
+    {
+      "qid": "q11",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0183,
+      "latency_s": 10.1
+    },
+    {
+      "qid": "q12",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.0084,
+      "latency_s": 2.8
+    },
+    {
+      "qid": "q13",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.0092,
+      "latency_s": 3.1
+    },
+    {
+      "qid": "q14",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0144,
+      "latency_s": 7.7,
+      "notes": "judge 2/4"
+    },
+    {
+      "qid": "q15",
+      "config": "A",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0319,
+      "latency_s": 16.8
+    },
+    {
+      "qid": "q01",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.029,
+      "latency_s": 4.9
+    },
+    {
+      "qid": "q02",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0354,
+      "latency_s": 7.4
+    },
+    {
+      "qid": "q03",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0295,
+      "latency_s": 5.3
+    },
+    {
+      "qid": "q04",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0182,
+      "latency_s": 6.5
+    },
+    {
+      "qid": "q05",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0159,
+      "latency_s": 11.3
+    },
+    {
+      "qid": "q06",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.01,
+      "latency_s": 5.9
+    },
+    {
+      "qid": "q07",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0141,
+      "latency_s": 6.4
+    },
+    {
+      "qid": "q08",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0096,
+      "latency_s": 7
+    },
+    {
+      "qid": "q09",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0117,
+      "latency_s": 9.7
+    },
+    {
+      "qid": "q10",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0121,
+      "latency_s": 7.5
+    },
+    {
+      "qid": "q11",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0095,
+      "latency_s": 8
+    },
+    {
+      "qid": "q12",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.0081,
+      "latency_s": 7.1
+    },
+    {
+      "qid": "q13",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.006,
+      "latency_s": 6.4
+    },
+    {
+      "qid": "q14",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0518,
+      "latency_s": 23.1,
+      "notes": "judge 4/4"
+    },
+    {
+      "qid": "q15",
+      "config": "B",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0089,
+      "latency_s": 6.3
+    },
+    {
+      "qid": "q01",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0017,
+      "latency_s": 4.6
+    },
+    {
+      "qid": "q02",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0018,
+      "latency_s": 5
+    },
+    {
+      "qid": "q03",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0017,
+      "latency_s": 4.2
+    },
+    {
+      "qid": "q04",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.002,
+      "latency_s": 10.7
+    },
+    {
+      "qid": "q05",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0014,
+      "latency_s": 24.7
+    },
+    {
+      "qid": "q06",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.001,
+      "latency_s": 5
+    },
+    {
+      "qid": "q07",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.001,
+      "latency_s": 6.4
+    },
+    {
+      "qid": "q08",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0009,
+      "latency_s": 5.5
+    },
+    {
+      "qid": "q09",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0009,
+      "latency_s": 4.9
+    },
+    {
+      "qid": "q10",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0009,
+      "latency_s": 5.4
+    },
+    {
+      "qid": "q11",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0007,
+      "latency_s": 5.4
+    },
+    {
+      "qid": "q12",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.0012,
+      "latency_s": 5.8
+    },
+    {
+      "qid": "q13",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": true,
+      "cost_usd": 0.0006,
+      "latency_s": 4.3
+    },
+    {
+      "qid": "q14",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.006,
+      "latency_s": 31.7,
+      "notes": "judge 4/4"
+    },
+    {
+      "qid": "q15",
+      "config": "C",
+      "correct": true,
+      "citations_valid": true,
+      "abstained": false,
+      "cost_usd": 0.0008,
+      "latency_s": 4.9
+    }
+  ],
+  "notes": [
+    "A: 15/15 correct; 0 number(s) not traceable to the data; hero passed, judge 2/4.",
+    "B: 15/15 correct; 0 number(s) not traceable to the data; hero passed, judge 4/4.",
+    "C: 15/15 correct; 0 number(s) not traceable to the data; hero passed, judge 4/4.",
+    "Spend for the answers on record: A $0.29, B $0.27, C $0.02; hero judge $0.0015; total $0.58.",
+    "All three setups got the same prompt rules, asker and effort. All three answered 15/15, cited only real ids, declined both questions the notebook can't answer, and stated no number the grader couldn't trace. At 14 trials the whole notebook (about 34K tokens) fits in context, so tools don't win on accuracy here.",
+    "Haiku with tools matched them at $0.0015 a question, 12–13× cheaper than Sonnet either way. That's the routing case: Haiku for lookups, Sonnet when a decision is at stake.",
+    "On the hero question, the Haiku judge scored the whole-notebook proposal 2/4 (it didn't credit Greeshma or say what's uncertain) and both tool setups 4/4. One run each, so read it as a signal, not a result.",
+    "Why tools anyway: numbers are computed in code, citations come from tool results, and the design keeps working at 10,000 trials and live device logs, which won't fit in context.",
+    "Grader fixes after the first pass, applied to stored answers: \"isn't in the notebook\" now counts as declining, and a ratio of two numbers the answer itself states isn't counted as a wrong number. Both had caused false failures."
+  ]
+}

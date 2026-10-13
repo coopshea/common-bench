@@ -1,0 +1,608 @@
+{
+  "config": "B",
+  "label": "Agent + tools · Sonnet",
+  "model": "claude-sonnet-5-5",
+  "status": "ran",
+  "records": {
+    "q01": {
+      "qid": "q01",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What was T14's viscosity?",
+      "answer": "T14's viscosity was 1.55 Pa·s. That is just above the 1.5 Pa·s objective, so [T14] passed every guardrail but didn't meet the objective.",
+      "citations": [
+        "T14"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.029027500000000005,
+      "latency_s": 4.866,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:35.653Z"
+    },
+    "q02": {
+      "qid": "q02",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "Who ran T09, and on what date?",
+      "answer": "Cooper Shea ran [T09]. The trial is dated 2025-04-22, and the log has the mixing, weighing and viscosity steps on that day [T09-L01]. Printing started the next morning, 2025-04-23 [T09-L07]. Testing was on 2025-04-24 [T09-L10].",
+      "citations": [
+        "T09",
+        "T09-L01",
+        "T09-L07",
+        "T09-L10"
+      ],
+      "proposals_json": "",
+      "tool_calls": 2,
+      "cost_usd": 0.0353994,
+      "latency_s": 7.375,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T09",
+          "T09-L01",
+          "T09-L07",
+          "T09-L10"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:38.168Z"
+    },
+    "q03": {
+      "qid": "q03",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What porosity did T08 have, and did it pass the porosity guardrail?",
+      "answer": "[T08] had a porosity of 3.74%, so it failed the porosity guardrail, which requires 1% or less. It also failed the tensile and bend guardrails. Its tensile strength was 34.4 MPa, and its flex strength was 53.7 MPa. It passed cytotoxicity.",
+      "citations": [
+        "T08"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.0294723,
+      "latency_s": 5.278,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:36.073Z"
+    },
+    "q04": {
+      "qid": "q04",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "Which trials were excluded from the team's conclusions, and why?",
+      "answer": "Only one trial was excluded from the team's conclusions: [T09], which Cooper excluded. His stated reason was \"Anomalous, likely a lucky specimen.\"\n\n[T09] was a replicate of [T08]. It used 38% diluent and 1.0% photoinitiator, with the same recipe and no degassing. The results were very different:\n- **[T09]:** UTS 44.2 MPa, porosity 0.38%, viscosity 1.28 Pa·s. It passed every guardrail and met the objective.\n- **[T08]:** UTS 34.4 MPa, porosity 3.74%, viscosity 1.3 Pa·s. It failed the tensile, bend and porosity guardrails.\n\nThe one process difference in the summary is rest time, which was 18.2 h for [T09] and 0.4 h for [T08]. I haven't read the logs, so I can't say whether that explains the gap. A long rest could let bubbles escape, which would fit [T09]'s low porosity. The notebook doesn't confirm that.\n\nNo other trial is flagged as excluded. All of Greeshma's trials, [T11] to [T14], are included.",
+      "citations": [
+        "T09",
+        "T08",
+        "T11",
+        "T14"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.018214,
+      "latency_s": 6.498,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T09",
+          "T11",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:42.152Z"
+    },
+    "q05": {
+      "qid": "q05",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What was the mean tensile strength (UTS) of Cooper's campaign B, with and without the excluded trial?",
+      "answer": "Cooper's campaign B has a mean UTS of 35.98 MPa with the excluded trial and 33.92 MPa without it.\n\n- **With the excluded trial:** the mean is 35.98 MPa across five trials, [T06], [T07], [T08], [T09] and [T10]. Values range from 30.7 to 44.2 MPa, and only one of the five passed every guardrail.\n- **Without it:** the mean is 33.92 MPa across four trials, [T06], [T07], [T08] and [T10]. Values range from 30.7 to 35.6 MPa, and none of the four passed every guardrail.\n\nThe excluded trial is [T09], at 44.2 MPa. It is the only campaign B trial that clears the 40 MPa tensile guardrail and the only one that passed every guardrail.",
+      "citations": [
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10"
+      ],
+      "proposals_json": "",
+      "tool_calls": 3,
+      "cost_usd": 0.0158681,
+      "latency_s": 11.301,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:47.374Z"
+    },
+    "q06": {
+      "qid": "q06",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "At 30% diluent or above, how does tensile strength (UTS) compare between degassed and undegassed trials?",
+      "answer": "At 30% diluent or above, degassed trials had clearly higher tensile strength than undegassed ones.\n\n- **Degassed (n=2):** UTS was 49.3–50.7 MPa, mean 50 MPa ([T13], [T14]). Both passed every guardrail.\n- **Not degassed (n=5):** UTS was 30.7–44.2 MPa, mean 35.98 MPa ([T06], [T07], [T08], [T09], [T10]). Only 1 of 5 passed every guardrail.\n\nThe tensile guardrail is 40 MPa or more. Every degassed trial cleared it, and four of the five undegassed trials fell below it. The exception is [T09], at 44.2 MPa.\n\nThis rests on only seven trials, and just two of them were degassed. The group difference shows an association, not proof that degassing caused it. I didn't check whether recipe or other process differences also separate the groups.",
+      "citations": [
+        "T13",
+        "T14",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.009973700000000002,
+      "latency_s": 5.88,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10",
+          "T13",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:44.048Z"
+    },
+    "q07": {
+      "qid": "q07",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "How many trials reached the viscosity target of 1.5 Pa·s or lower, and which of those passed every guardrail?",
+      "answer": "Five trials reached a viscosity of 1.5 Pa·s or lower: [T06], [T07], [T08], [T09] and [T10]. All five are Cooper's, and their viscosities ran from 1.19 to 1.44 Pa·s.\n\nOnly [T09] passed every guardrail. It had a viscosity of 1.28 Pa·s, a tensile strength of 44.2 MPa and porosity of 0.38%. It was a replicate of [T08] but was rested 18.2 h before printing, where [T08] was rested 0.4 h. Cooper excluded it as \"likely a lucky specimen\".\n\nThe other four ([T06], [T07], [T08], [T10]) failed the tensile, bend and porosity guardrails. They passed cytotoxicity.\n\nThis is one passing trial, so it can't show whether the long rest caused the result. I treated this as a lookup, so I haven't proposed an experiment.",
+      "citations": [
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10"
+      ],
+      "proposals_json": "",
+      "tool_calls": 2,
+      "cost_usd": 0.014091800000000002,
+      "latency_s": 6.374,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:48.526Z"
+    },
+    "q08": {
+      "qid": "q08",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+      "answer": "Greeshma's mean porosity across her four trials is 0.16 %. The range is 0.12–0.22 %, and all four passed every guardrail [T11][T12][T13][T14].\n\nCooper's campaign A averages 0.54 % over five trials. The range is 0.27–0.75 %, and all five passed every guardrail [T01][T02][T03][T04][T05].\n\nBoth groups sit under the 1 % limit. Greeshma's mean is lower.\n\nFor context, Cooper's campaign B averaged 2.89 % and only one of its five trials passed all guardrails. You didn't ask about that campaign, so I haven't compared it with yours.\n\nThese are small groups, and I haven't checked whether the two campaigns used the same recipes or process steps.",
+      "citations": [
+        "T11",
+        "T12",
+        "T13",
+        "T14",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.0095547,
+      "latency_s": 7.043,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05",
+          "T11",
+          "T12",
+          "T13",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:51.092Z"
+    },
+    "q09": {
+      "qid": "q09",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "How long did T09's resin rest between the end of mixing and the start of printing?",
+      "answer": "[T09]'s resin rested 18.2 hours between the end of mixing [T09-L05] at 16:42 on 2025-04-22 and the start of printing [T09-L07] at 10:52 the next day. The typical rest across trials is 0.4 hours, so this gap is unusually long.\n\nThe log also shows no degas step for [T09]. The long rest may have let trapped bubbles escape, which could be why its porosity was low (0.38%) [T09-L14].",
+      "citations": [
+        "T09",
+        "T09-L05",
+        "T09-L07",
+        "T09-L14"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.011680300000000001,
+      "latency_s": 9.706,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T09-L14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:57.080Z"
+    },
+    "q10": {
+      "qid": "q10",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "Apart from the recipe, what was different about how T08 and T13 were processed?",
+      "answer": "Apart from the recipe, the one real difference is vacuum degassing. You degassed [T13] for 10 minutes, logged at [T13-L06] from your worksheet. [T08] has no degas step in its log. Degassing isn't in SOP v1, so it's easy to miss in a device log.\n\nEverything else matched. Both used the same mixing (3000 rpm for 2 min), viscosity at 25 °C, and 45 min of UV post-cure. Both ran the same six guardrail tests. Rest before printing was 0.4 h for [T08] and 0.5 h for [T13], and both printed within the hour.\n\nCooper's excluded trial [T09] has the same recipe as [T08] but sat for 18.2 h between mixing [T09-L05] and printing [T09-L07]. It had lower porosity (0.38% vs 3.74%) and higher UTS (44.2 vs 34.4 MPa). That is consistent with time or degassing letting bubbles escape.\n\nThis is one pair plus one related trial, so it suggests a cause but doesn't prove one. I haven't tested it across the wider group of trials.",
+      "citations": [
+        "T13",
+        "T13-L06",
+        "T08",
+        "T09",
+        "T09-L05",
+        "T09-L07"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.012075500000000001,
+      "latency_s": 7.537,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T08",
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T13",
+          "T13-L06"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:56.064Z"
+    },
+    "q11": {
+      "qid": "q11",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What's the current status of the high-diluent dead end in the findings ledger, and what evidence was it based on?",
+      "answer": "The high-diluent dead end is [L2]. It is still **active**, so nobody has disputed it. Cooper recorded it on 2025-06-10: \"high diluent (> 30%) too brittle.\" It covers diluent 30–45% and photoinitiator 0.5–1.3%.\n\nIt rests on four included trials, [T06], [T07], [T08] and [T10]. Its status note says they were porous with brittle fracture. Their UTS ran 30.7–35.6 MPa, below the 40 MPa floor in all four. The note says [T09] was excluded as anomalous.\n\nTwo related items are in the ledger. [L1] is Cooper's accepted finding that low diluent (15–24%) passes the strength guardrails but leaves viscosity at 1.98–2.60 Pa·s. [L3] is your open question, citing [T14], about whether 1.5 Pa·s is reachable without new materials.\n\nI haven't re-checked whether the dead end's reasoning holds up. That would mean comparing the process logs for [T09] against the four included trials.",
+      "citations": [
+        "L2",
+        "T06",
+        "T07",
+        "T08",
+        "T10",
+        "T09",
+        "L1",
+        "L3",
+        "T14"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.0094886,
+      "latency_s": 8.034,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L1",
+          "L2",
+          "L3",
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:21:59.126Z"
+    },
+    "q12": {
+      "qid": "q12",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What's the supplier's price per kilogram for DiluentX?",
+      "answer": "That isn't in the notebook. The ledger ([L1], [L2], [L3]) and the trial records don't hold any supplier pricing for DiluentX. The notebook tracks recipes, process steps, and test results, not purchasing costs.\n\nA quote or invoice from the supplier, or the lab's purchasing records, would settle it. If you can get the price, I can set it against the time cost of any next experiment.",
+      "citations": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.008126000000000001,
+      "latency_s": 7.057,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": true,
+        "cited_ids": [
+          "L1",
+          "L2",
+          "L3"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:22:03.121Z"
+    },
+    "q13": {
+      "qid": "q13",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "What tensile strength did T17 reach, and did it pass the bend test?",
+      "answer": "That isn't in the notebook. There's no trial T17, because the notebook only holds T01–T14. The next free id is T15. If you meant a different trial, such as one of T01–T14, give me its id and I'll look up its tensile strength and bend result.",
+      "citations": [],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.0060206,
+      "latency_s": 6.44,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": true,
+        "cited_ids": [],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:22:03.520Z"
+    },
+    "q14": {
+      "qid": "q14",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?",
+      "answer": "Cooper reached 1.19–1.44 Pa·s with 34–40% diluent in [T06], [T07], [T08], [T09] and [T10]. Those trials failed on strength and bubbles, and Cooper logged high diluent as a dead end in [L2].\n\nThe unintended difference is degassing. Your [T13] was degassed 10 min, and Cooper's [T08] never was. Among trials at 30% diluent or above, degassed ones had UTS of 49.3–50.7 MPa and passed [T13, T14], while undegassed ones passed in 1 of 5.\n\nCooper excluded [T09] as a \"lucky specimen\". It had an 18.2 h rest before printing [T09-L05, T09-L07] and passed with 0.38% porosity.\n\nBrittle material is flaw-sensitive, and bubbles are flaws. Time or degassing lets them escape. Credit to you for degassing routinely. Only 7 trials support this, and 38% diluent with degassing is untested.\n\nI suggest T15a: 38% diluent, 1.7% PI, 10-min degas. The control, T15b, is identical with no degas. Nothing to order, so it's a day's work instead of $1,800 and six weeks. I'd also mark [L2] disputed and add a candidate finding under you.",
+      "citations": [
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "L2",
+        "T13",
+        "T14",
+        "T09-L05",
+        "T09-L07"
+      ],
+      "proposals_json": "[{\"id\":\"p-ledger-mv6y7xnw-1\",\"kind\":\"ledger\",\"title\":\"Ledger: L2 → disputed · add L4 (Greeshma)\",\"summary\":\"L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma N.): Degassing removes the strength barrier at high diluent. · pending T15\",\"payload\":[{\"op\":\"update\",\"id\":\"L2\",\"patch\":{\"status\":\"disputed\",\"status_note\":\"reason disputed: confounded by degassing (see T09, T13)\",\"evidence\":[\"T06\",\"T07\",\"T08\",\"T10\",\"T09\",\"T13\"]},\"reason\":\"The dead end's brittleness reason is undermined because undegassed trials failed while degassed ones passed at high diluent.\"},{\"op\":\"add\",\"item\":{\"id\":\"L4\",\"kind\":\"finding\",\"text\":\"Degassing removes the strength barrier at high diluent.\",\"owner\":\"greeshma\",\"evidence\":[\"T09\",\"T13\",\"T14\"],\"status\":\"candidate\",\"recorded_at\":\"2026-10-13\",\"pending_on\":\"T15\",\"history\":[{\"at\":\"2026-10-13\",\"by\":\"agent\",\"change\":\"proposed\"}]},\"reason\":\"Degassed high-diluent trials passed strength where undegassed ones failed, and Greeshma's routine degas step is the suspect.\"}],\"status\":\"pending\"},{\"id\":\"p-draft-mv6y7z4s-2\",\"kind\":\"draft\",\"title\":\"Draft T15: Does degassing remove the strength barrier at 38% diluent?\",\"summary\":\"T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma N.\",\"payload\":{\"id\":\"T15\",\"title\":\"Does degassing remove the strength barrier at 38% diluent?\",\"owner\":\"greeshma\",\"linked_trials\":[\"T08\",\"T13\",\"T09\"],\"hypothesis\":\"Degassing 10 min lets trapped bubbles escape, so a 38% diluent resin reaches the viscosity target while passing strength and bubble guardrails. Without degassing the same recipe should fail.\",\"arms\":[{\"id\":\"T15a\",\"label\":\"T15a: 38% diluent, 1.7% PI, 10-min degas\",\"role\":\"treatment\",\"recipe\":{\"diluent_wt\":38,\"photoinit_wt\":1.7,\"degas_min\":10,\"rest_h\":0.5,\"mix_rpm\":3000,\"mix_min\":2,\"postcure_min\":45},\"estimate\":{\"viscosity_pa_s\":1.29,\"porosity_pct\":0.41,\"p_pass\":0.8,\"basis\":\"fitted to 14 trials; extrapolated beyond 32% diluent for degassed resin\"}},{\"id\":\"T15b\",\"label\":\"T15b: 38% diluent, 1.7% PI, no degas (the control)\",\"role\":\"control\",\"recipe\":{\"diluent_wt\":38,\"photoinit_wt\":1.7,\"degas_min\":0,\"rest_h\":0.5,\"mix_rpm\":3000,\"mix_min\":2,\"postcure_min\":45},\"estimate\":{\"viscosity_pa_s\":1.29,\"porosity_pct\":3.72,\"p_pass\":0.25,\"basis\":\"fitted to 14 trials\"}}],\"steps\":[\"Weigh one 50 g batch per arm: T15a 38% diluent / 1.7% photoinitiator; T15b 38% diluent / 1.7% photoinitiator.\",\"Mix each at 3000 rpm for 2 min (SOP v1).\",\"Degas T15a under vacuum for 10 min; do not degas T15b (control). Log it on the worksheet so the degasser step is recorded.\",\"Measure viscosity at 25 °C.\",\"Print each arm within an hour of mixing, so rest time isn't a second variable.\",\"Post-cure 45 min, then run all four guardrails: tensile, 3-pt bend, porosity (cross-section), cytotoxicity.\"],\"materials\":[{\"item\":\"Base monomer\",\"in_stock\":true,\"note\":\"used in every trial (T01–T14)\"},{\"item\":\"Reactive diluent (the current one)\",\"in_stock\":true,\"note\":\"used in every trial (T01–T14); no new diluent needed\"},{\"item\":\"Photoinitiator\",\"in_stock\":true,\"note\":\"used in every trial (T01–T14)\"},{\"item\":\"Vacuum degasser\",\"in_stock\":true,\"note\":\"on the bench; used in T11–T14\"}],\"nothing_to_order\":true,\"citations\":[\"T08\",\"T13\",\"T09\",\"T14\",\"T09-L05\",\"T09-L07\",\"L2\"]},\"status\":\"pending\"}]",
+      "tool_calls": 8,
+      "cost_usd": 0.0518457,
+      "latency_s": 23.123,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "L2",
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T09-L05",
+          "T09-L07",
+          "T10",
+          "T13",
+          "T14"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "hero": {
+          "names_degas_confound": true,
+          "names_T09": true,
+          "proposes_control_arm": true,
+          "pass": true
+        },
+        "diagnosis": ""
+      },
+      "judge": {
+        "control_arm": {
+          "pass": true,
+          "evidence": "T15b is the same recipe (38% diluent, 1.7% PI) with no degas, isolating degassing as the only difference from T15a."
+        },
+        "cheapest_experiment": {
+          "pass": true,
+          "evidence": "\"Nothing to order, so it's a day's work instead of $1,800 and six weeks\"; all materials are in stock and the degasser is on the bench."
+        },
+        "credits_greeshma": {
+          "pass": true,
+          "evidence": "\"Credit to you for degassing routinely\" and the proposed finding L4 is owned by Greeshma, with the degas step framed as her contribution."
+        },
+        "uncertainty_stated": {
+          "pass": true,
+          "evidence": "\"Only 7 trials support this, and 38% diluent with degassing is untested\"; the draft also labels the estimates as fitted and extrapolated."
+        },
+        "score": 4,
+        "cost_usd": 0.0005421
+      },
+      "ran_at": "2026-10-13T17:22:24.755Z"
+    },
+    "q15": {
+      "qid": "q15",
+      "config": "B",
+      "model": "claude-sonnet-5-5",
+      "question": "Across all the undegassed trials, what's the Pearson correlation between diluent % and porosity?",
+      "answer": "Across the 10 undegassed trials, the Pearson correlation between diluent % and porosity is r = 0.754 ([T01], [T02], [T03], [T04], [T05], [T06], [T07], [T08], [T09], [T10]). More diluent generally goes with more bubbles.\n\nOne trial pulls the figure down. [T09] has 38% diluent but only 0.38% porosity, while [T08], at the same diluent, has 3.74%. Without [T09] the trend would be tighter. I haven't checked why [T09] differs.\n\nThis is a correlation across 10 trials. It doesn't show that diluent causes the bubbles.",
+      "citations": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10"
+      ],
+      "proposals_json": "",
+      "tool_calls": 1,
+      "cost_usd": 0.0089052,
+      "latency_s": 6.291,
+      "grade": {
+        "correct": true,
+        "citations_valid": true,
+        "unprompted_proposals": false,
+        "abstained": false,
+        "cited_ids": [
+          "T01",
+          "T02",
+          "T03",
+          "T04",
+          "T05",
+          "T06",
+          "T07",
+          "T08",
+          "T09",
+          "T10"
+        ],
+        "invalid_ids": [],
+        "missing_ids": [],
+        "numbers_missing": [],
+        "concepts_missing": [],
+        "wrong_numbers": [],
+        "diagnosis": ""
+      },
+      "ran_at": "2026-10-13T17:22:09.412Z"
+    }
+  }
+}

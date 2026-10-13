@@ -1,0 +1,11 @@
+{
+  "name": "common-bench",
+  "displayName": "Common Bench",
+  "version": "0.1.0",
+  "description": "A team lab notebook as a Claude Code plugin: notebook tools over trials, step logs and a findings ledger (MCP), plus the lab-notebook-analyst Skill. Concept demo with synthetic data.",
+  "author": {
+    "name": "Cooper Shea"
+  },
+  "license": "MIT",
+  "keywords": ["lab-notebook", "mcp", "skills", "science", "demo"]
+}

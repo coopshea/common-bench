@@ -1,0 +1,10 @@
+{
+ "size": 1000,
+ "config": "A",
+ "label": "Whole notebook in context · Sonnet",
+ "model": "claude-sonnet-5-5",
+ "status": "doesnt_fit",
+ "records": {},
+ "context_tokens": 1939730,
+ "status_note": "1,939,730 tokens > 1,000,000-token context window"
+}

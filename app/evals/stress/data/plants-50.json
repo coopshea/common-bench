@@ -1,0 +1,30 @@
+{
+  "size": 50,
+  "overnight_rest": "T26",
+  "postcure_delay": "T04",
+  "print_restart": "T20",
+  "near_dup": {
+    "ravi": "T28",
+    "lucia": "T32"
+  },
+  "prewarm_notes": [
+    "T32",
+    "T27",
+    "T31"
+  ],
+  "contradictions": {
+    "tensile": "T33",
+    "viscosity": "T42",
+    "porosity": "T08"
+  },
+  "whitford_44": "T36",
+  "pi_24": "T30",
+  "superseded": {
+    "old": "L2",
+    "new": "L4"
+  },
+  "mixer2_window": [
+    "2025-11-03",
+    "2026-02-13"
+  ]
+}
