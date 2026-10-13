@@ -1192,7 +1192,7 @@
      "id": "p-ledger-mv6zb25l-1",
      "kind": "ledger",
      "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
-     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma N.): Degassing removes the strength barrier at high diluent. · pending T15",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma): Degassing removes the strength barrier at high diluent. · pending T15",
      "payload": [
       {
        "op": "update",
@@ -1254,7 +1254,7 @@
      "id": "p-ledger-mv6zb25l-1",
      "kind": "ledger",
      "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
-     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma N.): Degassing removes the strength barrier at high diluent. · pending T15",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma): Degassing removes the strength barrier at high diluent. · pending T15",
      "payload": [
       {
        "op": "update",
@@ -1341,7 +1341,7 @@
       ]
      },
      "status": "done",
-     "summary": "Approved by Greeshma N.",
+     "summary": "Approved by Greeshma",
      "ms": 1530
     }
    }
@@ -1398,7 +1398,7 @@
      "id": "p-draft-mv6zb3qn-2",
      "kind": "draft",
      "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
-     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma N.",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma",
      "payload": {
       "id": "T15",
       "title": "Does degassing rescue the 38% diluent recipe?",
@@ -1515,7 +1515,7 @@
      "id": "p-draft-mv6zb3qn-2",
      "kind": "draft",
      "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
-     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma N.",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma",
      "payload": {
       "id": "T15",
       "title": "Does degassing rescue the 38% diluent recipe?",
@@ -1660,7 +1660,7 @@
       ]
      },
      "status": "done",
-     "summary": "Approved by Greeshma N.",
+     "summary": "Approved by Greeshma",
      "ms": 1515
     }
    }

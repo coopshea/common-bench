@@ -198,7 +198,7 @@
       "should_abstain": false,
       "why_hard": "Eight exact counts; two people are both named Dana (Whitfield and Whitford), and the owner grouping in the tools keys on first name.",
       "expected": {
-        "summary": "Tomás Herrera 57, Dana Whitfield 48, Ravi Menon 39, Cooper Shea 17, Dana Whitford 35, Lucia Ferreira 28, Ines Kowalski 24, Greeshma N. 2",
+        "summary": "Tomás Herrera 57, Dana Whitfield 48, Ravi Menon 39, Cooper Shea 17, Dana Whitford 35, Lucia Ferreira 28, Ines Kowalski 24, Greeshma 2",
         "numbers": [],
         "required_ids": [],
         "concepts": [],
@@ -257,7 +257,7 @@
             "value": 24
           },
           {
-            "label": "Greeshma N.",
+            "label": "Greeshma",
             "name_patterns": [
               "Greeshma"
             ],

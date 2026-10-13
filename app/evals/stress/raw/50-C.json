@@ -60,7 +60,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Across the 50 trials [T01]–[T50], the counts are:\n\n- Tomás Herrera: 10 ([T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]). [T07] is excluded by its owner.\n- Ravi Menon: 8 ([T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29])\n- Cooper Shea: 8 ([T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]). [T26] is excluded by its owner.\n- Dana Whitfield: 7 ([T03], [T04], [T33], [T38], [T40], [T43], [T45])\n- Lucia Ferreira: 6 ([T27], [T31], [T32], [T34], [T41], [T48])\n- Ines Kowalski: 5 ([T37], [T42], [T44], [T46], [T50])\n- Dana Whitford: 4 ([T25], [T35], [T36], [T39])\n- Greeshma N.: 2 ([T47], [T49])\n\nThese totals include excluded trials. The two Danas are separate people in the roster, so I counted them separately.",
+   "answer": "Across the 50 trials [T01]–[T50], the counts are:\n\n- Tomás Herrera: 10 ([T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]). [T07] is excluded by its owner.\n- Ravi Menon: 8 ([T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29])\n- Cooper Shea: 8 ([T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]). [T26] is excluded by its owner.\n- Dana Whitfield: 7 ([T03], [T04], [T33], [T38], [T40], [T43], [T45])\n- Lucia Ferreira: 6 ([T27], [T31], [T32], [T34], [T41], [T48])\n- Ines Kowalski: 5 ([T37], [T42], [T44], [T46], [T50])\n- Dana Whitford: 4 ([T25], [T35], [T36], [T39])\n- Greeshma: 2 ([T47], [T49])\n\nThese totals include excluded trials. The two Danas are separate people in the roster, so I counted them separately.",
    "tool_calls": 3,
    "trace": [
     {
@@ -3155,7 +3155,7 @@
    "question": "What porosity did Cooper Shea's degassed trials show?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Cooper Shea has no vacuum-degassed trials in the notebook. All eight of Cooper's trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21] and [T26], have degas_min 0. Their cross-section porosities were 0.54, 0.53, 0.32, 0.9, 0.32, 0.71, 2 and 0.07 % respectively. [T21] failed the porosity guardrail at 2 %, and [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe.\"\n\nThe degassed trials in the notebook were run by others: Dana Whitford, Ines Kowalski and Greeshma N. Their porosities are in the notebook, and Greeshma's [T47] and [T49] both passed with porosity 0.24 % and 0.19 %.",
+   "answer": "Cooper Shea has no vacuum-degassed trials in the notebook. All eight of Cooper's trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21] and [T26], have degas_min 0. Their cross-section porosities were 0.54, 0.53, 0.32, 0.9, 0.32, 0.71, 2 and 0.07 % respectively. [T21] failed the porosity guardrail at 2 %, and [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe.\"\n\nThe degassed trials in the notebook were run by others: Dana Whitford, Ines Kowalski and Greeshma Their porosities are in the notebook, and Greeshma's [T47] and [T49] both passed with porosity 0.24 % and 0.19 %.",
    "tool_calls": 3,
    "trace": [
     {

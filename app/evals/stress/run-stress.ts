@@ -301,7 +301,7 @@ How to answer:
 - Lookups and aggregations: answer briefly and stop. Only decision questions ("has anyone tried…", "should I…", "what next") get a proposed experiment and ledger change.
 - Decision answers: at most 140 words. Plain text: no headings, no bold, no tables, no lists.
 
-The person asking is Greeshma N. (id greeshma, current member). Address them as "you"; credit their work by name where it matters.`;
+The person asking is Greeshma (id greeshma, current member). Address them as "you"; credit their work by name where it matters.`;
 
 // ---------- report ----------
 

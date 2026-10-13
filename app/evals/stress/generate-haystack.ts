@@ -109,7 +109,7 @@ const PEOPLE: PersonSpec[] = [
     campaigns: [{ code: "K", dil: [28, 38], pi: [1.2, 1.8] }] },
   { id: "ines", name: "Ines Kowalski", initials: "IK", role: "Scientist · materials", color: "#6B8E23", joined: "2025-09-15", degas: 10,
     campaigns: [{ code: "P", dil: [30, 42], pi: [1.4, 2.0] }] },
-  { id: "greeshma", name: "Greeshma N.", initials: "GN", role: "Scientist · formulation", color: "#E4674F", joined: "2026-07-06", degas: 10,
+  { id: "greeshma", name: "Greeshma", initials: "GN", role: "Scientist · formulation", color: "#E4674F", joined: "2026-07-06", degas: 10,
     campaigns: [{ code: "G", dil: [26, 34], pi: [1.5, 1.8] }] },
 ];
 const spec = (id: string) => PEOPLE.find((p) => p.id === id)!;

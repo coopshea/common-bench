@@ -127,7 +127,7 @@ const project: Project = {
 const people: Person[] = [
   { id: "cooper", name: "Cooper Shea", initials: "CS", role: "Former member · formulation", color: "#2a78d6",
     joined: "2024-09-16", left: "2025-06-27", status: "former" },
-  { id: "greeshma", name: "Greeshma N.", initials: "GN", role: "Scientist · formulation", color: "#6250d6",
+  { id: "greeshma", name: "Greeshma", initials: "G", role: "Scientist · formulation", color: "#6250d6",
     joined: "2026-07-06", status: "current" },
 ];
 
