@@ -16,10 +16,18 @@ export function Workspace() {
   const { state, dispatch, replayDate } = useStore();
   const rows = useRows();
   const replaying = state.replay.cursor !== null;
+  // From the bench: focus a trial in progress on the plots and bring its row into view.
+  const openTrial = (id: string) => {
+    dispatch({ type: "focus", id });
+    dispatch({ type: "hover", id });
+    const row = [...document.querySelectorAll<HTMLTableRowElement>(".table-panel tbody tr")].find((r) => r.querySelector(".id .mono")?.textContent === id);
+    row?.scrollIntoView({ block: "center", behavior: "smooth" });
+    window.setTimeout(() => dispatch({ type: "hover", id: null }), 1800);
+  };
   return (
     <div className="workspace">
       <div className={`process-row ${tourClass(state.tour, "process")}`}>
-        <BenchFigure stations={project.sop.stations} activeStation={null} />
+        <BenchFigure stations={project.sop.stations} activeStation={null} live={state.drafts} onOpenTrial={openTrial} />
       </div>
       <main className={`main ${state.tour !== null ? "touring" : ""}`}>
         <section className="left">

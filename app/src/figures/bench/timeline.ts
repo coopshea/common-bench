@@ -60,6 +60,19 @@ export interface StationState {
   /** The logged entries for this step up to the clock: what the instrument has reported so far. */
   seen: LogEntry[];
   readout: string | null;
+  parts?: number[]; // weigh only: grams of each addition so far (base monomer, diluent, photoinitiator)
+}
+
+/** Grams of each weigh addition at the clock; the one being poured grows between log entries. */
+function weighParts(trial: Trial, runs: Run[], clock: number): number[] {
+  const w = runs.find((r) => r.step === "weigh");
+  if (!w) return [];
+  return w.entries.map((e, k) => {
+    const t1 = Date.parse(e.t);
+    const t0 = k === 0 ? w.start : Date.parse(w.entries[k - 1].t);
+    const f = Math.max(0, Math.min(1, (clock - t0) / Math.max(1, t1 - t0)));
+    return (e.value ?? 0) * f;
+  });
 }
 
 const fmtClock = (min: number) => {
@@ -88,7 +101,9 @@ export function stationAt(trial: Trial, runs: Run[], step: StepId, clock: number
     else if (step === "viscosity") readout = "…";
     else if (step === "test") readout = TEST_WORD[cur.mode] ?? "";
     else readout = dur(elapsedMin, totalMin);
-    return { ...base, status: "running", mode: cur.mode, progress, elapsedMin, totalMin, readout };
+    const parts = step === "weigh" ? weighParts(trial, runs, clock) : undefined;
+    if (parts) readout = `${num(parts.reduce((a, b) => a + b, 0))} g`;
+    return { ...base, status: "running", mode: cur.mode, progress, elapsedMin, totalMin, readout, parts };
   }
   if (!last) return { ...base, status: "idle", mode: mine[0].mode, progress: 0, readout: null };
   const allDone = clock >= mine[mine.length - 1].end;
@@ -98,7 +113,7 @@ export function stationAt(trial: Trial, runs: Run[], step: StepId, clock: number
   else if (step === "viscosity" && lastVal?.value !== undefined) readout = `${lastVal.value} Pa·s`;
   else if (step === "test") readout = allDone ? `${seen.length} results` : `${seen.length} so far`;
   else readout = `${Math.round((last.end - last.start) / MIN)} min`;
-  return { ...base, status: allDone ? "done" : "idle", mode: last.mode, progress: 1, readout, totalMin: (last.end - last.start) / MIN, elapsedMin: (last.end - last.start) / MIN };
+  return { ...base, parts: step === "weigh" ? weighParts(trial, runs, clock) : undefined, status: allDone ? "done" : "idle", mode: last.mode, progress: 1, readout, totalMin: (last.end - last.start) / MIN, elapsedMin: (last.end - last.start) / MIN };
 }
 
 // ---------- playback: compress a trial's real hours into a few seconds, skipping the idle gaps ----------
@@ -138,4 +153,14 @@ export function playbackOf(runs: Run[]): Playback {
     return end;
   };
   return { duration: p, clockAt, start, end };
+}
+
+/** For hover: the station at fraction f of one representative run (the tensile pull for the test frame). */
+export function demoOf(trial: Trial, runs: Run[], step: StepId): ((f: number) => StationState) | undefined {
+  const run = runs.find((r) => r.step === step && (step !== "test" || r.mode === "tensile"));
+  if (!run) return undefined;
+  return (f: number) => {
+    const s = stationAt(trial, runs, step, run.start + Math.min(0.9999, f) * (run.end - run.start));
+    return f >= 1 ? { ...s, progress: 1 } : s;
+  };
 }

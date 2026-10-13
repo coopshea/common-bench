@@ -121,3 +121,24 @@
 .ct-read span.over { color: var(--fail-ink); font-weight: 600; }
 .spec-play .bench-play { flex: none; }
 .live-inst { display: inline-flex; flex: none; }
+/* weighed parts: base monomer (ivory), diluent (pale teal), photoinitiator (yellow) */
+.iso .part-base > .iso-fill, .iso .part-base > .iso-shade { fill: #e9dfc6; }
+.iso .part-base > .iso-top { fill: #f5eedc; }
+.iso .part-diluent > .iso-fill, .iso .part-diluent > .iso-shade { fill: #a9d6d0; }
+.iso .part-diluent > .iso-top { fill: #c8e8e3; }
+.iso .part-pi > .iso-fill, .iso .part-pi > .iso-shade { fill: #f0dc5a; }
+.iso .part-pi > .iso-top { fill: #f7ea93; }
+
+/* trials in progress: green dot + completion ring + arm id, under the instrument name */
+.inst-cell { position: relative; }
+.bench3d.top .run-chip { position: absolute; left: 82px; bottom: 7px; }
+.run-chip {
+  display: inline-flex; align-items: center; gap: 5px; padding: 1px 6px 1px 4px; border-radius: 10px;
+  border: 1px solid transparent; background: none; cursor: pointer; font-size: 11px; color: var(--ink); font: inherit;
+}
+.run-chip .mono { font-size: 11px; }
+.run-chip:hover { border-color: var(--line-2); background: var(--panel); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: #0ca30c; flex: none; animation: live-pulse 2s ease-in-out infinite; }
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.zoom-log.live li { display: flex; align-items: center; justify-content: space-between; }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }

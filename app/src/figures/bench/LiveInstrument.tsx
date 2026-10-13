@@ -1,15 +1,16 @@
-// An instrument that follows the bench clock, and on hover loops its own logged run (any size, anywhere).
+// An instrument showing its current state; on hover it loops one run of itself (any size, anywhere).
+// The loop is owned by refs and stops the moment the pointer leaves or the component unmounts.
 import { useEffect, useRef, useState } from "react";
-import type { StepId, Trial } from "../../shared/types.ts";
+import type { StepId } from "../../shared/types.ts";
 import { InstrumentFigure } from "./InstrumentFigure.tsx";
-import { stationAt, type Run, type StationState } from "./timeline.ts";
+import type { StationState } from "./timeline.ts";
 
 export interface LiveInstrumentProps {
-  trial: Trial;
-  runs: Run[];
   step: StepId;
-  state: StationState; // from the bench clock
-  t: number;
+  state: StationState; // what the instrument is doing now
+  /** The state at fraction f (0..1) of a representative run, for the hover loop. Omit to disable hover. */
+  demo?: (f: number) => StationState;
+  t?: number;
   width: number;
   height: number;
   optional?: boolean;
@@ -17,40 +18,40 @@ export interface LiveInstrumentProps {
 }
 
 const LOOP = 2.6; // s per hover loop
+const reduced = () => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-export function LiveInstrument({ trial, runs, step, state, t, width, height, optional, label }: LiveInstrumentProps) {
-  const run = runs.find((r) => r.step === step && (step !== "test" || r.mode === "tensile"));
+export function LiveInstrument({ step, state, demo, t = 0, width, height, optional, label }: LiveInstrumentProps) {
   const [hover, setHover] = useState<number | null>(null); // seconds since hover began
   const raf = useRef(0);
+  const on = useRef(false);
 
-  useEffect(() => {
-    if (hover === null || !run) return;
-    const t0 = performance.now() - hover * 1000;
+  const stop = () => {
+    on.current = false;
+    cancelAnimationFrame(raf.current);
+    setHover(null);
+  };
+  const start = () => {
+    if (!demo || reduced() || on.current) return;
+    on.current = true;
+    const t0 = performance.now();
     const tick = (now: number) => {
+      if (!on.current) return;
       setHover((now - t0) / 1000);
       raf.current = requestAnimationFrame(tick);
     };
     raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [hover === null, run]);
+  };
+  useEffect(() => () => { on.current = false; cancelAnimationFrame(raf.current); }, []);
 
-  const reduced = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   let shown = state;
   let phase = t;
-  if (hover !== null && run) {
+  if (hover !== null && demo) {
     const f = (hover % LOOP) / LOOP;
-    // run 0 → 85%, hold the finished state for the last 15%
-    const k = Math.min(0.9999, f / 0.85);
-    shown = stationAt(trial, runs, step, run.start + k * (run.end - run.start));
-    if (f >= 0.85) shown = { ...stationAt(trial, runs, step, run.end), status: "running", progress: 1, mode: run.mode };
+    shown = demo(Math.min(1, f / 0.85)); // run, then hold the finished state for the last 15%
     phase = hover;
   }
   return (
-    <span
-      className="live-inst"
-      onPointerEnter={() => !reduced && run && setHover(0)}
-      onPointerLeave={() => setHover(null)}
-    >
+    <span className="live-inst" onPointerEnter={start} onPointerLeave={stop}>
       <InstrumentFigure step={step} state={shown} t={phase} width={width} height={height} optional={optional} label={label} />
     </span>
   );

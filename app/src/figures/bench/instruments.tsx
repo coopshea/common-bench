@@ -80,18 +80,27 @@ function Bone({ cx, y0, u0, u1, zAt, p }: { cx: number; y0: number; u0: number; 
   );
 }
 
-// ---------- Balance: a beaker fills as each addition is logged ----------
+// ---------- Balance: each addition stacks in the beaker as its own colored layer, in the weighed ratio ----------
+const PART_CLASS = ["part-base", "part-diluent", "part-pi"];
 function Balance({ s, p }: InstrumentProps) {
   const total = 50;
-  const mass = s.seen.reduce((a, e) => a + (e.value ?? 0), 0);
-  const fill = clamp01(mass / total);
+  const H = 3.4;
+  const parts = s.parts ?? [];
+  let z = 2.3;
+  const layers = parts.map((g, i) => {
+    if (g <= 0) return null;
+    const h = Math.max(0.24, (g / total) * H); // the photoinitiator is ~1%: keep a visible sliver
+    const el = <Solid key={i} paths={cyl(6, 5.6, 1.5, z, h, p)} className={`resin ${PART_CLASS[i] ?? ""}`} crease="none" tone="mid" />;
+    z += h;
+    return el;
+  });
   return (
     <g>
       <Solid paths={box(2, 2.5, 8, 7, 0, 1.6, p)} />
       <Screen y0={9.5} x0={3.6} x1={8.4} z0={0.35} z1={1.2} lit={on(s)} p={p} />
       <Solid paths={cyl(6, 5.6, 0.5, 1.6, 0.4, p)} tone="mid" />
       <Solid paths={cyl(6, 5.6, 3.1, 2.0, 0.25, p)} />
-      {fill > 0 && <Solid paths={cyl(6, 5.6, 1.5, 2.3, 3.4 * fill, p)} className="resin" crease="none" tone="mid" />}
+      {layers}
       <Solid paths={cyl(6, 5.6, 1.7, 2.25, 3.8, p)} className="glass" crease="none" tone="mid" />
     </g>
   );
