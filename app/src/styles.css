@@ -600,3 +600,7 @@ table.trials td.bad { background: none; }
 .stress-grid td.bad { background: #fdeceb; } .stress-grid td.bad b { color: #a3261e; }
 .stress-grid td.na { background: #f3f1ec; color: var(--ink-2); }
 .stress-notes { margin: 12px 0 6px; padding-left: 18px; color: var(--ink-2); font-size: 13px; line-height: 1.6; }
+
+.ev-h { font-size: 14px; font-weight: 650; margin: 24px 0 8px; }
+.method { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; line-height: 1.6; max-width: 820px; }
+.method li { margin-bottom: 4px; }

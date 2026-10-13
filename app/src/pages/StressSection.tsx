@@ -32,12 +32,7 @@ export function StressSection() {
   const cell = (size: number, cfg: string) => stress.cells.find((c) => c.size === size && c.config === cfg);
   return (
     <section className="stress">
-      <div className="eyebrow" style={{ marginTop: 28 }}>Stress test</div>
-      <h2>Where it breaks as the notebook grows</h2>
-      <p className="lede">
-        Seeded notebooks of {stress.sizes.join(", ")} trials with planted needles, lookalikes, multi-step questions and traps.
-        Same core questions in every cell.
-      </p>
+      <h3 className="ev-h">Stress test · {stress.sizes.map((s) => s.toLocaleString()).join(" / ")} trials</h3>
       <div className="panel" style={{ overflowX: "auto" }}>
         <table className="stress-grid">
           <thead>
@@ -64,12 +59,7 @@ export function StressSection() {
           </tbody>
         </table>
       </div>
-      <ul className="stress-notes">
-        <li><b>Long context is perfect until it doesn't fit.</b> Then it can't answer at all.</li>
-        <li><b>The tools, not the model, limit the agents.</b> Search results too large to return, filters frozen to the demo's people, logs that need one call per trial. Sonnet did no better than Haiku.</li>
-        <li><b>They fail safely.</b> Most misses say "can't answer" rather than guess. The fixes are in the roadmap: exhaustive scan and aggregate tools.</li>
-      </ul>
-      <div className="muted" style={{ fontSize: 12 }}>One run per question · total spend ${stress.spend_usd.toFixed(2)}</div>
+      <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>One run per question · total spend ${stress.spend_usd.toFixed(2)}</div>
     </section>
   );
 }
