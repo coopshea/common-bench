@@ -586,3 +586,17 @@ table.trials td.bad { background: none; }
 .rc-val.goal { fill: #1f6b28; } .rc-val.close { fill: #7a5200; } .rc-val.fail { fill: #a3261e; }
 .rc-lim { font-weight: 400; fill: var(--ink-3); }
 .rc-foot { font-size: 10.5px; color: var(--ink-3); padding: 0 10px 8px; text-align: center; margin-top: -6px; }
+
+/* stress grid */
+.stress-grid { width: 100%; border-collapse: collapse; font-size: 13px; }
+.stress-grid th { text-align: left; font-size: 11.5px; font-weight: 600; color: var(--ink-3); padding: 9px 12px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+.stress-grid td { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.stress-grid tr:last-child td { border-bottom: 0; }
+.stress-grid td.size { font-weight: 650; font-variant-numeric: tabular-nums; }
+.stress-grid td b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.stress-grid td .sub { font-size: 11.5px; color: var(--ink-3); margin-top: 1px; }
+.stress-grid td.good { background: #f1f9f1; } .stress-grid td.good b { color: #1f6b28; }
+.stress-grid td.mid { background: #fff6dd; } .stress-grid td.mid b { color: #7a5200; }
+.stress-grid td.bad { background: #fdeceb; } .stress-grid td.bad b { color: #a3261e; }
+.stress-grid td.na { background: #f3f1ec; color: var(--ink-2); }
+.stress-notes { margin: 12px 0 6px; padding-left: 18px; color: var(--ink-2); font-size: 13px; line-height: 1.6; }

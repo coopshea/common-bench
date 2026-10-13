@@ -3,6 +3,7 @@
 import type { EvalConfigResult, EvalResults } from "../shared/types.ts";
 import { fmtDate } from "../lib/format.ts";
 import { navigate } from "../lib/hooks.ts";
+import { StressSection } from "./StressSection.tsx";
 
 const found = import.meta.glob("../../evals/results.json", { eager: true, import: "default" }) as Record<string, EvalResults>;
 const results: EvalResults | null = Object.values(found)[0] ?? null;
@@ -50,6 +51,7 @@ export function EvalsPage() {
             The table appears here when <span className="mono">evals/results.json</span> exists.
           </div>
         )}
+        <StressSection />
       </div>
     </div>
   );
