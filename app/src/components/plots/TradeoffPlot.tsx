@@ -13,7 +13,8 @@ const VISC = METRICS.find((m) => m.key === "viscosity_pa_s")!;
 const UTS = METRICS.find((m) => m.key === "uts_mpa")!;
 const M = { l: 50, r: 16, t: 26, b: 40 };
 
-export function TradeoffPlot({ rows }: { rows: Row[] }) {
+// `dim`: rows drawn faded for context (the project's other experiments).
+export function TradeoffPlot({ rows, dim }: { rows: Row[]; dim?: (r: Row) => boolean }) {
   const { state, dispatch } = useStore();
   const hl = useHighlight();
   const [local, setLocal] = useState<string | null>(null);
@@ -58,7 +59,7 @@ export function TradeoffPlot({ rows }: { rows: Row[] }) {
       onMouseMove={(e) => { if (!(e.target as Element).classList?.contains("hit")) { setLocal(null); if (state.hover) dispatch({ type: "hover", id: null }); } }}>
       {size.width > 0 && (
         <svg width={W} height={H} role="img" aria-label="Viscosity against tensile strength for every trial, with the goal corner">
-          <rect x={M.l} y={M.t} width={pw} height={ph} fill="#fff" stroke="var(--line)" />
+          <rect x={M.l} y={M.t} width={pw} height={ph} fill="var(--panel)" stroke="var(--line)" />
           <rect x={M.l} y={M.t} width={gx - M.l} height={gy - M.t} fill="var(--goal)" />
           <text x={M.l + 10} y={M.t + 20} className="goal-label">Goal</text>
 
@@ -91,7 +92,7 @@ export function TradeoffPlot({ rows }: { rows: Row[] }) {
 
           {/* each person's path in date order */}
           {people.map((p) => {
-            const mine = rows.filter((r) => r.owner === p.id && r.trial);
+            const mine = rows.filter((r) => r.owner === p.id && r.trial && !dim?.(r));
             if (mine.length < 2) return null;
             return <polyline key={p.id} points={mine.map((r) => `${x(r.values.viscosity_pa_s)},${y(r.values.uts_mpa)}`).join(" ")}
               fill="none" stroke={colorOf(p.id)} strokeWidth={1.6} strokeOpacity={0.4} strokeLinejoin="round" />;
@@ -103,10 +104,11 @@ export function TradeoffPlot({ rows }: { rows: Row[] }) {
             const on = r.id === hl;
             const excluded = !!r.trial?.excluded;
             const est = !!r.arm;
-            const showLabel = on || excluded || est || r.id === best?.id;
+            const faded = !!dim?.(r) && !on;
+            const showLabel = !faded && (on || excluded || est || r.id === best?.id);
             const flip = cx > M.l + pw - 110;
             return (
-              <g key={r.id} className="dot-g" style={{ opacity: hl !== null && !on ? 0.4 : 1 }}>
+              <g key={r.id} className="dot-g" style={{ opacity: faded ? 0.22 : hl !== null && !on ? 0.4 : 1 }}>
                 {excluded && <circle cx={cx} cy={cy} r={12} fill="none" stroke="var(--ink-3)" strokeDasharray="3 2" />}
                 <StatusMark status={statusOf(r)} cx={cx} cy={cy} est={est} on={on} />
                 {showLabel && (
@@ -120,8 +122,8 @@ export function TradeoffPlot({ rows }: { rows: Row[] }) {
                   onMouseLeave={() => { setLocal(null); dispatch({ type: "hover", id: null }); }}
                   onFocus={() => { setLocal(r.id); dispatch({ type: "hover", id: r.id }); }}
                   onBlur={() => { setLocal(null); dispatch({ type: "hover", id: null }); }}
-                  onClick={() => r.trial && dispatch({ type: "drawer", trialId: r.trial.id })}
-                  onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && r.trial) { e.preventDefault(); dispatch({ type: "drawer", trialId: r.trial.id }); } }} />
+                  onClick={() => r.trial && dispatch({ type: "select", sel: { trial: r.trial.id } })}
+                  onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && r.trial) { e.preventDefault(); dispatch({ type: "select", sel: { trial: r.trial.id } }); } }} />
               </g>
             );
           })}

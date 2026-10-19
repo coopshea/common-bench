@@ -13,5 +13,5 @@
     "verbatimModuleSyntax": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["src", "server", "data", "evals", "vite.config.ts"]
+  "include": ["src", "server", "data", "evals", "managed", "vite.config.ts"]
 }

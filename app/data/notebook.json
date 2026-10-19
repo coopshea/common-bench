@@ -6226,6 +6226,435 @@
       ]
     }
   ],
+  "org": {
+    "thrusts": [
+      {
+        "id": "materials",
+        "title": "Printable dental materials",
+        "blurb": "Resins that print faster and last longer.",
+        "funding": "Meridian R&D program DR-07"
+      },
+      {
+        "id": "access",
+        "title": "Accessible chairside dentistry",
+        "blurb": "Same-day parts on low-cost printers.",
+        "funding": "Clinic partnership pilot"
+      },
+      {
+        "id": "process",
+        "title": "Print process reliability",
+        "blurb": "Every printer and oven gives the same part.",
+        "funding": "Internal"
+      },
+      {
+        "id": "devices",
+        "title": "Bioresorbable devices",
+        "blurb": "Closed in 2025.",
+        "funding": "SBIR Phase I (fictional)",
+        "closed": true
+      }
+    ],
+    "projects": [
+      {
+        "id": "fast-print-denture-resin",
+        "thrust": "materials",
+        "title": "Fast-print denture base resin",
+        "people": [
+          "greeshma",
+          "cooper"
+        ],
+        "last": "2026-10-13",
+        "goal": "Viscosity ≤ 1.5 Pa·s, every guardrail passing",
+        "deliverable": "Formulation spec and a manuscript",
+        "why": "Thinner resin recoats faster between layers, so dentures print faster.",
+        "docs": [
+          "Program proposal (2024)",
+          "SOP v1: resin prep and print",
+          "Guardrail sources"
+        ]
+      },
+      {
+        "id": "shade-match",
+        "thrust": "materials",
+        "title": "Match shades A1–A3 with two pigments",
+        "people": [
+          "cooper"
+        ],
+        "last": "2025-05-30",
+        "goal": "Two pigments cover A1–A3 within ΔE 2",
+        "deliverable": "Pigment recipe",
+        "why": "Fewer pigments, fewer mixing errors.",
+        "docs": [
+          "Shade guide scans"
+        ],
+        "known": [
+          {
+            "text": "One pigment reaches A1 and A2",
+            "cite": "Shade run 1"
+          }
+        ],
+        "open": [
+          {
+            "text": "Can A3 be reached without a third?",
+            "cite": ""
+          }
+        ]
+      },
+      {
+        "id": "chairside-fit",
+        "thrust": "access",
+        "title": "Same-day denture fit on a $3k printer",
+        "people": [
+          "greeshma"
+        ],
+        "last": "2026-09-12",
+        "goal": "Fit within 50 µm from a low-cost printer",
+        "deliverable": "Clinic protocol",
+        "why": "Most clinics can't afford a lab printer.",
+        "docs": [
+          "Pilot agreement"
+        ],
+        "known": [
+          {
+            "text": "First fit is within 80 µm",
+            "cite": "Fit test 1"
+          }
+        ],
+        "open": [
+          {
+            "text": "Is the gap from the printer or the resin?",
+            "cite": ""
+          }
+        ]
+      },
+      {
+        "id": "printer-drift",
+        "thrust": "process",
+        "title": "Measure printer-to-printer drift",
+        "people": [
+          "greeshma"
+        ],
+        "last": "2026-10-02",
+        "goal": "Know how far printers 1 and 2 disagree",
+        "deliverable": "Calibration note",
+        "why": "Printer 2 isn't logged, so nobody has compared them.",
+        "docs": [
+          "Draft proposal"
+        ],
+        "known": [],
+        "open": [
+          {
+            "text": "Is drift larger than fit tolerance?",
+            "cite": ""
+          }
+        ]
+      },
+      {
+        "id": "fast-cure",
+        "thrust": "process",
+        "title": "Halve post-cure time",
+        "people": [
+          "greeshma"
+        ],
+        "last": "2026-09-29",
+        "goal": "Post-cure in 25 min, no strength lost",
+        "deliverable": "Oven profile",
+        "why": "The UV oven is the bottleneck between print and test.",
+        "docs": [
+          "Scoping note"
+        ],
+        "known": [
+          {
+            "text": "35 min is the shortest passing profile",
+            "cite": "Cure run 1"
+          }
+        ],
+        "open": [
+          {
+            "text": "Does temperature matter more than time?",
+            "cite": ""
+          }
+        ]
+      },
+      {
+        "id": "stent-resin",
+        "thrust": "devices",
+        "title": "Stent resin degradation in saline",
+        "people": [
+          "cooper"
+        ],
+        "last": "2025-06-20",
+        "goal": "Hold strength 8 weeks, then degrade",
+        "deliverable": "Phase I report",
+        "why": "A resin that holds, then disappears.",
+        "docs": [
+          "Phase I final report"
+        ],
+        "known": [],
+        "open": []
+      }
+    ],
+    "experiments": [
+      {
+        "id": "A",
+        "project": "fast-print-denture-resin",
+        "campaign": "A",
+        "title": "Low-diluent formulations",
+        "people": [
+          "cooper"
+        ],
+        "when": "Oct 2024 – Jan 2025",
+        "protocol": "SOP v1"
+      },
+      {
+        "id": "B",
+        "project": "fast-print-denture-resin",
+        "campaign": "B",
+        "title": "High-diluent formulations",
+        "people": [
+          "cooper"
+        ],
+        "when": "Feb 2025 – May 2025",
+        "protocol": "SOP v1"
+      },
+      {
+        "id": "G",
+        "project": "fast-print-denture-resin",
+        "campaign": "G",
+        "title": "Mid-diluent, high photoinitiator",
+        "people": [
+          "greeshma"
+        ],
+        "when": "Jul 2026 – Sep 2026",
+        "protocol": "SOP v1"
+      },
+      {
+        "id": "cure-1",
+        "project": "fast-cure",
+        "title": "Cure profiles, round 1",
+        "people": [
+          "greeshma"
+        ],
+        "when": "Sep 2026",
+        "protocol": "Oven SOP draft"
+      },
+      {
+        "id": "fit-1",
+        "project": "chairside-fit",
+        "title": "Fit test 1",
+        "people": [
+          "greeshma"
+        ],
+        "when": "Sep 2026",
+        "protocol": "Fit SOP draft"
+      },
+      {
+        "id": "shade-1",
+        "project": "shade-match",
+        "title": "Shade run 1",
+        "people": [
+          "cooper"
+        ],
+        "when": "May 2025",
+        "protocol": "Color SOP v1"
+      }
+    ]
+  },
+  "lab": {
+    "room": "Room 214",
+    "width": 1000,
+    "depth": 560,
+    "benches": [
+      {
+        "name": "Formulation bench",
+        "x": 40,
+        "y": 40,
+        "w": 420,
+        "h": 80
+      },
+      {
+        "name": "Print bay",
+        "x": 560,
+        "y": 40,
+        "w": 400,
+        "h": 80
+      },
+      {
+        "name": "Test bench",
+        "x": 560,
+        "y": 440,
+        "w": 400,
+        "h": 80
+      },
+      {
+        "name": "Island",
+        "x": 140,
+        "y": 300,
+        "w": 260,
+        "h": 90
+      }
+    ],
+    "fixtures": [
+      {
+        "name": "Fume hood",
+        "x": 40,
+        "y": 440,
+        "w": 160,
+        "h": 80,
+        "z": 160
+      },
+      {
+        "name": "Sink",
+        "x": 240,
+        "y": 460,
+        "w": 80,
+        "h": 60,
+        "z": 45
+      }
+    ],
+    "instruments": [
+      {
+        "id": "balance",
+        "name": "Balance",
+        "device": "Balance",
+        "source": "mhs",
+        "calibrated": "2026-09-02",
+        "x": 60,
+        "y": 55,
+        "w": 60,
+        "h": 50,
+        "z": 18
+      },
+      {
+        "id": "mixer",
+        "name": "Planetary mixer",
+        "device": "Planetary mixer",
+        "source": "mhs",
+        "calibrated": "2026-06-11",
+        "x": 150,
+        "y": 50,
+        "w": 80,
+        "h": 60,
+        "z": 42,
+        "in_use": {
+          "by": "greeshma",
+          "until": "10:10",
+          "what": "Cure profiles, round 2"
+        }
+      },
+      {
+        "id": "degasser",
+        "name": "Vacuum degasser",
+        "device": "Vacuum degasser",
+        "source": "manual",
+        "calibrated": null,
+        "x": 260,
+        "y": 50,
+        "w": 80,
+        "h": 60,
+        "z": 46
+      },
+      {
+        "id": "viscometer",
+        "name": "Viscometer",
+        "device": "Viscometer",
+        "source": "mhs",
+        "calibrated": "2026-08-20",
+        "x": 370,
+        "y": 55,
+        "w": 70,
+        "h": 50,
+        "z": 50
+      },
+      {
+        "id": "printer-1",
+        "name": "DLP printer",
+        "device": "DLP printer",
+        "source": "mhs",
+        "calibrated": "2026-09-30",
+        "x": 580,
+        "y": 45,
+        "w": 100,
+        "h": 70,
+        "z": 70,
+        "in_use": {
+          "by": "greeshma",
+          "until": "11:45",
+          "what": "Cure profiles, round 2"
+        }
+      },
+      {
+        "id": "printer-2",
+        "name": "Printer 2",
+        "source": "none",
+        "calibrated": null,
+        "x": 700,
+        "y": 45,
+        "w": 100,
+        "h": 70,
+        "z": 70
+      },
+      {
+        "id": "uv-oven",
+        "name": "UV oven",
+        "device": "UV oven",
+        "source": "manual",
+        "calibrated": "2025-11-04",
+        "x": 830,
+        "y": 50,
+        "w": 110,
+        "h": 60,
+        "z": 50
+      },
+      {
+        "id": "test-frame",
+        "name": "Test frame",
+        "device": "Test frame",
+        "source": "mhs",
+        "calibrated": "2026-05-15",
+        "x": 580,
+        "y": 450,
+        "w": 110,
+        "h": 60,
+        "z": 90
+      },
+      {
+        "id": "imaging",
+        "name": "Cross-section imaging",
+        "device": "Cross-section imaging",
+        "source": "camera",
+        "calibrated": "2026-07-01",
+        "x": 720,
+        "y": 455,
+        "w": 90,
+        "h": 50,
+        "z": 34
+      },
+      {
+        "id": "plate-reader",
+        "name": "Plate reader",
+        "device": "Plate reader",
+        "source": "mhs",
+        "calibrated": "2026-04-09",
+        "x": 840,
+        "y": 455,
+        "w": 100,
+        "h": 50,
+        "z": 30
+      },
+      {
+        "id": "hot-plate",
+        "name": "Hot plate",
+        "source": "none",
+        "calibrated": null,
+        "x": 170,
+        "y": 320,
+        "w": 60,
+        "h": 50,
+        "z": 12
+      }
+    ]
+  },
   "landscape": {
     "axes": {
       "diluent": [

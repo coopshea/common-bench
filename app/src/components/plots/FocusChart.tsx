@@ -135,8 +135,8 @@ export function FocusChart({ rows }: { rows: Row[] }) {
                     onMouseLeave={() => { setLocal(null); dispatch({ type: "hover", id: null }); }}
                     onFocus={() => { setLocal(r.id); dispatch({ type: "hover", id: r.id }); }}
                     onBlur={() => { setLocal(null); dispatch({ type: "hover", id: null }); }}
-                    onClick={() => r.trial && dispatch({ type: "drawer", trialId: r.trial.id })}
-                    onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && r.trial) { e.preventDefault(); dispatch({ type: "drawer", trialId: r.trial.id }); } }} />
+                    onClick={() => r.trial && dispatch({ type: "select", sel: { trial: r.trial.id } })}
+                    onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && r.trial) { e.preventDefault(); dispatch({ type: "select", sel: { trial: r.trial.id } }); } }} />
                 </g>
               );
             })}

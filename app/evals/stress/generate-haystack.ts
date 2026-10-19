@@ -427,6 +427,8 @@ export function generate(size: number, seed: number): { nb: Notebook; plants: Pl
     trials,
     ledger,
     landscape,
+    org: demo.org,
+    lab: demo.lab,
   };
   const plants: Plants = {
     size,

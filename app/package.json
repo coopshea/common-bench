@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "data": "node data/generate.ts",
+    "tokens": "node src/ds/build-tokens.ts",
     "dev": "concurrently -k -n web,api -c cyan,magenta \"vite\" \"tsx watch --env-file-if-exists=.env.local server/index.ts\"",
     "dev:web": "vite",
     "dev:api": "tsx watch --env-file-if-exists=.env.local server/index.ts",
     "build": "tsc -b && vite build",
     "start": "node server/index.ts",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b --noEmit",
+    "managed:setup": "tsx --env-file-if-exists=.env.local managed/setup.ts",
+    "managed:ask": "tsx --env-file-if-exists=.env.local managed/ask.ts"
   },
   "engines": {
     "node": ">=24"

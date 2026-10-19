@@ -59,6 +59,7 @@ export function Cite({ id, mini }: { id: string; mini?: boolean }) {
           : id;
   const onClick = () => {
     if (kind === "log" && t) dispatch({ type: "drawer", trialId: t.id, logId: id });
+    else if (t) dispatch({ type: "select", sel: { trial: id } });
     else dispatch({ type: "focus", id });
   };
   return (

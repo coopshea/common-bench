@@ -226,6 +226,69 @@ export interface Notebook {
   trials: Trial[];
   ledger: LedgerItem[];
   landscape: Landscape;
+  org: Org;
+  lab: Lab;
+}
+
+// ---------- The lab around the project: thrusts → projects → experiments, and the room ----------
+
+export interface Thrust {
+  id: string;
+  title: string;
+  blurb: string; // one line
+  funding: string;
+  closed?: boolean;
+}
+
+export interface OrgProject {
+  id: string; // the notebook project keeps its own id; the others are siblings with no trials yet
+  thrust: string;
+  title: string;
+  people: PersonId[];
+  last: string; // ISO date of the last activity, for ordering
+  goal: string;
+  deliverable: string;
+  why: string; // the one sentence on the project panel
+  docs: string[];
+  // Siblings carry their own; the notebook project derives these from the ledger at runtime.
+  known?: { text: string; cite: string }[];
+  open?: { text: string; cite: string }[];
+}
+
+export interface Experiment {
+  id: string;
+  project: string;
+  title: string;
+  people: PersonId[];
+  campaign?: Campaign; // the notebook project's experiments map to trial campaigns
+  when: string; // display range, derived from trial dates where there are trials
+  protocol: string;
+}
+
+export interface Org {
+  thrusts: Thrust[];
+  projects: OrgProject[];
+  experiments: Experiment[];
+}
+
+export type LabSource = LogSource | "none";
+
+export interface Instrument {
+  id: string;
+  name: string;
+  device?: string; // matches LogEntry.device, so trials can be traced to the instrument
+  source: LabSource;
+  calibrated: string | null; // ISO date
+  in_use?: { by: PersonId; until: string; what: string };
+  x: number; y: number; w: number; h: number; z: number; // floor plan, cm; z = height for the 3D view
+}
+
+export interface Lab {
+  room: string;
+  width: number; depth: number; // cm
+  benches: { name: string; x: number; y: number; w: number; h: number }[];
+  fixtures: { name: string; x: number; y: number; w: number; h: number; z: number }[];
+  instruments: Instrument[];
 }
 
 // ---------- Protocol diff (returned by diff_protocols, shown inline) ----------

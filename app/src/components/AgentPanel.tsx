@@ -40,7 +40,8 @@ function TraceItem({ s }: { s: TraceStep }) {
   );
 }
 
-export function AgentPanel() {
+/** `bare`: the answer only (no panel chrome, no ask box), for the right panel's answer view. */
+export function AgentPanel({ bare = false }: { bare?: boolean } = {}) {
   const { state, askQuestion } = useStore();
   const a = state.ask;
   const [q, setQ] = useState(HERO_QUESTION);
@@ -86,45 +87,8 @@ export function AgentPanel() {
   };
 
 
-  return (
-    <section className="panel agent" aria-label="Ask the project">
-      <div className="panel-head">
-        <span className="panel-title">Ask</span>
-        <span style={{ flex: 1 }} />
-        {a.status !== "idle" && (
-          <span className={`run-status ${pending ? "pending" : ""}`} role={pending ? "button" : undefined}
-            onClick={() => pending && document.getElementById("approvals-section")?.scrollIntoView({ block: "start", behavior: "smooth" })}>
-            {streaming
-              ? pending
-                ? `${pending} to approve ↓`
-                : "Investigating…"
-              : a.status === "done"
-                ? ""
-                : "Stopped"}
-          </span>
-        )}
-      </div>
-      <div className="agent-scroll" ref={scrollRef} onScroll={onScroll}>
-        <div className={`askbox ${a.status !== "idle" ? "asked" : ""} ${tourClass(state.tour, "ask")}`}>
-          <textarea
-            rows={a.status === "idle" ? 3 : 2}
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submit();
-            }}
-            aria-label="Question"
-          />
-          <div className="row">
-            <span className="asker" title={`Asking as ${asker.name}`}><Avatar id="greeshma" size="sm" /> {asker.name.split(" ")[0]}</span>
-            <span style={{ flex: 1 }} />
-            <button className={`btn ${a.status === "idle" ? "primary" : ""}`} onClick={submit} disabled={streaming}>
-              {a.status === "idle" ? "Ask" : "Ask again"}
-            </button>
-          </div>
-        </div>
-
-
+  const body = (
+    <>
         {a.trace.length > 0 && (
           <div className="section">
             <div className="section-h">
@@ -184,6 +148,51 @@ export function AgentPanel() {
             {a.source === "mock" && <span>offline replay</span>}
           </div>
         )}
+    </>
+  );
+
+  if (bare) return <div className="agent-bare">{body}</div>;
+
+  return (
+    <section className="panel agent reveal" aria-label="Ask the project">
+      <div className="panel-head">
+        <span className="panel-title">Ask</span>
+        <span style={{ flex: 1 }} />
+        {a.status !== "idle" && (
+          <span className={`run-status ${pending ? "pending" : ""}`} role={pending ? "button" : undefined}
+            onClick={() => pending && document.getElementById("approvals-section")?.scrollIntoView({ block: "start", behavior: "smooth" })}>
+            {streaming
+              ? pending
+                ? `${pending} to approve ↓`
+                : "Investigating…"
+              : a.status === "done"
+                ? ""
+                : "Stopped"}
+          </span>
+        )}
+      </div>
+      <div className="agent-scroll" ref={scrollRef} onScroll={onScroll}>
+        <div className={`askbox ${a.status !== "idle" ? "asked" : ""} ${tourClass(state.tour, "ask")}`}>
+          <textarea
+            rows={a.status === "idle" ? 3 : 2}
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submit();
+            }}
+            aria-label="Question"
+          />
+          <div className="row">
+            <span className="asker" title={`Asking as ${asker.name}`}><Avatar id="greeshma" size="sm" /> {asker.name.split(" ")[0]}</span>
+            <span style={{ flex: 1 }} />
+            <button className={`btn ${a.status === "idle" ? "primary" : ""}`} onClick={submit} disabled={streaming}>
+              {a.status === "idle" ? "Ask" : "Ask again"}
+            </button>
+          </div>
+        </div>
+
+
+        {body}
       </div>
     </section>
   );

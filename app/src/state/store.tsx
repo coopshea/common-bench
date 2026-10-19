@@ -49,7 +49,20 @@ export interface State {
   health: { state: "checking" | "live" | "cached" | "offline"; model?: string };
   tour: number | null;
   flash: Record<string, number>; // id → nonce, for "just changed" animations
+  // One selection model: the right panel follows it, Esc clears it.
+  sel: Selection;
+  askOpen: boolean; // the right panel shows the agent's answer instead of the selection
+  askScope: string | null; // which panel asked, so only that panel offers the answer back
+  back: { path: string; sel: Selection; label: string } | null; // after a deliberate jump between Projects and Lab
+  search: boolean;
 }
+
+export interface Selection {
+  trial: string | null;
+  step: StepId | null;
+  inst: string | null;
+}
+export const noSel: Selection = { trial: null, step: null, inst: null };
 
 const emptyAsk: AskState = {
   runId: 0, status: "idle", source: null, question: "", trace: [], answer: "", citations: [], diff: null,
@@ -71,6 +84,11 @@ const initial: State = {
   health: { state: "checking" },
   tour: null,
   flash: {},
+  sel: noSel,
+  askOpen: false,
+  askScope: null,
+  back: null,
+  search: false,
 };
 
 type Action =
@@ -89,7 +107,12 @@ type Action =
   | { type: "ask/event"; runId: number; event: AskEvent }
   | { type: "decide"; id: string; decision: "approve" | "reject"; serverLedger?: LedgerItem[] }
   | { type: "health"; state: State["health"] }
-  | { type: "tour"; step: number | null };
+  | { type: "tour"; step: number | null }
+  | { type: "select"; sel: Partial<Selection> }
+  | { type: "askOpen"; open: boolean }
+  | { type: "askScope"; scope: string }
+  | { type: "back"; back: State["back"] }
+  | { type: "search"; open: boolean };
 
 let nonce = 1;
 
@@ -204,6 +227,20 @@ function reducer(s: State, a: Action): State {
       return { ...s, health: a.state };
     case "tour":
       return { ...s, tour: a.step };
+    case "select": {
+      const sel = { ...s.sel, ...a.sel };
+      if (a.sel.trial !== undefined && a.sel.step === undefined) sel.step = null; // a new trial starts with no step open
+      return { ...s, sel, askOpen: a.sel.trial !== undefined || a.sel.inst !== undefined ? false : s.askOpen,
+        focus: a.sel.trial !== undefined ? (a.sel.trial ? { id: a.sel.trial, nonce: nonce++ } : null) : s.focus };
+    }
+    case "askOpen":
+      return { ...s, askOpen: a.open };
+    case "askScope":
+      return { ...s, askScope: a.scope };
+    case "back":
+      return { ...s, back: a.back };
+    case "search":
+      return { ...s, search: a.open };
   }
 }
 
@@ -252,6 +289,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     abortRef.current = ctl;
     const runId = ++runRef.current;
     dispatch({ type: "ask/start", question, runId });
+    dispatch({ type: "askOpen", open: true });
     const preferMock = stateRef.current.health.state === "offline";
     streamAsk(
       { question, asker: "greeshma", cached: opts?.cached },

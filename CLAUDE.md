@@ -24,6 +24,15 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 7. **Figures are parametric:** each figure is a pure function of one trial. See `app/src/figures/FIGURES_HANDOFF.md`.
 8. **MHS** means MHS-style logging, built from the public description of Anthropic's Model Hardware Standard research preview. There's no access to MHS itself.
 
+## Structure (2026-10-18)
+
+- **Navigation:** thrust → project → experiment → trial, plus the Lab (the room).
+- **Data:** the generator also writes `org` (thrusts, projects, experiments) and `lab` (the room). Only the notebook project has trials; its sibling projects exist so it isn't alone.
+- **Design system:** `app/src/ds/`. `tokens.json` is the same file as the Design System artifact, and `tokens.css` is generated from it (`npm run tokens`). Components are `cb-*`.
+- **Text budgets:** titles ≤ 8 words, labels ≤ 3, one sentence per panel. Navigation screens show a title and people only.
+- **Not built yet:** shown with a FUTURE tag, never a disabled control.
+- **Retired:** the old single-screen `Workspace.tsx` and the Guide (`TourBar`, `tour.ts`) are no longer mounted. The walkthrough needs rewriting for the new structure.
+
 ## Layout
 
 - `app/`: Vite + React UI, Hono + Claude Agent SDK server, notebook MCP tools, Skill, plugin, evals (`npm run dev`)

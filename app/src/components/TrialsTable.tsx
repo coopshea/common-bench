@@ -55,7 +55,7 @@ export function TrialsTable({ rows }: { rows: Row[] }) {
             return (
               <tr key={r.id} className={`${r.id === hl ? "on" : ""} ${est ? "est" : ""}`}
                 onMouseEnter={() => dispatch({ type: "hover", id: r.id })} onMouseLeave={() => dispatch({ type: "hover", id: null })}
-                onClick={() => r.trial && dispatch({ type: "drawer", trialId: r.trial.id })}>
+                onClick={() => r.trial && dispatch({ type: "select", sel: { trial: r.trial.id } })}>
                 <td className="id">
                   <span className="mono">{r.id}</span>
                   {excluded && <span className="tag">excluded</span>}

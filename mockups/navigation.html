@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common Bench navigation</title>
+<!-- Converged layout; the reasoning is in NAVIGATION_DESIGN.md next to this file. -->
+<style>
+  :root {
+    --paper: #f4f2ed; --card: #fff; --ink: #1b1a17; --ink-2: #5d5a52; --ink-3: #75716a; --line: #e2ddd2;
+    --cooper: #2a78d6; --greeshma: #6250d6; --lena: #8a8780;
+    --ok: #0ca30c; --close: #b98200; --fail: #d03b3b;
+    --mhs: #1f8a8a; --cam: #63b3b3; --hand: #efe6d0;
+    --rail: 360px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.45 -apple-system, "Inter", system-ui, sans-serif; }
+  button { font: inherit; cursor: pointer; color: inherit; }
+
+  /* Top bar */
+  .top { position: sticky; top: 0; z-index: 5; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 10px 16px; background: var(--card); border-bottom: 1px solid var(--line); }
+  .brand { font-weight: 700; letter-spacing: -0.01em; }
+  .nav { display: flex; gap: 8px; align-items: center; }
+  .seg { display: flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .seg button { border: 0; background: transparent; padding: 8px 24px; border-radius: 999px; font-weight: 600; color: var(--ink-2); }
+  .seg button.on { background: var(--ink); color: #fff; }
+  .circle { width: 42px; height: 42px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line); display: grid; place-items: center; padding: 0; color: var(--ink-2); }
+  .me { justify-self: end; display: flex; gap: 8px; align-items: center; position: relative; }
+  .me > button { border: 0; background: transparent; padding: 0; border-radius: 50%; }
+  .tag { font-size: 11px; color: var(--ink-3); border: 1px dashed var(--ink-3); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+  .av { width: 26px; height: 26px; border-radius: 50%; color: #fff; display: inline-grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; }
+  .av.me-av { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink); }
+  .av.dim { opacity: 0.45; }
+  .menu { position: absolute; right: 0; top: 40px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); padding: 6px; width: 240px; z-index: 7; }
+  .menu .label { padding: 6px 10px 2px; margin: 0; }
+  .menu button { display: flex; width: 100%; border: 0; background: transparent; padding: 8px 10px; border-radius: 6px; text-align: left; align-items: center; }
+  .menu button:hover { background: var(--paper); }
+  .menu hr { border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+
+  .page { max-width: 1240px; margin: 0 auto; padding: 22px 16px 60px; }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .grow { flex: 1; }
+  h1 { font-size: 22px; margin: 0; letter-spacing: -0.01em; }
+  h2 { font-size: 17px; margin: 0; }
+  .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); margin: 0 0 8px; }
+  .muted { color: var(--ink-2); }
+  .small { font-size: 12px; }
+  .btn { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 7px 12px; font-weight: 600; }
+  .future { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; margin-left: auto; }
+  .btn .future { margin-left: 6px; }
+  .linkbtn { border: 0; background: transparent; padding: 0; color: var(--ink-2); text-decoration: underline; font-size: 13px; }
+  /* "Unusual" is a dashed ink outline everywhere, never a color. */
+  .unusual { display: inline-flex; font-size: 11px; font-weight: 600; border: 1.5px dashed var(--ink); border-radius: 999px; padding: 0 7px; color: var(--ink); }
+
+  /* Projects home */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: left; display: flex; flex-direction: column; gap: 14px; min-height: 116px; }
+  .card:hover, .prow:hover { border-color: var(--ink-3); }
+  .card .title { font-weight: 650; font-size: 16px; line-height: 1.3; }
+  .people { display: flex; gap: 6px; margin-top: auto; }
+  .list { display: grid; gap: 6px; margin-bottom: 18px; }
+  .prow { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; text-align: left; }
+  .prow .title { flex: 1; font-weight: 600; }
+
+  /* Information screens: main view plus one right panel */
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) var(--rail); gap: 14px; margin-top: 16px; align-items: start; }
+  .rail { position: sticky; top: 78px; max-height: calc(100vh - 92px); overflow-y: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .rail section { margin-top: 18px; }
+  .rail .x { border: 0; background: transparent; font-size: 16px; color: var(--ink-3); padding: 2px 4px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .doc { padding: 3px 0; font-size: 13px; }
+  .doc::before { content: "▤ "; color: var(--ink-3); }
+  .act { font-size: 13px; padding: 3px 0; display: flex; gap: 8px; }
+  .act .d { color: var(--ink-3); width: 64px; flex: none; }
+  .kv { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .kv div { background: var(--paper); border-radius: 8px; padding: 8px 10px; }
+  .kv b { display: block; font-size: 17px; }
+  .kv span { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; }
+  .placeholder { border: 1.5px dashed var(--line); border-radius: 10px; padding: 12px; color: var(--ink-3); font-size: 13px; }
+
+  /* Scoped Ask: the same component at the bottom of every panel */
+  .askbox { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; }
+  .scope { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; background: var(--paper); border-radius: 999px; padding: 2px 4px 2px 10px; margin-bottom: 8px; }
+  .scope button { border: 0; background: transparent; padding: 0 4px; color: var(--ink-3); }
+  .ask { display: flex; gap: 6px; }
+  .ask input { flex: 1; border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; font: inherit; min-width: 0; }
+  .suggest { border: 1px dashed var(--line); background: transparent; border-radius: 999px; padding: 3px 10px; font-size: 12px; color: var(--ink-2); margin: 8px 6px 0 0; }
+
+  /* Process steps: the as-run SOP, drawn with the same tiles as the lab */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .step { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px; text-align: left; min-height: 58px; display: flex; flex-direction: column; gap: 2px; }
+  .step b { font-size: 12px; display: flex; align-items: center; gap: 5px; }
+  .step span { font-size: 11px; color: var(--ink-2); }
+  .step.dev { border: 1.5px dashed var(--ink); }
+  .step.on { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .sq { width: 9px; height: 9px; border-radius: 2px; flex: none; display: inline-block; }
+  .sq.mhs { background: var(--mhs); } .sq.camera { background: var(--cam); } .sq.manual { background: var(--hand); border: 1px dashed #b9a979; } .sq.none { border: 1px dotted var(--ink-3); } .sq.derived { background: var(--line); }
+  .stepinfo { background: var(--paper); border-radius: 10px; padding: 10px; margin-top: 8px; font-size: 13px; }
+  .logline { display: flex; gap: 8px; font-size: 12px; padding: 2px 0; }
+  .logline .d { color: var(--ink-3); width: 82px; flex: none; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-3); font-weight: 600; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover, tbody tr.on { background: #f6f3ec; }
+  .tablewrap { overflow-x: auto; }
+  .who { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .mk { font-weight: 700; }
+  .mk.goal { color: var(--ok); } .mk.close { color: var(--close); } .mk.fail { color: var(--fail); }
+
+  /* Back chip after a deliberate jump between halves */
+  .back { position: fixed; left: 16px; bottom: 18px; z-index: 6; background: var(--ink); color: #fff; border: 0; border-radius: 999px; padding: 9px 16px; font-weight: 600; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+
+  /* Search */
+  .scrim { position: fixed; inset: 0; background: rgba(27,26,23,0.35); z-index: 10; display: flex; justify-content: center; align-items: flex-start; padding: 80px 16px 16px; }
+  .finder { background: var(--card); border-radius: 14px; width: 600px; max-width: 100%; max-height: 75vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+  .finder input { width: 100%; border: 0; border-bottom: 1px solid var(--line); padding: 16px 18px; font: inherit; font-size: 16px; outline: none; }
+  .finder .grp { padding: 10px 10px 4px; }
+  .finder .label { padding: 0 8px; }
+  .hit { display: flex; gap: 10px; align-items: center; width: 100%; border: 0; background: transparent; text-align: left; padding: 8px; border-radius: 8px; }
+  .hit:hover { background: var(--paper); }
+  .hit .k { color: var(--ink-3); font-size: 12px; margin-left: auto; }
+  .askrow { border-top: 1px solid var(--line); padding: 12px 18px; color: var(--ink-2); font-size: 13px; display: flex; }
+
+  /* Lab */
+  .segsm { display: flex; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .segsm button { border: 0; background: transparent; padding: 5px 14px; border-radius: 999px; font-weight: 600; color: var(--ink-2); font-size: 13px; }
+  .segsm button.on { background: var(--ink); color: #fff; }
+  .labsvg { width: 100%; height: auto; display: block; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .inst { cursor: pointer; }
+  .inst:hover .body { stroke: var(--ink); stroke-width: 2; }
+  .legend { display: grid; gap: 6px; font-size: 13px; }
+  .legend div { display: flex; align-items: center; gap: 8px; }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; flex: none; }
+
+  /* Home: thrusts hold projects */
+  .thrust { margin-bottom: 26px; }
+  .thrust h2 { font-size: 18px; }
+  .thrust .blurb { color: var(--ink-2); font-size: 13px; margin: 2px 0 10px; }
+  .card.new { border: 1.5px dashed var(--ink-3); background: transparent; align-items: center; justify-content: center; color: var(--ink-2); font-weight: 600; gap: 6px; }
+  .card.new .plus { font-size: 26px; line-height: 1; }
+  .card .meta { font-size: 12px; color: var(--ink-3); }
+  /* Project page: what's known constrains what gets asked next */
+  .goal { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .ku { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ku ul { margin: 0; padding-left: 18px; }
+  .ku li { margin: 4px 0; font-size: 13px; }
+  .ku .cite { color: var(--ink-3); font-size: 12px; }
+  .lens { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+  .lens.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .opt { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 12px; margin-top: 8px; }
+  .opt.on { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  .opt b { display: block; }
+  .drop { border: 1.5px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center; color: var(--ink-3); margin-top: 10px; }
+  textarea.sop { width: 100%; min-height: 120px; border: 1px solid var(--line); border-radius: 8px; padding: 10px; font: inherit; margin-top: 10px; }
+
+  @media (max-width: 900px) {
+    .ku { grid-template-columns: 1fr; }
+    .top { grid-template-columns: auto 1fr auto; gap: 8px; }
+    .nav { justify-self: center; }
+    .seg button { padding: 8px 14px; }
+    .tag { display: none; }
+    .brand { font-size: 13px; }
+    .split { grid-template-columns: 1fr; }
+    .rail { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">Common Bench</span>
+  <div class="nav">
+    <div class="seg" role="tablist">
+      <button data-view="projects">Projects</button>
+      <button data-view="lab">Lab</button>
+    </div>
+    <button class="circle" data-act="search" aria-label="Search" title="Search (⌘K)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    </button>
+  </div>
+  <div class="me" id="me"></div>
+</div>
+<div id="app"></div>
+<div id="overlay"></div>
+
+<script>
+// ---------- Data (hand-written for this mock; the app's seeded generator stays the source of truth) ----------
+const ME = "greeshma";
+const PEOPLE = {
+  cooper: { name: "Cooper Shea", short: "Cooper", ini: "CS", color: "var(--cooper)", role: "Former member" },
+  greeshma: { name: "Greeshma N.", short: "Greeshma", ini: "GN", color: "var(--greeshma)", role: "Scientist" },
+  lena: { name: "Dr. Lena Ortiz", short: "Lena", ini: "LO", color: "var(--lena)", role: "PI" },
+};
+
+// Thrust → project → experiment → trial. Thrusts are the lab's big research directions, like an academic lab's site.
+const THRUSTS = [
+  { id: "materials", title: "Printable materials for restorations", blurb: "Resins that print finer, cure faster and last longer in the mouth.", funding: "Meridian R&D program DR-07" },
+  { id: "access", title: "Accessible chairside dentistry", blurb: "Same-day crowns on low-cost printers, for clinics without a lab.", funding: "Clinic partnership pilot" },
+  { id: "process", title: "Print process reliability", blurb: "Make every printer and oven in the lab give the same part.", funding: "Internal" },
+  { id: "devices", title: "Bioresorbable devices", blurb: "Closed in 2025.", funding: "SBIR Phase I (fictional)", archived: true },
+];
+
+const PROJECTS = [
+  {
+    id: "resin", thrust: "materials", last: "2026-10-06", people: ["greeshma", "cooper", "lena"],
+    title: "Low-viscosity crown resin",
+    goal: "Viscosity below 1.5 Pa·s with every strength and safety check passing.",
+    deliverable: "Formulation spec for production, and a manuscript",
+    why: "Thinner resin prints finer features. The current one is too thick for the new crown geometry.",
+    known: [["Diluent above 30% brings viscosity under 1.5 Pa·s", "T06–T10"], ["With degassing, strength holds up to 32% diluent", "T11–T14"], ["Weak high-diluent trials were also the porous ones", "T06–T10"]],
+    unknowns: [["Does degassing keep strength above 32% diluent?", ""], ["Is T09 repeatable, or a lucky specimen?", "T09"], ["Is “high diluent is a dead end” still true?", "Ledger, Jun 2025"]],
+    docs: ["Program proposal (2024)", "Funding: Meridian R&D program DR-07", "SOP v3: resin prep and print"],
+    activity: [["Oct 2026", "greeshma", "T14: 1.55 Pa·s, closest yet"], ["Jul 2026", "greeshma", "Joined; T11–T14"], ["Jun 2025", "cooper", "Called high diluent a dead end"]],
+  },
+  { id: "shade", thrust: "materials", last: "2026-05-30", people: ["lena", "cooper"], title: "Match crown shades A1–A3 with two pigments",
+    goal: "Two pigments cover shades A1–A3 within ΔE 2.", deliverable: "Pigment recipe", why: "Fewer pigments, fewer mixing errors.",
+    known: [["One pigment reaches A1 and A2", "Shade run 1"]], unknowns: [["Can A3 be reached without a third pigment?", ""]], docs: ["Shade guide scans"], activity: [["May 2026", "lena", "Paused"]] },
+  { id: "shelf", thrust: "materials", last: "2026-08-14", people: ["lena"], title: "How long does opened resin stay printable?",
+    goal: "A shelf life for opened bottles, backed by data.", deliverable: "Storage guideline", why: "Opened bottles get thrown out on a guess.",
+    known: [], unknowns: [["Does viscosity drift before print quality does?", ""]], docs: ["Notes"], activity: [["Aug 2026", "lena", "Bottles opened and dated"]] },
+  { id: "chairside", thrust: "access", last: "2026-09-12", people: ["lena", "greeshma"], title: "Same-day crowns on a $3k printer",
+    goal: "A crown that fits within 50 µm from a low-cost printer.", deliverable: "Clinic protocol", why: "Most clinics can't afford a lab printer.",
+    known: [["Fit is within 80 µm on the first try", "Fit test 1"]], unknowns: [["Is the gap from the printer or from the resin?", ""]], docs: ["Pilot agreement"], activity: [["Sep 2026", "greeshma", "First fit test"]] },
+  { id: "drift", thrust: "process", last: "2026-10-02", people: ["greeshma"], title: "Measure printer-to-printer dimensional drift",
+    goal: "Know how far printers 1 and 2 disagree.", deliverable: "Calibration note", why: "Printers 1 and 2 seem to disagree on small features. Nobody has measured it.",
+    known: [], unknowns: [["Is the drift bigger than the fit tolerance?", ""]], docs: ["Draft proposal"], activity: [["Oct 2026", "greeshma", "Drafted"]] },
+  { id: "cure", thrust: "process", last: "2026-09-29", people: ["greeshma", "lena"], title: "Halve post-cure time without lowering strength",
+    goal: "Post-cure in 30 min with no loss of strength.", deliverable: "Oven profile", why: "The UV oven is the bottleneck between printing and testing.",
+    known: [["48 min is the shortest profile that passes so far", "Cure run 1"]], unknowns: [["Does temperature matter more than time?", ""]], docs: ["Scoping note"], activity: [["Sep 2026", "greeshma", "Three cure profiles tried"]] },
+  { id: "stent", thrust: "devices", last: "2025-06-20", people: ["cooper", "lena"], title: "Stent resin: control degradation rate in saline",
+    goal: "Hold strength 8 weeks, then degrade.", deliverable: "Phase I report", why: "A resin that holds strength for 8 weeks, then degrades.",
+    known: [], unknowns: [], docs: ["Phase I final report"], activity: [["Jun 2025", "cooper", "Closed"]] },
+];
+
+// Experiments are campaigns inside a project. Each one runs a protocol (SOP) and owns its trials.
+const EXPERIMENTS = [
+  { id: "A", project: "resin", title: "Low-diluent formulations", people: ["cooper"], when: "Oct–Dec 2024", sop: "SOP v3" },
+  { id: "B", project: "resin", title: "High-diluent formulations", people: ["cooper"], when: "Jan–Jun 2025", sop: "SOP v3" },
+  { id: "G", project: "resin", title: "Mid-diluent, high photoinitiator", people: ["greeshma"], when: "Jul 2026–now", sop: "SOP v3 + degassing" },
+  { id: "C1", project: "cure", title: "Cure profiles, round 1", people: ["greeshma"], when: "Sep 2026", sop: "Oven SOP v1" },
+  { id: "F1", project: "chairside", title: "Fit test 1", people: ["greeshma"], when: "Sep 2026", sop: "Fit SOP draft" },
+  { id: "S1", project: "shade", title: "Shade run 1", people: ["cooper"], when: "May 2026", sop: "Color SOP v1" },
+];
+
+// Resin trials. Goal: viscosity < 1.5 Pa·s and strength ≥ 40 MPa.
+const T = (id, who, date, dil, visc, uts, por, extra = {}) => ({ id, project: "resin", who, date, dil, visc, uts, por, ...extra });
+const TRIALS = [
+  T("T01", "cooper", "2024-10-08", 15, 2.6, 62, 0.6), T("T02", "cooper", "2024-10-22", 18, 2.4, 60, 0.7),
+  T("T03", "cooper", "2024-11-12", 20, 2.2, 58, 0.5), T("T04", "cooper", "2024-12-03", 22, 2.05, 55, 0.8),
+  T("T05", "cooper", "2024-12-17", 25, 1.9, 52, 0.9),
+  T("T06", "cooper", "2025-01-21", 33, 1.45, 34, 4.1), T("T07", "cooper", "2025-02-18", 35, 1.38, 31, 3.6),
+  T("T08", "cooper", "2025-03-25", 38, 1.25, 29, 4.8),
+  // Outlier: a plain rule (far from the trend of its neighbors), not a model call.
+  T("T09", "cooper", "2025-04-29", 40, 1.15, 48, 0.4, { rest: "18 h 12 min", outlier: "Much stronger than the trials around it", note: "Anomalous, likely a lucky specimen; excluded." }),
+  T("T10", "cooper", "2025-06-03", 42, 1.1, 27, 5.0),
+  T("T11", "greeshma", "2026-07-14", 26, 1.9, 58, 0.3, { degas: true }), T("T12", "greeshma", "2026-08-11", 28, 1.78, 56, 0.3, { degas: true }),
+  T("T13", "greeshma", "2026-09-08", 30, 1.66, 53, 0.2, { degas: true }), T("T14", "greeshma", "2026-10-06", 32, 1.55, 50, 0.3, { degas: true }),
+];
+TRIALS.forEach((t) => {
+  t.status = t.uts < 40 ? "fail" : t.visc < 1.5 ? "goal" : "close";
+  const n = +t.id.slice(1);
+  t.exp = n <= 5 ? "A" : n <= 10 ? "B" : "G";
+});
+const GLYPH = { goal: "✓", close: "○", fail: "✕" };
+
+// Lab layout in cm. Benches are fixtures; instruments sit on them.
+const BENCHES = [
+  { name: "Formulation bench", x: 40, y: 40, w: 420, h: 80 },
+  { name: "Print bay", x: 560, y: 40, w: 400, h: 80 },
+  { name: "Test bench", x: 560, y: 440, w: 400, h: 80 },
+  { name: "Island", x: 140, y: 300, w: 260, h: 90 },
+];
+const FIXTURES = [{ name: "Fume hood", x: 40, y: 440, w: 160, h: 80 }, { name: "Sink", x: 240, y: 460, w: 80, h: 60 }];
+const INSTRUMENTS = [
+  { id: "balance", name: "Balance", x: 60, y: 55, w: 60, h: 50, z: 18, src: "mhs", cal: "2026-09-02" },
+  { id: "mixer", name: "Mixer", x: 150, y: 50, w: 80, h: 60, z: 42, src: "mhs", cal: "2026-06-11", use: "greeshma", job: "until 11:40" },
+  { id: "degasser", name: "Vacuum degasser", x: 260, y: 50, w: 80, h: 60, z: 46, src: "manual", cal: null },
+  { id: "visc", name: "Viscometer", x: 370, y: 55, w: 70, h: 50, z: 50, src: "mhs", cal: "2026-08-20" },
+  { id: "printer1", name: "Printer 1", x: 580, y: 45, w: 100, h: 70, z: 70, src: "mhs", cal: "2026-09-30", use: "greeshma", job: "until 14:30" },
+  { id: "printer2", name: "Printer 2", x: 700, y: 45, w: 100, h: 70, z: 70, src: "none", cal: null },
+  { id: "uvoven", name: "UV oven", x: 830, y: 50, w: 110, h: 60, z: 50, src: "manual", cal: "2025-11-04" },
+  { id: "testframe", name: "Test frame", x: 580, y: 450, w: 110, h: 60, z: 90, src: "mhs", cal: "2026-05-15" },
+  { id: "imaging", name: "Cross-section imaging", x: 720, y: 455, w: 90, h: 50, z: 34, src: "camera", cal: "2026-07-01" },
+  { id: "reader", name: "Plate reader", x: 840, y: 455, w: 100, h: 50, z: 30, src: "mhs", cal: "2026-04-09" },
+  { id: "hotplate", name: "Hot plate", x: 170, y: 320, w: 60, h: 50, z: 12, src: "none", cal: null },
+];
+const SRC_TEXT = { mhs: "Logs itself (MHS)", camera: "Logged by camera", manual: "Logged by hand", none: "Not logged", derived: "From timestamps" };
+const inst = (id) => INSTRUMENTS.find((i) => i.id === id);
+const label = (i) => (i.name.startsWith("Printer") ? i.name : i.name.split(" ")[0]);
+
+// SOP v3 as written, and how each trial actually ran. Each step carries its own log lines.
+function asRun(t) {
+  const g = t.who === "greeshma";
+  return [
+    { id: "weigh", step: "Weigh", inst: "balance", sop: "±0.01 g", run: `${t.dil}% diluent`, src: "mhs", log: [["16:31", `Diluent ${t.dil}% by mass`]] },
+    { id: "mix", step: "Mix", inst: "mixer", sop: "2,000 rpm, 3 min", run: "3 min", src: "mhs", log: [["16:37", "Start, 2,000 rpm"], ["16:40", "Done"]] },
+    { id: "degas", step: "Degas", inst: "degasser", sop: "Not in SOP", run: g ? "10 min" : "None", src: g ? "manual" : "none", dev: g,
+      log: g ? [["16:52", "10 min, full vacuum (worksheet)"]] : [] },
+    { id: "rest", step: "Rest", inst: null, sop: "Not in SOP", run: t.rest ?? "< 1 h", src: "derived", dev: !!t.rest,
+      log: [["", "Gap between mix done and print start"]] },
+    { id: "print", step: "Print", inst: "printer1", sop: "50 µm layers", run: "50 µm", src: "mhs", log: [[t.rest ? "+1 d 10:52" : "17:20", "Print started"]] },
+    { id: "cure", step: "Cure", inst: "uvoven", sop: "60 min, 60 °C", run: "60 min", src: "manual", log: [["+1 d", "In 13:05, out 14:05 (worksheet)"]] },
+    { id: "test", step: "Test", inst: "testframe", sop: "5 dogbones", run: `${t.uts} MPa`, src: "mhs", log: [["+2 d", `UTS ${t.uts} MPa, mean of 5`]] },
+    { id: "section", step: "Section", inst: "imaging", sop: "3 sections", run: `${t.por}% pores`, src: "camera", log: [["+2 d", `Porosity ${t.por}%`]] },
+  ];
+}
+const trialsFor = (id) => TRIALS.filter((t) => asRun(t).some((s) => s.inst === id && s.src !== "none")).slice(-4).reverse();
+
+// ---------- State ----------
+// One selection model: clicking selects, the right panel follows, Esc clears.
+const S = { view: "projects", open: null, exp: null, outliers: false, trial: null, step: null, inst: null, lab3d: false, menu: false, showArchived: false, back: null, search: false, q: "", wide: false };
+const set = (patch) => { Object.assign(S, patch); render(); };
+const snapshot = () => ({ view: S.view, open: S.open, exp: S.exp, trial: S.trial, step: S.step, inst: S.inst });
+
+// ---------- Helpers ----------
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const av = (p, emph = false) => `<span class="av ${emph ? (p === ME ? "me-av" : "dim") : ""}" title="${PEOPLE[p].name}${p === ME ? " (you)" : ""}" style="background:${PEOPLE[p].color}">${PEOPLE[p].ini}</span>`;
+const avs = (list) => [...list].sort((a, b) => (b === ME) - (a === ME)).map((x) => av(x, true)).join("");
+const who = (p) => `<span class="who" style="background:${PEOPLE[p].color}"></span>${PEOPLE[p].short}`;
+const mk = (s) => `<span class="mk ${s}">${GLYPH[s]}</span>`;
+const proj = (id) => PROJECTS.find((p) => p.id === id);
+const trial = (id) => TRIALS.find((t) => t.id === id);
+const exper = (id) => EXPERIMENTS.find((x) => x.id === id);
+const thrust = (id) => THRUSTS.find((x) => x.id === id);
+const ordered = (list) => list.slice().sort((a, b) => b.last.localeCompare(a.last));
+
+// The same Ask box closes every panel; only its scope changes.
+function askBox(scope, suggestions, clearable) {
+  const shown = clearable && S.wide ? "this experiment" : scope;
+  return `<div class="askbox">
+    <span class="scope">Asking about ${esc(shown)}${clearable ? `<button data-act="widen" title="${S.wide ? "Narrow" : "Widen"} the question">${S.wide ? "↺" : "✕"}</button>` : ""}</span>
+    <div class="ask"><input placeholder="Has anyone tried…"><button class="btn">Ask</button></div>
+    ${suggestions.map((s) => `<button class="suggest">${s}</button>`).join("")}
+  </div>`;
+}
+
+// ---------- Home (navigation only): your projects, then the lab's thrusts ----------
+function projectsView() {
+  const mine = ordered(PROJECTS.filter((p) => p.people.includes(ME) && !thrust(p.thrust).archived));
+  const live = THRUSTS.filter((t) => !t.archived), archived = THRUSTS.filter((t) => t.archived);
+  const section = (t) => `<div class="thrust"><h2>${esc(t.title)}</h2><p class="blurb">${esc(t.blurb)}</p>
+    <div class="list">${ordered(PROJECTS.filter((p) => p.thrust === t.id)).map(row).join("")}</div></div>`;
+  return `
+    <p class="label">Your projects</p>
+    <div class="grid">${mine.map((p) => `<button class="card" data-open="${p.id}"><span class="meta">${esc(thrust(p.thrust).title)}</span><span class="title">${esc(p.title)}</span><span class="people">${avs(p.people)}</span></button>`).join("")}</div>
+    <p class="label">Research thrusts</p>
+    ${live.map(section).join("")}
+    <button class="linkbtn" data-act="archived">${S.showArchived ? "Hide" : "Show"} closed thrusts (${archived.length})</button>
+    ${S.showArchived ? `<div style="margin-top:14px;opacity:0.7">${archived.map(section).join("")}</div>` : ""}`;
+}
+const row = (p) => `<button class="prow" data-open="${p.id}"><span class="title">${esc(p.title)}</span><span class="people">${avs(p.people)}</span></button>`;
+
+// ---------- Project page: the goal and what's known decide which experiments come next ----------
+function projectPage() {
+  const p = proj(S.open), th = thrust(p.thrust);
+  const exps = EXPERIMENTS.filter((x) => x.project === p.id);
+  const li = ([t, c]) => `<li>${esc(t)}${c ? ` <span class="cite">${esc(c)}</span>` : ""}</li>`;
+  return `
+    <button class="linkbtn" data-act="to-projects">← ${esc(th.title)}</button>
+    <div class="row" style="margin-top:8px"><h1 class="grow">${esc(p.title)}</h1><span class="people">${avs(p.people)}</span></div>
+    <div class="split">
+      <div style="display:grid;gap:14px;min-width:0">
+        <div class="goal"><p class="label">Goal</p><div style="font-size:16px;font-weight:600">${esc(p.goal)}</div>
+          <div class="small muted" style="margin-top:6px">Delivers: ${esc(p.deliverable)}</div></div>
+        <div class="ku">
+          <div class="goal"><p class="label">What we know</p>${p.known.length ? `<ul>${p.known.map(li).join("")}</ul>` : `<span class="small muted">Nothing established yet.</span>`}</div>
+          <div class="goal"><p class="label">Open questions</p>${p.unknowns.length ? `<ul>${p.unknowns.map(li).join("")}</ul>` : `<span class="small muted">None written down.</span>`}</div>
+        </div>
+        <div><p class="label">Experiments</p>
+          <div class="grid" style="margin:0">
+            <button class="card new" data-act="new-exp"><span class="plus">+</span>New experiment</button>
+            ${exps.map((x) => `<button class="card" data-exp="${x.id}"><span class="meta">${x.when} · ${x.sop}</span><span class="title">${esc(x.title)}</span><span class="people">${avs(x.people)}</span></button>`).join("")}
+          </div>
+        </div>
+      </div>
+      <aside class="rail">${projectRail(p)}</aside>
+    </div>`;
+}
+
+function projectRail(p) {
+  return `<p class="label">Why</p>
+    <p style="margin:0">${esc(p.why)}</p>
+    <section><p class="label">People</p>${p.people.map((x) => `<div class="row" style="margin-bottom:6px">${av(x)}<span>${PEOPLE[x].name} <span class="muted small">· ${PEOPLE[x].role}</span></span></div>`).join("")}</section>
+    <section><p class="label">Documents</p>${p.docs.map((d) => `<div class="doc">${esc(d)}</div>`).join("")}</section>
+    <section><p class="label">Recent</p>${p.activity.map(([d, w, t]) => `<div class="act"><span class="d">${d}</span><span>${who(w)} · ${esc(t)}</span></div>`).join("")}</section>
+    <section><button class="btn" data-future="report">Send to report draft<span class="future">future</span></button></section>
+    ${askBox("this project", ["What's still unknown?", "Has anyone tried a different diluent?"], false)}`;
+}
+
+// ---------- Experiment view: this campaign's trials, on the map of the whole project ----------
+function expView() {
+  const p = proj(S.open), x = exper(S.exp);
+  const all = TRIALS.filter((t) => t.project === p.id);
+  const mine = all.filter((t) => t.exp === x.id);
+  return `
+    <button class="linkbtn" data-act="to-project">← ${esc(p.title)}</button>
+    <div class="row" style="margin-top:8px"><h1 class="grow">${esc(x.title)}</h1><span class="people">${avs(x.people)}</span></div>
+    <div class="split">
+      <div style="display:grid;gap:14px;min-width:0">
+        ${mine.length ? `
+        <div class="panel">${chart(all, x.id)}</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Trial</th><th>Date</th><th>Diluent</th><th>Viscosity</th><th>Strength</th><th></th></tr></thead>
+          <tbody>${mine.slice().reverse().map((t) => `<tr class="${S.trial === t.id ? "on" : ""}" data-trial="${t.id}"><td><b>${t.id}</b> ${S.outliers && t.outlier ? `<span class="unusual">outlier</span>` : ""}</td><td>${t.date}</td><td>${t.dil}%</td><td>${t.visc}</td><td>${t.uts}</td><td>${mk(t.status)}</td></tr>`).join("")}</tbody>
+        </table></div>` : `<div class="placeholder">Only the resin experiments have trials in this mock.</div>`}
+      </div>
+      <aside class="rail">${S.trial ? trialRail(trial(S.trial)) : expRail(x)}</aside>
+    </div>`;
+}
+
+function expRail(x) {
+  const n = TRIALS.filter((t) => t.exp === x.id).length;
+  return `<p class="label">Protocol</p>
+    <div class="doc">${esc(x.sop)}</div>
+    <section><p class="label">People</p>${x.people.map((p) => `<div class="row">${av(p)}<span>${PEOPLE[p].name}</span></div>`).join("")}</section>
+    <section><p class="label">Trials</p>${n} · ${x.when}</section>
+    ${askBox("this experiment", ["How do these compare with the other experiments?"], false)}`;
+}
+
+// All of the project's trials are drawn; the open experiment is solid, the rest faded for context.
+function chart(trials, current) {
+  const W = 640, H = 300, L = 46, B = 36, R = 12, Tp = 12;
+  const x = (v) => L + ((v - 0.9) / (2.8 - 0.9)) * (W - L - R);
+  const y = (v) => H - B - ((v - 20) / (70 - 20)) * (H - B - Tp);
+  return `<div class="row" style="margin-bottom:4px"><b class="grow">Goal: viscosity &lt; 1.5 and strength ≥ 40</b>
+      <span class="small muted">${mk("goal")} met ${mk("close")} too thick ${mk("fail")} too weak</span>
+      <button class="lens ${S.outliers ? "on" : ""}" data-act="lens" title="Mark trials far from the trend">Outliers</button></div>
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+      <rect x="${L}" y="${Tp}" width="${x(1.5) - L}" height="${y(40) - Tp}" fill="#e6f2e2"/>
+      <text x="${L + 8}" y="${Tp + 16}" font-size="12" fill="#2f7a2f">goal</text>
+      <line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="#ccc"/><line x1="${L}" x2="${L}" y1="${Tp}" y2="${H - B}" stroke="#ccc"/>
+      <text x="${(W + L) / 2}" y="${H - 6}" text-anchor="middle" font-size="12" fill="#75716a">← lower is better · viscosity, Pa·s</text>
+      <text x="14" y="${(H - B) / 2}" font-size="12" fill="#75716a" transform="rotate(-90 14 ${(H - B) / 2})" text-anchor="middle">strength, MPa · higher is better →</text>
+      ${[1, 1.5, 2, 2.5].map((v) => `<text x="${x(v)}" y="${H - B + 15}" text-anchor="middle" font-size="11" fill="#75716a">${v}</text>`).join("")}
+      ${[30, 40, 50, 60].map((v) => `<text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#75716a">${v}</text>`).join("")}
+      ${trials.map((t) => { const here = t.exp === current; return `<g style="cursor:pointer" data-trial="${t.id}" opacity="${here ? 1 : 0.28}">
+        ${S.trial === t.id ? `<circle cx="${x(t.visc)}" cy="${y(t.uts)}" r="13" fill="${PEOPLE[t.who].color}" opacity="0.15"/>` : ""}
+        ${S.outliers && t.outlier ? `<circle cx="${x(t.visc)}" cy="${y(t.uts)}" r="16" fill="none" stroke="#1b1a17" stroke-width="1.5" stroke-dasharray="3 3"/>` : ""}
+        <text x="${x(t.visc)}" y="${y(t.uts) + 6}" text-anchor="middle" font-size="18" font-weight="700" fill="${PEOPLE[t.who].color}">${GLYPH[t.status]}</text>
+        ${here ? `<text x="${x(t.visc) + 11}" y="${y(t.uts) - 7}" font-size="10" fill="#75716a">${t.id}</text>` : ""}</g>`; }).join("")}
+    </svg>
+    <div class="small muted">Solid: this experiment. Faded: the project's other experiments. &nbsp;${who("cooper")} &nbsp; ${who("greeshma")}</div>`;
+}
+
+function trialRail(t) {
+  const steps = asRun(t);
+  const sel = steps.find((s) => s.id === S.step);
+  return `<div class="row"><h2>${t.id}</h2>${av(t.who)}<span class="muted small grow">${PEOPLE[t.who].short} · ${t.date}</span><button class="x" data-act="close-trial" title="Back to the project (Esc)">✕</button></div>
+    <div class="kv"><div><span>Viscosity</span><b>${t.visc} Pa·s</b></div><div><span>Strength</span><b>${t.uts} MPa</b></div><div><span>Porosity</span><b>${t.por}%</b></div><div><span>Result</span><b>${mk(t.status)}</b></div></div>
+    ${S.outliers && t.outlier ? `<p style="margin:12px 0 0"><span class="unusual">outlier</span> ${t.outlier}.</p>` : ""}
+    ${t.note ? `<p class="muted small" style="margin:6px 0 0">${PEOPLE[t.who].short}: “${esc(t.note)}”</p>` : ""}
+    <section><p class="label">How it ran</p>
+      <div class="steps">${steps.map((s) => `<button class="step ${s.dev ? "dev" : ""} ${S.step === s.id ? "on" : ""}" data-step="${s.id}" title="${s.step}: ${SRC_TEXT[s.src]}"><b><i class="sq ${s.src}"></i>${s.step}</b><span>${s.run}</span></button>`).join("")}</div>
+      ${sel ? stepInfo(sel) : `<p class="small muted" style="margin:8px 0 0">Dashed: differs from the SOP. Click a step for its log and location.</p>`}
+    </section>
+    <section><div class="placeholder">Figures for ${t.id}</div></section>
+    ${askBox(t.id, ["How does this compare to its neighbors?"], true)}`;
+}
+
+function stepInfo(s) {
+  return `<div class="stepinfo">
+    <div class="row"><b class="grow">${s.step}</b><span class="small muted">${SRC_TEXT[s.src]}</span></div>
+    <div class="small" style="margin:4px 0 6px"><span class="muted">SOP:</span> ${s.sop} &nbsp; <span class="muted">This run:</span> <b>${s.run}</b></div>
+    ${s.log.length ? s.log.map(([d, e]) => `<div class="logline"><span class="d">${d}</span><span>${e}</span></div>`).join("") : `<div class="small muted">Nothing recorded.</div>`}
+    ${s.inst ? `<div style="margin-top:8px">${plan(s.inst, true)}</div>
+      <div class="row" style="margin-top:6px"><span class="small muted grow">${inst(s.inst).name}</span><button class="linkbtn" data-goinst="${s.inst}">Open in lab →</button></div>` : ""}
+  </div>`;
+}
+
+// ---------- Lab ----------
+function labView() {
+  return `
+    <div class="row"><h1 class="grow">Room 214</h1>
+      <div class="segsm"><button class="${!S.lab3d ? "on" : ""}" data-lab3d="0">Plan</button><button class="${S.lab3d ? "on" : ""}" data-lab3d="1">3D</button></div>
+    </div>
+    <div class="split">
+      <div style="min-width:0">${S.lab3d ? iso() : plan(S.inst)}</div>
+      <aside class="rail">${S.inst ? instRail(inst(S.inst)) : labRail()}</aside>
+    </div>`;
+}
+
+function labRail() {
+  const n = (s) => INSTRUMENTS.filter((i) => i.src === s).length;
+  const busy = INSTRUMENTS.filter((i) => i.use);
+  return `<p class="label">Instruments</p>
+    <div class="legend">
+      <div><i style="background:var(--mhs)"></i><b>${n("mhs")}</b> log themselves</div>
+      <div><i style="background:var(--cam)"></i><b>${n("camera")}</b> logged by camera</div>
+      <div><i style="background:var(--hand);border:1px dashed #b9a979"></i><b>${n("manual")}</b> logged by hand</div>
+      <div><i style="background:#fff;border:1.5px dotted var(--ink-3)"></i><b>${n("none")}</b> not logged</div>
+    </div>
+    <section><p class="label">In use now</p>${busy.map((i) => `<button class="hit" data-inst="${i.id}">${av(i.use)}${i.name}<span class="k">${i.job}</span></button>`).join("")}</section>
+    ${askBox("the lab", ["What's overdue for calibration?"], false)}`;
+}
+
+function instRail(i) {
+  const trials = trialsFor(i.id);
+  return `<div class="row"><h2 class="grow">${i.name}</h2><button class="x" data-act="close-inst" title="Back to the lab (Esc)">✕</button></div>
+    <div class="row" style="margin-top:6px"><i class="sq ${i.src}"></i><span class="muted small">${SRC_TEXT[i.src]}</span></div>
+    <section><p class="label">Now</p>${i.use ? `<div class="row">${av(i.use)}<span>${PEOPLE[i.use].short} · ${i.job}</span></div>` : `<span class="muted">Free</span>`}</section>
+    <section><p class="label">Calibrated</p>${i.cal ?? `<span class="muted">No record</span>`}</section>
+    <section><p class="label">Recent trials</p>${trials.length ? trials.map((t) => `<button class="hit" data-jump="${t.id}">${t.id} ${mk(t.status)}<span class="k">${PEOPLE[t.who].short}</span></button>`).join("") : `<span class="muted">None recorded</span>`}</section>
+    <section><button class="btn" data-future="book">Book<span class="future">future</span></button></section>
+    ${askBox(i.name, ["When was this last used?"], false)}`;
+}
+
+const FILL = { mhs: "var(--mhs)", camera: "var(--cam)", manual: "var(--hand)", none: "#fff" };
+const STROKE = (i) => (i.src === "manual" ? 'stroke="#b9a979" stroke-dasharray="4 3"' : i.src === "none" ? 'stroke="#75716a" stroke-dasharray="2 3"' : 'stroke="rgba(0,0,0,0.25)"');
+
+// The floor plan. "mini" is the read-only preview inside a trial step.
+function plan(hl, mini = false) {
+  return `<svg class="labsvg" viewBox="0 0 1000 560" ${mini ? 'style="border-radius:8px"' : ""}>
+    <rect x="20" y="20" width="960" height="520" fill="#faf8f4" stroke="#1b1a17" stroke-width="3"/>
+    <line x1="470" x2="530" y1="540" y2="540" stroke="#faf8f4" stroke-width="5"/>
+    ${BENCHES.map((b) => `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="#ece8df" stroke="#d5cfc2"/>`).join("")}
+    ${FIXTURES.map((f) => `<rect x="${f.x}" y="${f.y}" width="${f.w}" height="${f.h}" fill="#f1eee8" stroke="#d5cfc2"/>${mini ? "" : `<text x="${f.x + f.w / 2}" y="${f.y + f.h / 2 + 4}" text-anchor="middle" font-size="11" fill="#75716a">${f.name}</text>`}`).join("")}
+    ${INSTRUMENTS.map((i) => {
+      const on = hl === i.id, faded = mini && !on;
+      return `<g class="${mini ? "" : "inst"}" ${mini ? "" : `data-inst="${i.id}"`} opacity="${faded ? 0.35 : 1}">
+      ${i.use && !mini ? `<rect x="${i.x - 6}" y="${i.y - 6}" width="${i.w + 12}" height="${i.h + 12}" rx="8" fill="none" stroke="${PEOPLE[i.use].color}" stroke-width="3"/>` : ""}
+      <rect class="body" x="${i.x}" y="${i.y}" width="${i.w}" height="${i.h}" rx="5" fill="${FILL[i.src]}" ${on ? 'stroke="#1b1a17" stroke-width="6"' : STROKE(i)}/>
+      ${mini && !on ? "" : `<text x="${i.x + i.w / 2}" y="${i.y + i.h / 2 + (mini ? 8 : 4)}" text-anchor="middle" font-size="${mini ? 26 : 11}" font-weight="600" fill="${i.src === "mhs" || i.src === "camera" ? "#fff" : "#5d5a52"}">${label(i)}</text>`}
+    </g>`;
+    }).join("")}
+  </svg>`;
+}
+
+function iso() {
+  const s = 0.62, ox = 400, oy = 70, c = 0.866, h = 0.5;
+  const P = (x, y, z) => `${(ox + (x - y) * c * s).toFixed(1)},${(oy + ((x + y) * h - z) * s).toFixed(1)}`;
+  const box = (x, y, w, d, z0, z1, top, side1, side2, extra = "") => `
+    <polygon points="${P(x + w, y, z0)} ${P(x + w, y + d, z0)} ${P(x + w, y + d, z1)} ${P(x + w, y, z1)}" fill="${side1}" ${extra}/>
+    <polygon points="${P(x, y + d, z0)} ${P(x + w, y + d, z0)} ${P(x + w, y + d, z1)} ${P(x, y + d, z1)}" fill="${side2}" ${extra}/>
+    <polygon points="${P(x, y, z1)} ${P(x + w, y, z1)} ${P(x + w, y + d, z1)} ${P(x, y + d, z1)}" fill="${top}" ${extra}/>`;
+  const BZ = 45; // bench height
+  // Draw each instrument right after its bench, so benches never cover what sits on them.
+  const benchOf = (i) => BENCHES.find((b) => i.x >= b.x && i.x <= b.x + b.w && i.y >= b.y - 20 && i.y <= b.y + b.h);
+  const bk = (b) => b.x + b.w + b.y + b.h;
+  const SIDES = { mhs: ["#176c6c", "#135b5b"], camera: ["#4f9a9a", "#468a8a"], manual: ["#ddd0ad", "#d2c49c"], none: ["#eeeeee", "#e2e2e2"] };
+  const items = [
+    ...BENCHES.map((b) => ({ k: bk(b), svg: box(b.x, b.y, b.w, b.h, 0, BZ, "#ece8df", "#d9d3c6", "#cfc8b9") })),
+    ...FIXTURES.map((f) => ({ k: bk(f) - 1, svg: box(f.x, f.y, f.w, f.h, 0, f.name === "Fume hood" ? 160 : BZ, "#f1eee8", "#e2ddd2", "#d9d3c6") })),
+    ...INSTRUMENTS.map((i) => {
+      const z1 = BZ + i.z;
+      const sel = S.inst === i.id ? 'stroke="#1b1a17" stroke-width="2"' : 'stroke="rgba(0,0,0,0.15)"';
+      const [lx, ly] = P(i.x + i.w / 2, i.y + i.h / 2, z1 + 14).split(",");
+      return { k: bk(benchOf(i)) + (i.x + i.y) / 10000, svg: `<g class="inst" data-inst="${i.id}">${box(i.x, i.y, i.w, i.h, BZ, z1, FILL[i.src], ...SIDES[i.src], sel)}
+        ${i.use ? `<circle cx="${lx}" cy="${+ly + 6}" r="9" fill="${PEOPLE[i.use].color}"/><text x="${lx}" y="${+ly + 10}" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">${PEOPLE[i.use].ini}</text>` : ""}
+        <text x="${lx}" y="${+ly - 6}" text-anchor="middle" font-size="10" font-weight="600" fill="#5d5a52">${label(i)}</text></g>` };
+    }),
+  ].sort((a, b) => a.k - b.k);
+  return `<svg class="labsvg" viewBox="60 20 840 560">
+    <polygon points="${P(20, 20, 0)} ${P(980, 20, 0)} ${P(980, 540, 0)} ${P(20, 540, 0)}" fill="#faf8f4" stroke="#1b1a17" stroke-width="2"/>
+    <polygon points="${P(20, 20, 0)} ${P(980, 20, 0)} ${P(980, 20, 220)} ${P(20, 20, 220)}" fill="#f1eee8" stroke="#d5cfc2"/>
+    <polygon points="${P(20, 20, 0)} ${P(20, 540, 0)} ${P(20, 540, 220)} ${P(20, 20, 220)}" fill="#ebe7df" stroke="#d5cfc2"/>
+    ${items.map((it) => it.svg).join("")}
+  </svg>`;
+}
+
+// ---------- Search ----------
+function finder() {
+  const q = S.q.trim().toLowerCase();
+  const has = (s) => s.toLowerCase().includes(q);
+  const projects = PROJECTS.filter((p) => q && has(p.title + " " + p.people.map((x) => PEOPLE[x].name).join(" ")));
+  const trials = q ? TRIALS.filter((t) => has(`${t.id} ${PEOPLE[t.who].name}`) || false) : TRIALS.slice(-5).reverse();
+  const insts = INSTRUMENTS.filter((i) => q && has(i.name));
+  const exps = EXPERIMENTS.filter((x) => q && has(x.title));
+  const grp = (title, items) => (items ? `<div class="grp"><p class="label">${title}</p>${items}</div>` : "");
+  return `<div class="scrim" data-scrim="search"><div class="finder">
+    <input id="q" placeholder="Search projects, trials, people, instruments" value="${esc(S.q)}" autocomplete="off">
+    ${grp("Projects", projects.map((p) => `<button class="hit" data-hitproj="${p.id}">${esc(p.title)}<span class="k">project</span></button>`).join(""))}
+    ${grp("Experiments", exps.map((x) => `<button class="hit" data-hitexp="${x.id}">${esc(x.title)}<span class="k">${esc(proj(x.project).title)}</span></button>`).join(""))}
+    ${grp(q ? "Trials" : "Recent trials", trials.map((t) => `<button class="hit" data-jump="${t.id}"><b>${t.id}</b> ${mk(t.status)}<span class="k">${PEOPLE[t.who].short} · ${t.date}</span></button>`).join(""))}
+    ${grp("Instruments", insts.map((i) => `<button class="hit" data-hitinst="${i.id}">${i.name}<span class="k">${SRC_TEXT[i.src]}</span></button>`).join(""))}
+    ${q ? `<div class="askrow">Ask about “${esc(S.q)}” across the whole lab<span class="future">future</span></div>` : ""}
+  </div></div>`;
+}
+
+// ---------- Render and events ----------
+const FUTURE = {
+  scan: ["Import a lab scan", "Upload a phone scan of the room. An open-source reconstruction tool builds the 3D twin; you confirm what each object is."],
+  add: ["Add an instrument", "Click a spot on the plan and take a photo. The instrument is modeled and placed, and the bench extends to fit."],
+  connect: ["Connect instruments", "Link an instrument through an MHS-style driver, add a camera, or set up hand logging."],
+  devfile: ["Device files", "What each instrument measures, what can be adjusted, and its safety limits."],
+  people: ["People", "Lab members, roles and who can approve changes."],
+  report: ["Send to report draft", "Hands the goal, what's known, the trials and every question asked here to a writing tool, with citations to trials and to the literature."],
+  book: ["Book this instrument", "Reserve a time slot. The lab view shows who has what, and when."],
+};
+function future([title, body]) {
+  document.getElementById("overlay").innerHTML = `<div class="scrim" data-scrim="future"><div class="finder" style="padding:18px;width:420px">
+    <span class="future" style="margin:0">future</span><h2 style="margin-top:8px">${title}</h2><p class="muted">${body}</p>
+    <button class="btn" data-act="close-future">OK</button></div></div>`;
+}
+
+// New experiment: start from an SOP file, write one, or copy a protocol already in the lab.
+let newMode = "upload";
+function newExperiment() {
+  const opt = (k, t, d) => `<button class="opt ${newMode === k ? "on" : ""}" data-newmode="${k}"><span><b>${t}</b><span class="small muted">${d}</span></span></button>`;
+  const body = newMode === "upload" ? `<div class="drop">Drop an SOP (PDF, Word or a photo of a paper sheet)</div>`
+    : newMode === "write" ? `<textarea class="sop" placeholder="1. Weigh resin and diluent to ±0.01 g&#10;2. Mix at 2,000 rpm for 3 min&#10;3. …"></textarea>`
+    : `<div class="drop" style="text-align:left">${EXPERIMENTS.filter((x) => x.project === S.open).map((x) => `<div class="doc">${esc(x.sop)} · ${esc(x.title)}</div>`).join("") || "No protocols in this project yet."}</div>`;
+  document.getElementById("overlay").innerHTML = `<div class="scrim" data-scrim="future"><div class="finder" style="padding:18px;width:520px">
+    <h2>New experiment</h2><p class="small muted" style="margin:4px 0 0">In ${esc(proj(S.open).title)}</p>
+    <input placeholder="Experiment name" style="border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin-top:12px;font-size:14px">
+    <p class="label" style="margin-top:14px">Protocol</p>
+    ${opt("upload", "Upload an SOP", "Turned into steps you can check")}${opt("write", "Write one", "Step by step")}${opt("copy", "Copy an existing protocol", "Start from what the lab already runs")}
+    ${body}
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn" data-act="close-future">Cancel</button><button class="btn" style="background:var(--ink);color:#fff;border-color:var(--ink)" data-act="close-future">Create</button></div>
+  </div></div>`;
+}
+
+function render() {
+  document.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b.dataset.view === S.view));
+  document.getElementById("me").innerHTML = `<span class="tag">navigation mock · synthetic data</span>
+    <button data-act="menu" aria-label="Account and lab settings">${av(ME)}</button>
+    ${S.menu ? `<div class="menu">
+      <p class="label">Lab settings</p>
+      <button data-future="scan">Import lab scan<span class="future">future</span></button>
+      <button data-future="add">Add instrument<span class="future">future</span></button>
+      <button data-future="connect">Connect instruments<span class="future">future</span></button>
+      <button data-future="devfile">Device files<span class="future">future</span></button>
+      <hr><button data-future="people">People<span class="future">future</span></button>
+    </div>` : ""}`;
+  const page = S.view === "lab" ? labView() : S.exp ? expView() : S.open ? projectPage() : projectsView();
+  document.getElementById("app").innerHTML = `<div class="page">${page}</div>
+    ${S.back ? `<button class="back" data-act="back">← Back to ${S.back.label}</button>` : ""}
+    ${S.search ? finder() : ""}`;
+  const q = document.getElementById("q");
+  if (q) {
+    q.focus();
+    q.setSelectionRange(q.value.length, q.value.length);
+    q.oninput = (e) => set({ q: e.target.value });
+  }
+}
+
+// A deliberate jump between halves remembers where you were, so the back chip can return you there.
+function jump(patch, label) {
+  set({ ...patch, back: { ...snapshot(), label }, search: false, q: "", menu: false });
+}
+const openTrial = (id) => ({ view: "projects", open: trial(id).project, exp: trial(id).exp, trial: id, step: null, inst: null, wide: false });
+
+document.addEventListener("click", (e) => {
+  const scrim = e.target.dataset?.scrim;
+  if (scrim === "search") return set({ search: false, q: "" });
+  if (scrim === "future") { document.getElementById("overlay").innerHTML = ""; return; }
+  const el = e.target.closest("[data-view],[data-open],[data-exp],[data-newmode],[data-hitexp],[data-trial],[data-step],[data-goinst],[data-inst],[data-lab3d],[data-future],[data-jump],[data-hitproj],[data-hitinst],[data-act]");
+  if (!el) { if (S.menu) set({ menu: false }); return; }
+  const d = el.dataset;
+  if (d.view) return set({ view: d.view, back: null, trial: null, step: null, inst: null, menu: false });
+  if (d.open) return set({ open: d.open, exp: null, trial: null, step: null, back: null });
+  if (d.exp) return set({ exp: d.exp, trial: null, step: null });
+  if (d.newmode) { newMode = d.newmode; return newExperiment(); }
+  if (d.hitexp) return set({ view: "projects", open: exper(d.hitexp).project, exp: d.hitexp, trial: null, search: false, q: "", back: null });
+  if (d.trial) return set({ trial: d.trial, step: null, wide: false });
+  if (d.step) return set({ step: S.step === d.step ? null : d.step });
+  if (d.goinst) return jump({ view: "lab", inst: d.goinst }, S.trial);
+  if (d.inst) return set({ inst: d.inst, menu: false });
+  if (d.lab3d) return set({ lab3d: d.lab3d === "1" });
+  if (d.future) { set({ menu: false }); return future(FUTURE[d.future]); }
+  if (d.jump) return S.view === "lab" && S.inst ? jump(openTrial(d.jump), inst(S.inst).name) : set({ ...openTrial(d.jump), search: false, q: "", back: null });
+  if (d.hitproj) return set({ view: "projects", open: d.hitproj, exp: null, trial: null, search: false, q: "", back: null });
+  if (d.hitinst) return set({ view: "lab", inst: d.hitinst, search: false, q: "", back: null });
+  switch (d.act) {
+    case "search": return set({ search: true, menu: false });
+    case "menu": return set({ menu: !S.menu });
+    case "archived": return set({ showArchived: !S.showArchived });
+    case "widen": return set({ wide: !S.wide });
+    case "close-inst": return set({ inst: null });
+    case "close-trial": return set({ trial: null, step: null });
+    case "close-future": document.getElementById("overlay").innerHTML = ""; return;
+    case "to-projects": return set({ open: null, exp: null, trial: null, step: null, back: null });
+    case "to-project": return set({ exp: null, trial: null, step: null, back: null });
+    case "new-exp": newMode = "upload"; return newExperiment();
+    case "lens": return set({ outliers: !S.outliers });
+    case "back": { const b = S.back; return set({ ...b, back: null }); }
+  }
+});
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); return set({ search: true }); }
+  if (e.key !== "Escape") return;
+  if (document.getElementById("overlay").innerHTML) document.getElementById("overlay").innerHTML = "";
+  else if (S.search) set({ search: false, q: "" });
+  else if (S.menu) set({ menu: false });
+  else if (S.step) set({ step: null });
+  else if (S.trial) set({ trial: null });
+  else set({ inst: null });
+});
+render();
+</script>
+</body>
+</html>

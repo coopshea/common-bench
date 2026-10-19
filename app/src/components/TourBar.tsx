@@ -1,9 +1,9 @@
-// Tour mode: steps through scenes 2–7 with one caption each, highlighting the panel and triggering the action.
+// The guide: one question per step. Each step reveals more of the screen and triggers its action.
 import { useEffect, useRef } from "react";
 import { navigate, usePath } from "../lib/hooks.ts";
 import { useStore } from "../state/store.tsx";
 import { HERO_QUESTION } from "./AgentPanel.tsx";
-import { TOUR } from "./tour.ts";
+import { TOUR, markGuideSeen } from "./tour.ts";
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ block: "start", behavior: "smooth" });
 
@@ -18,6 +18,7 @@ export function TourBar() {
   useEffect(() => {
     if (step === null) {
       ran.current.clear();
+      markGuideSeen();
       return;
     }
     const s = TOUR[step];
@@ -75,15 +76,17 @@ export function TourBar() {
   };
   return (
     <div className="tourbar" role="dialog" aria-label="Tour">
-      <span className="step">Scene {s.scene} · {step + 1}/{TOUR.length}</span>
-      <span className="cap" key={step} style={{ animation: "fade-in 0.3s ease-out both" }}>{s.caption}</span>
+      <span className="step">{step + 1}/{TOUR.length}</span>
+      <span className="cap" key={step} style={{ animation: "fade-in 0.3s ease-out both" }}>
+        <b>{s.title}</b> {s.caption}
+      </span>
       <button className="btn small" onClick={() => go(step - 1)} disabled={step === 0}>Back</button>
       {last ? (
         <button className="btn small primary" onClick={() => go(null)}>Finish</button>
       ) : (
         <button className="btn small primary" onClick={() => go(step + 1)}>Next</button>
       )}
-      <button className="btn small" onClick={() => go(null)} aria-label="Exit tour">✕</button>
+      <button className="btn small ghost" onClick={() => go(null)}>Show all</button>
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type {
+  Lab,
+  Org,
   FittedModels, Guardrail, GuardrailId, LandscapeGrid, LedgerItem, Lens, LogEntry, Notebook, Person,
   PersonId, Pore, Project, Station, StepId, Trial, TrialInputs, TrialOutputs,
 } from "../src/shared/types.ts";
@@ -481,11 +483,95 @@ const viscosity_target_contour = PI_.map((p) => ({
   diluent: r1((Math.log(OBJECTIVE_TARGET) - models.viscosity.b0 - models.viscosity.b_photoinit * p) / models.viscosity.b_diluent),
 }));
 
+
+// ---------- the lab around the project ----------
+// Thrusts → projects → experiments. Only the notebook project has trials; its siblings exist so it isn't alone.
+
+const span = (c: "A" | "B" | "G") => {
+  const ds = trials.filter((t) => t.campaign === c).map((t) => t.date).sort();
+  const m = (d: string) => new Date(d + "T12:00:00").toLocaleString("en-US", { month: "short", year: "numeric" });
+  return `${m(ds[0])} – ${m(ds[ds.length - 1])}`;
+};
+const lastDate = project.now.slice(0, 10); // the notebook project is the one being worked on today
+
+const org: Org = {
+  thrusts: [
+    { id: "materials", title: "Printable dental materials", blurb: "Resins that print faster and last longer.", funding: "Meridian R&D program DR-07" },
+    { id: "access", title: "Accessible chairside dentistry", blurb: "Same-day parts on low-cost printers.", funding: "Clinic partnership pilot" },
+    { id: "process", title: "Print process reliability", blurb: "Every printer and oven gives the same part.", funding: "Internal" },
+    { id: "devices", title: "Bioresorbable devices", blurb: "Closed in 2025.", funding: "SBIR Phase I (fictional)", closed: true },
+  ],
+  projects: [
+    { id: project.id, thrust: "materials", title: project.name, people: ["greeshma", "cooper"], last: lastDate,
+      goal: `${project.objective.label}, every guardrail passing`, deliverable: "Formulation spec and a manuscript",
+      why: project.objective.why, docs: ["Program proposal (2024)", `SOP ${project.sop.version}: resin prep and print`, "Guardrail sources"] },
+    { id: "shade-match", thrust: "materials", title: "Match shades A1–A3 with two pigments", people: ["cooper"], last: "2025-05-30",
+      goal: "Two pigments cover A1–A3 within ΔE 2", deliverable: "Pigment recipe", why: "Fewer pigments, fewer mixing errors.",
+      docs: ["Shade guide scans"], known: [{ text: "One pigment reaches A1 and A2", cite: "Shade run 1" }],
+      open: [{ text: "Can A3 be reached without a third?", cite: "" }] },
+    { id: "chairside-fit", thrust: "access", title: "Same-day denture fit on a $3k printer", people: ["greeshma"], last: "2026-09-12",
+      goal: "Fit within 50 µm from a low-cost printer", deliverable: "Clinic protocol", why: "Most clinics can't afford a lab printer.",
+      docs: ["Pilot agreement"], known: [{ text: "First fit is within 80 µm", cite: "Fit test 1" }],
+      open: [{ text: "Is the gap from the printer or the resin?", cite: "" }] },
+    { id: "printer-drift", thrust: "process", title: "Measure printer-to-printer drift", people: ["greeshma"], last: "2026-10-02",
+      goal: "Know how far printers 1 and 2 disagree", deliverable: "Calibration note", why: "Printer 2 isn't logged, so nobody has compared them.",
+      docs: ["Draft proposal"], known: [], open: [{ text: "Is drift larger than fit tolerance?", cite: "" }] },
+    { id: "fast-cure", thrust: "process", title: "Halve post-cure time", people: ["greeshma"], last: "2026-09-29",
+      goal: "Post-cure in 25 min, no strength lost", deliverable: "Oven profile", why: "The UV oven is the bottleneck between print and test.",
+      docs: ["Scoping note"], known: [{ text: "35 min is the shortest passing profile", cite: "Cure run 1" }],
+      open: [{ text: "Does temperature matter more than time?", cite: "" }] },
+    { id: "stent-resin", thrust: "devices", title: "Stent resin degradation in saline", people: ["cooper"], last: "2025-06-20",
+      goal: "Hold strength 8 weeks, then degrade", deliverable: "Phase I report", why: "A resin that holds, then disappears.",
+      docs: ["Phase I final report"], known: [], open: [] },
+  ],
+  experiments: [
+    { id: "A", project: project.id, campaign: "A", title: "Low-diluent formulations", people: ["cooper"], when: span("A"), protocol: `SOP ${project.sop.version}` },
+    { id: "B", project: project.id, campaign: "B", title: "High-diluent formulations", people: ["cooper"], when: span("B"), protocol: `SOP ${project.sop.version}` },
+    { id: "G", project: project.id, campaign: "G", title: "Mid-diluent, high photoinitiator", people: ["greeshma"], when: span("G"), protocol: `SOP ${project.sop.version}` },
+    { id: "cure-1", project: "fast-cure", title: "Cure profiles, round 1", people: ["greeshma"], when: "Sep 2026", protocol: "Oven SOP draft" },
+    { id: "fit-1", project: "chairside-fit", title: "Fit test 1", people: ["greeshma"], when: "Sep 2026", protocol: "Fit SOP draft" },
+    { id: "shade-1", project: "shade-match", title: "Shade run 1", people: ["cooper"], when: "May 2025", protocol: "Color SOP v1" },
+  ],
+};
+
+// The room. Instruments carry the device names the trial logs use, so a trial traces to a place.
+const src = (device: string) => stations.find((st) => st.device === device)?.source ?? "mhs";
+const lab: Lab = {
+  room: "Room 214",
+  width: 1000, depth: 560,
+  benches: [
+    { name: "Formulation bench", x: 40, y: 40, w: 420, h: 80 },
+    { name: "Print bay", x: 560, y: 40, w: 400, h: 80 },
+    { name: "Test bench", x: 560, y: 440, w: 400, h: 80 },
+    { name: "Island", x: 140, y: 300, w: 260, h: 90 },
+  ],
+  fixtures: [
+    { name: "Fume hood", x: 40, y: 440, w: 160, h: 80, z: 160 },
+    { name: "Sink", x: 240, y: 460, w: 80, h: 60, z: 45 },
+  ],
+  instruments: [
+    { id: "balance", name: "Balance", device: "Balance", source: src("Balance"), calibrated: "2026-09-02", x: 60, y: 55, w: 60, h: 50, z: 18 },
+    { id: "mixer", name: "Planetary mixer", device: "Planetary mixer", source: src("Planetary mixer"), calibrated: "2026-06-11", x: 150, y: 50, w: 80, h: 60, z: 42,
+      in_use: { by: "greeshma", until: "10:10", what: "Cure profiles, round 2" } },
+    { id: "degasser", name: "Vacuum degasser", device: "Vacuum degasser", source: src("Vacuum degasser"), calibrated: null, x: 260, y: 50, w: 80, h: 60, z: 46 },
+    { id: "viscometer", name: "Viscometer", device: "Viscometer", source: src("Viscometer"), calibrated: "2026-08-20", x: 370, y: 55, w: 70, h: 50, z: 50 },
+    { id: "printer-1", name: "DLP printer", device: "DLP printer", source: src("DLP printer"), calibrated: "2026-09-30", x: 580, y: 45, w: 100, h: 70, z: 70,
+      in_use: { by: "greeshma", until: "11:45", what: "Cure profiles, round 2" } },
+    { id: "printer-2", name: "Printer 2", source: "none", calibrated: null, x: 700, y: 45, w: 100, h: 70, z: 70 },
+    { id: "uv-oven", name: "UV oven", device: "UV oven", source: src("UV oven"), calibrated: "2025-11-04", x: 830, y: 50, w: 110, h: 60, z: 50 },
+    { id: "test-frame", name: "Test frame", device: "Test frame", source: "mhs", calibrated: "2026-05-15", x: 580, y: 450, w: 110, h: 60, z: 90 },
+    { id: "imaging", name: "Cross-section imaging", device: "Cross-section imaging", source: "camera", calibrated: "2026-07-01", x: 720, y: 455, w: 90, h: 50, z: 34 },
+    { id: "plate-reader", name: "Plate reader", device: "Plate reader", source: "mhs", calibrated: "2026-04-09", x: 840, y: 455, w: 100, h: 50, z: 30 },
+    { id: "hot-plate", name: "Hot plate", source: "none", calibrated: null, x: 170, y: 320, w: 60, h: 50, z: 12 },
+  ],
+};
+const logDevices = new Set(trials.flatMap((t) => t.log.map((e) => e.device)));
+
 // ---------- assemble + write ----------
 
 const notebook: Notebook = {
   meta: { generator: "data/generate.ts", seed: SEED, generated_at: project.now, synthetic: true },
-  project, people, trials, ledger,
+  project, people, trials, ledger, org, lab,
   landscape: { axes: { diluent: [10, 45], photoinit: [0.5, 2.0] }, viscosity_target_contour, lenses, models },
 };
 writeFileSync(join(HERE, "notebook.json"), JSON.stringify(notebook, null, 2) + "\n");
@@ -593,6 +679,8 @@ console.log("Team-lens wall by PI:  " + lenses.team.boundary.map((b) => `${b.pho
 console.log("Degas-lens wall by PI: " + lenses.degas.boundary.map((b) => `${b.photoinit}:${b.diluent ?? "—"}`).join("  "));
 console.log("Viscosity 1.5 contour: " + viscosity_target_contour.map((c) => `${c.photoinit}:${c.diluent}`).join("  "));
 console.log(`True best (degassed): ${best.d}% diluent, ${best.p}% PI → ${best.v} Pa·s. Near-best region: diluent ${groundTruth.near_best_region.diluent.join("–")}, PI ${groundTruth.near_best_region.photoinit.join("–")}`);
+check("Every logged device is an instrument in the lab", [...logDevices].every((d) => lab.instruments.some((i) => i.device === d)), [...logDevices].filter((d) => !lab.instruments.some((i) => i.device === d)).join(", "));
+check("Every trial campaign is an experiment", ["A", "B", "G"].every((c) => org.experiments.some((x) => x.campaign === c)));
 console.log("\nVerification\n");
 for (const [name, ok, detail] of checks) console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? "  (" + detail + ")" : ""}`);
 const failed = checks.filter((c) => !c[1]).length;

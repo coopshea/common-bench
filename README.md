@@ -16,9 +16,13 @@ npm install          # once
 npm run dev          # web on :5173, agent API on :8787
 ```
 
-- Open http://localhost:5173. Press **Tour** for a self-guided walkthrough, or follow `DEMO_WALKTHROUGH.md`.
+- Open http://localhost:5173. Two views, toggled at the top:
+  - **Projects:** research thrusts → project (goal, what we know, open questions) → experiment (chart and trials) → trial (how it ran, step by step).
+  - **Lab:** the room as a floor plan or in 3D, showing how each instrument is logged and who is using it.
+  - Every screen has one right panel that follows your selection and ends in an Ask box scoped to it. The demo question is the suggestion under Ask in the *Mid-diluent, high photoinitiator* experiment.
+- `DEMO_WALKTHROUGH.md` and the Guide describe the previous single-screen layout. They haven't been rewritten for this one yet.
 - Live agent answers need `ANTHROPIC_API_KEY` in `app/.env.local` (gitignored). **Without a key or a network, the demo path replays a recorded live run**, so it works offline.
-- `npm run data` regenerates `data/notebook.json` from the seeded generator and re-runs the 23 story checks.
+- `npm run data` regenerates `data/notebook.json` from the seeded generator and re-runs the 26 story checks. `npm run tokens` regenerates `src/ds/tokens.css` from the design system's `src/ds/tokens.json`.
 
 ## The user and the problem
 
