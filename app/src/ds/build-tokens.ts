@@ -33,7 +33,7 @@ for (const g of t.type.groups) {
   for (const s of g.styles) {
     const parts = [`font-family: var(--font-${s.family ?? g.family})`, `font-size: ${s.fontSize}`, `line-height: ${s.lineHeight}`, `font-weight: ${s.fontWeight}`];
     if (s.letterSpacing) parts.push(`letter-spacing: ${s.letterSpacing}`);
-    if (s.name === "eyebrow") parts.push("text-transform: uppercase; color: var(--ink-3)");
+    if (s.name === "eyebrow") parts.push("color: var(--ink-3)");
     out.push(`.t-${s.name} { ${parts.join("; ")}; }`);
   }
 }

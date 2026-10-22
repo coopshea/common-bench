@@ -9,6 +9,7 @@ import type {
   LensId,
   ProtocolDiff,
   Proposal,
+  PersonId,
   StepId,
   TraceStep,
 } from "../shared/types.ts";
@@ -55,6 +56,35 @@ export interface State {
   askScope: string | null; // which panel asked, so only that panel offers the answer back
   back: { path: string; sel: Selection; label: string } | null; // after a deliberate jump between Projects and Lab
   search: boolean;
+  // Review: double-click a trial, a step or the chart to flag it for someone, with a note.
+  flagging: FlagTarget | null;
+  flags: Flag[];
+  // Instrument bookings approved from the lab's Ask.
+  bookings: Booking[];
+}
+
+/** What a flag points at: enough to reopen the exact view (path plus selection). */
+export interface FlagTarget {
+  kind: "trial" | "step" | "chart" | "instrument";
+  label: string; // "T09", "T09 · Print", "High-diluent chart"
+  path: string;
+  sel: Selection;
+}
+export interface Flag {
+  id: string;
+  target: FlagTarget;
+  from: PersonId;
+  to: PersonId;
+  note: string;
+  at: string;
+}
+export interface Booking {
+  id: string;
+  inst: string;
+  by: PersonId;
+  from: string; // "14:00"
+  to: string;
+  day: string; // "Today"
 }
 
 export interface Selection {
@@ -89,6 +119,9 @@ const initial: State = {
   askScope: null,
   back: null,
   search: false,
+  flagging: null,
+  flags: [],
+  bookings: [],
 };
 
 type Action =
@@ -112,7 +145,10 @@ type Action =
   | { type: "askOpen"; open: boolean }
   | { type: "askScope"; scope: string }
   | { type: "back"; back: State["back"] }
-  | { type: "search"; open: boolean };
+  | { type: "search"; open: boolean }
+  | { type: "flagging"; target: FlagTarget | null }
+  | { type: "flag"; flag: Flag }
+  | { type: "book"; booking: Booking };
 
 let nonce = 1;
 
@@ -241,6 +277,12 @@ function reducer(s: State, a: Action): State {
       return { ...s, back: a.back };
     case "search":
       return { ...s, search: a.open };
+    case "flagging":
+      return { ...s, flagging: a.target };
+    case "flag":
+      return { ...s, flags: [...s.flags, a.flag], flagging: null, flash: { ...s.flash, [a.flag.id]: nonce++ } };
+    case "book":
+      return { ...s, bookings: [...s.bookings, a.booking], flash: { ...s.flash, [a.booking.id]: nonce++ } };
   }
 }
 

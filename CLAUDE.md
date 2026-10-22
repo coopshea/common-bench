@@ -29,8 +29,12 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 - **Navigation:** thrust → project → experiment → trial, plus the Lab (the room).
 - **Data:** the generator also writes `org` (thrusts, projects, experiments) and `lab` (the room). Only the notebook project has trials; its sibling projects exist so it isn't alone.
 - **Design system:** `app/src/ds/`. `tokens.json` is the same file as the Design System artifact, and `tokens.css` is generated from it (`npm run tokens`). Components are `cb-*`.
+- **Look ("technical atlas", approved 2026-10-18):** hairline engineering drawings on warm white; Instrument Sans + IBM Plex Mono (bundled via @fontsource, so offline works); ink rules instead of boxes. Selection is dark cyan. "Differs from the SOP" is a drawn revision triangle, never a color, and only shown for the selected trial. Logging is ink squares (filled, half, empty). The screens are in the "Common Bench screens" Design canvas.
 - **Text budgets:** titles ≤ 8 words, labels ≤ 3, one sentence per panel. Navigation screens show a title and people only.
-- **Not built yet:** shown with a FUTURE tag, never a disabled control.
+- **Ask:** first thing in every right panel, scoped to what the panel shows. The lab's Ask turns "Book the degasser 2–4 pm" into an approval card (`lib/booking.ts`, a local parse).
+- **Review:** double-click a trial, a chart point or a step (or the flag button) to send that exact view to a teammate with a note (`components/Review.tsx`). The recording is roadmap (issue #6).
+- **Lab twin:** `figures/LabTwin.tsx` places the bench instrument models on the room's benches. Instruments in use run their animation and hum. Fixtures are dashed outlines.
+- **Not built yet:** a quiet dotted "later" tag, never a disabled control.
 - **Retired:** the old single-screen `Workspace.tsx` and the Guide (`TourBar`, `tour.ts`) are no longer mounted. The walkthrough needs rewriting for the new structure.
 
 ## Layout

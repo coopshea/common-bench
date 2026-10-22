@@ -543,7 +543,7 @@ const lab: Lab = {
     { name: "Formulation bench", x: 40, y: 40, w: 420, h: 80 },
     { name: "Print bay", x: 560, y: 40, w: 400, h: 80 },
     { name: "Test bench", x: 560, y: 440, w: 400, h: 80 },
-    { name: "Island", x: 140, y: 300, w: 260, h: 90 },
+    { name: "Prep bench", x: 140, y: 300, w: 260, h: 90 },
   ],
   fixtures: [
     { name: "Fume hood", x: 40, y: 440, w: 160, h: 80, z: 160 },

@@ -1,10 +1,11 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { people, personById, project, trials } from "./data/notebook.ts";
 import { navigate, usePath } from "./lib/hooks.ts";
-import { ME, experimentOfTrial, lab, org, parseRoute, pathOf, projectById } from "./lib/org.ts";
+import { ME, company, experimentOfTrial, lab, org, parseRoute, pathOf, projectById } from "./lib/org.ts";
 import { StoreProvider, noSel, useStore, type Selection } from "./state/store.tsx";
 import { FutureDialog, FutureProvider, futureLabel, useFuture, useGo } from "./lib/nav.tsx";
-import { Avatar, BackChip, Future, SearchIcon } from "./ds/index.tsx";
+import { Avatar, BackChip, BrandMark, Later, SearchIcon } from "./ds/index.tsx";
+import { FlagDialog, FlagToast, ReviewList } from "./components/Review.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
 import { ProjectPage } from "./pages/ProjectPage.tsx";
 import { ExperimentPage } from "./pages/ExperimentPage.tsx";
@@ -35,17 +36,18 @@ function Shell() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); dispatch({ type: "search", open: true }); return; }
       if (e.key !== "Escape" || state.drawer) return;
-      if (state.search) dispatch({ type: "search", open: false });
+      if (state.flagging) dispatch({ type: "flagging", target: null });
+      else if (state.search) dispatch({ type: "search", open: false });
       else if (state.sel.step) dispatch({ type: "select", sel: { step: null } });
       else if (state.askOpen) dispatch({ type: "askOpen", open: false });
       else if (state.sel.trial || state.sel.inst) dispatch({ type: "select", sel: noSel });
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [state.search, state.sel, state.askOpen, state.drawer, dispatch]);
+  }, [state.search, state.sel, state.askOpen, state.drawer, state.flagging, dispatch]);
 
   return (
-    <div className="app" style={personVars}>
+    <div className="app cb" style={personVars}>
       <TopBar onLab={route.view === "lab"} />
       <main className="page">
         {route.view === "home" && <HomePage />}
@@ -65,6 +67,8 @@ function Shell() {
       {state.search && <Search />}
       {state.drawer && <TrialDrawer />}
       <FutureDialog />
+      <FlagDialog />
+      <FlagToast />
     </div>
   );
 }
@@ -75,31 +79,39 @@ function TopBar({ onLab }: { onLab: boolean }) {
   const future = useFuture();
   const go = useGo();
   const health = state.health.state;
+  const me = personById(ME);
   return (
-    <header className="top">
-      <button className="brand" onClick={() => go(pathOf.home())}>Common Bench</button>
-      <div className="cb-nav">
-        <div className="cb-toggle" role="tablist" aria-label="View">
-          <button role="tab" aria-selected={!onLab} onClick={() => go(pathOf.home())}>Projects</button>
-          <button role="tab" aria-selected={onLab} onClick={() => go(pathOf.lab())}>Lab</button>
+    <header className="topnav">
+      <button className="brand" onClick={() => go(pathOf.home())}>
+        <BrandMark /><span><b>Common Bench</b><span>{company}</span></span>
+      </button>
+      <nav className="nav" aria-label="Main">
+        <div className="seg" role="group">
+          <button className={onLab ? "" : "on"} aria-pressed={!onLab} onClick={() => go(pathOf.home())}>Projects</button>
+          <button className={onLab ? "on" : ""} aria-pressed={onLab} onClick={() => go(pathOf.lab())}>Lab</button>
         </div>
-        <button className="cb-circle" aria-label="Search (⌘K)" title="Search (⌘K)" onClick={() => dispatch({ type: "search", open: true })}><SearchIcon /></button>
-      </div>
+        <button className="cb-round" aria-label="Search (⌘K)" title="Search (⌘K)" onClick={() => dispatch({ type: "search", open: true })}><SearchIcon /></button>
+      </nav>
       <div className="me">
-        <span className="status-pill" title={health === "live" ? `Live: ${state.health.model ?? ""}` : "Answers replay from a recorded run"}>
-          <i className={health} />{project.synthetic_label}
+        <span className="synth" title={health === "live" ? `Live: ${state.health.model ?? ""}` : "Answers replay from a recorded run"}>
+          <i className={`health ${health}`} />{project.synthetic_label}
         </span>
-        <button className="me-btn" aria-label="Account and lab settings" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
-          <Avatar id={ME} />
+        <button className="me-btn" aria-label={`Account menu, ${me.name}`} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+          <Avatar id={ME} size="lg" />
+          {state.flags.length > 0 && <span className="badge">{state.flags.length}</span>}
         </button>
         {menu && (
-          <div className="menu" onMouseLeave={() => setMenu(false)}>
-            <p className="cb-eyebrow">Lab settings</p>
+          <div className="menu" role="menu" onMouseLeave={() => setMenu(false)}>
+            <div className="menu-me"><Avatar id={ME} /><div><div className="h3">{me.name}</div><div className="cb-label">{me.role}</div></div></div>
+            <hr />
+            <p className="cb-label pad">Sent for review</p>
+            <ReviewList onOpen={() => setMenu(false)} />
+            <hr />
             {(["scan", "add", "connect", "devices"] as const).map((k) => (
-              <button key={k} onClick={() => { setMenu(false); future(k); }}>{futureLabel(k)}<Future /></button>
+              <button key={k} role="menuitem" onClick={() => { setMenu(false); future(k); }}>{futureLabel(k)}<Later /></button>
             ))}
             <hr />
-            <button onClick={() => { setMenu(false); go("/evals"); }}>Evals</button>
+            <button role="menuitem" onClick={() => { setMenu(false); go("/evals"); }}>Evals</button>
           </div>
         )}
       </div>
@@ -121,10 +133,10 @@ function Search() {
   const ts = on ? trials.filter((t) => has(`${t.id} ${t.owners.map((o) => personById(o).name).join(" ")}`)) : trials.slice(-5).reverse();
   const insts = on ? lab.instruments.filter((i) => has(i.name)) : [];
   const open = (path: string, sel: Partial<Selection> = {}) => { close(); go(path, sel); };
-  const group = (title: string, items: React.ReactNode[]) => items.length > 0 && <div className="grp"><p className="cb-eyebrow">{title}</p>{items}</div>;
+  const group = (title: string, items: React.ReactNode[]) => items.length > 0 && <div className="grp"><p className="cb-label">{title}</p>{items}</div>;
   return (
     <div className="scrim" onMouseDown={(e) => e.target === e.currentTarget && close()}>
-      <div className="finder" role="dialog" aria-label="Search">
+      <div className="sheet finder" role="dialog" aria-label="Search">
         <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Projects, trials, people, instruments" aria-label="Search" />
         {group("Projects", projects.map((p) => <button key={p.id} className="hitrow" onClick={() => open(pathOf.project(p.id))}>{p.title}</button>))}
         {group("Experiments", exps.map((x) => <button key={x.id} className="hitrow" onClick={() => open(pathOf.experiment(x.project, x.id))}>{x.title}<span className="k">{projectById(x.project)?.title}</span></button>))}

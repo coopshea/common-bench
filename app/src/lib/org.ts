@@ -1,5 +1,5 @@
 // The lab around the notebook: thrusts → projects → experiments, the room, and the links between them.
-import type { Experiment, Instrument, LedgerItem, OrgProject, Trial } from "../shared/types.ts";
+import type { Experiment, Instrument, LedgerItem, OrgProject, PersonId, Trial } from "../shared/types.ts";
 import { notebook, project, trials } from "../data/notebook.ts";
 
 export const org = notebook.org;
@@ -19,16 +19,19 @@ export const myProjects = () => org.projects.filter((p) => p.people.includes(ME)
 export const projectsIn = (thrustId: string) => org.projects.filter((p) => p.thrust === thrustId).sort(byRecent);
 
 // The notebook project's "what we know" and "open questions" are the ledger, so they change when a finding is approved.
-export function knownAndOpen(p: OrgProject, ledger: LedgerItem[]) {
+export interface KnownItem { text: string; cite: string; id?: string; owner?: PersonId; ids?: string[] }
+
+export function knownAndOpen(p: OrgProject, ledger: LedgerItem[]): { known: KnownItem[]; open: KnownItem[] } {
   if (p.id !== project.id) return { known: p.known ?? [], open: p.open ?? [] };
   const cite = (l: LedgerItem) => (l.evidence.length > 2 ? `${l.evidence[0]}–${l.evidence[l.evidence.length - 1]}` : l.evidence.join(", "));
   const short = (l: LedgerItem) => l.text.replace(/^Dead end: /, "").replace(/\s*\([^)]*\)\.?$/, "").replace(/\.$/, "").trim();
+  const item = (l: LedgerItem, text: string): KnownItem => ({ text, cite: cite(l), id: l.id, owner: l.owner, ids: l.evidence.filter((e) => /^T\d/.test(e)) });
   const known = ledger
     .filter((l) => (l.kind === "finding" && l.status === "accepted") || (l.kind === "dead_end" && l.status === "active"))
-    .map((l) => ({ text: l.kind === "dead_end" ? `Dead end: ${short(l)}` : short(l), cite: cite(l), id: l.id }));
+    .map((l) => item(l, l.text));
   const open = ledger
     .filter((l) => (l.kind === "question" && l.status === "open") || l.status === "disputed" || l.status === "candidate")
-    .map((l) => ({ text: l.status === "disputed" ? `Is “${short(l)}” still true?` : short(l), cite: cite(l), id: l.id }));
+    .map((l) => item(l, l.status === "disputed" ? `Is “${short(l)}” still true?` : l.text));
   return { known, open };
 }
 
@@ -67,3 +70,4 @@ export const pathOf = {
   experiment: (p: string, x: string) => `/p/${encodeURIComponent(p)}/${encodeURIComponent(x)}`,
   lab: () => "/lab",
 };
+export const company = project.customer.replace(/\s*\(fictional\)$/, "");
