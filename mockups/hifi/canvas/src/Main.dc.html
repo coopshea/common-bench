@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+<!--CSS-->
+.yours{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:24px}
+.card{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:196px;padding:18px 0 4px;border-top:2px solid var(--ink)}
+.card .t{font-size:24px;font-weight:500;letter-spacing:-0.015em;line-height:1.15;text-wrap:pretty}
+.thrust{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px 48px;padding:28px 0;border-top:1px solid var(--rule)}
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;border-bottom:1px solid var(--rule-2);font-size:17px}
+.row:first-child{border-top:1px solid var(--rule-2)}
+.menu{position:absolute;top:78px;right:40px;width:290px;background:#fff;border:1px solid var(--ink);border-radius:8px;box-shadow:0 18px 50px rgba(27,26,23,.14);padding:8px;display:flex;flex-direction:column;z-index:3}
+.menu a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:5px;font-size:15px}
+.menu a:hover{background:var(--ground);color:var(--ink)}
+.menu hr{border:0;border-top:1px solid var(--rule-2);margin:6px 4px}
+</style>
+</helmet>
+<div class="cb" style="position:relative">
+<!--TOPBAR:projects-->
+
+<div class="menu" role="menu" aria-label="Account">
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px 12px"><span class="av g">G</span><div><div class="h3">Greeshma</div><div class="label">Scientist · formulation</div></div></div>
+<hr>
+<a role="menuitem" href="#">Import lab scan</a>
+<a role="menuitem" href="#">Add instrument</a>
+<a role="menuitem" href="#">Connect instruments</a>
+<a role="menuitem" href="#">Device files</a>
+<hr>
+<a role="menuitem" href="#">Evals</a>
+</div>
+
+<main style="max-width:1280px;margin:0 auto;padding:56px 48px 96px;display:flex;flex-direction:column;gap:72px">
+
+<section style="display:flex;flex-direction:column;gap:28px" aria-labelledby="yours">
+<h1 id="yours" class="h1">Your projects</h1>
+<div class="yours">
+<a class="card" href="Project.dc.html">
+<div style="display:flex;flex-direction:column;gap:14px"><span class="label">01</span><span class="t">Fast-print denture base resin</span></div>
+<div class="avs"><span class="av g you">G</span><span class="av c">CS</span></div>
+</a>
+<a class="card" href="#">
+<div style="display:flex;flex-direction:column;gap:14px"><span class="label">02</span><span class="t">Same-day denture fit on a $3k printer</span></div>
+<div class="avs"><span class="av g you">G</span></div>
+</a>
+<a class="card" href="#">
+<div style="display:flex;flex-direction:column;gap:14px"><span class="label">03</span><span class="t">Measure printer-to-printer drift</span></div>
+<div class="avs"><span class="av g you">G</span></div>
+</a>
+<a class="card" href="#">
+<div style="display:flex;flex-direction:column;gap:14px"><span class="label">04</span><span class="t">Halve post-cure time</span></div>
+<div class="avs"><span class="av g you">G</span></div>
+</a>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column" aria-labelledby="thrusts">
+<h2 id="thrusts" class="h2" style="margin-bottom:8px">Research thrusts</h2>
+
+<div class="thrust">
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Printable dental materials</h3><p class="muted">Resins that print faster and last longer.</p></div>
+<div class="rows">
+<a class="row" href="Project.dc.html"><span>Fast-print denture base resin</span><span class="avs"><span class="av sm g you">G</span><span class="av sm c">CS</span></span></a>
+<a class="row" href="#"><span>Match shades A1–A3 with two pigments</span><span class="avs"><span class="av sm c">CS</span></span></a>
+</div>
+</div>
+
+<div class="thrust">
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Accessible chairside dentistry</h3><p class="muted">Same-day parts on low-cost printers.</p></div>
+<div class="rows">
+<a class="row" href="#"><span>Same-day denture fit on a $3k printer</span><span class="avs"><span class="av sm g you">G</span></span></a>
+</div>
+</div>
+
+<div class="thrust" style="border-bottom:1px solid var(--rule)">
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Print process reliability</h3><p class="muted">Every printer and oven gives the same part.</p></div>
+<div class="rows">
+<a class="row" href="#"><span>Measure printer-to-printer drift</span><span class="avs"><span class="av sm g you">G</span></span></a>
+<a class="row" href="#"><span>Halve post-cure time</span><span class="avs"><span class="av sm g you">G</span></span></a>
+</div>
+</div>
+
+<a href="#" class="label" style="margin-top:18px;align-self:flex-start;min-height:44px;display:flex;align-items:center">1 closed thrust</a>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

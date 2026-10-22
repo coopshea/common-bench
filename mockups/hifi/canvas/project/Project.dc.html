@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f5f4ef}
+.cb{--ground:#f5f4ef;--sheet:#fbfaf7;--ink:#1b1a17;--ink-2:#47443d;--ink-3:#69655c;--rule:#d6d2c8;--rule-2:#e6e3db;--sel:#13808f;--sel-tint:#e6f3f4;--resin:#ece2c8;--uv:#6fd0df;--cooper:#2a78d6;--greeshma:#6250d6;--ok:#0ca30c;--mid:#d99a00;--bad:#d03b3b;
+font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:var(--ink);background:var(--ground);min-height:100vh;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.cb *{box-sizing:border-box}
+.cb a{color:inherit;text-decoration:none}
+.cb a:hover{color:var(--sel)}
+.mono,.cb code{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.cb h1,.cb h2,.cb h3,.cb p{margin:0}
+.cb button{font:inherit;color:inherit;cursor:pointer}
+/* top bar */
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:14px 40px;border-bottom:1px solid var(--rule);background:var(--ground)}
+.brand{display:flex;align-items:center;gap:12px;min-width:220px}
+.brand b{font-size:17px;font-weight:600;letter-spacing:-0.01em;display:block}
+.brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);display:block}
+.nav{display:flex;align-items:center;gap:12px}
+.seg{display:flex;border:1px solid var(--ink);border-radius:8px;overflow:hidden}
+.seg a{display:flex;align-items:center;height:50px;padding:0 30px;font-size:17px;font-weight:500;color:var(--ink)}
+.seg a + a{border-left:1px solid var(--ink)}
+.seg a.on{background:var(--ink);color:var(--ground)}
+.seg a.on:hover{color:var(--ground)}
+.round{width:52px;height:52px;border-radius:50%;border:1px solid var(--rule);background:var(--sheet);display:flex;align-items:center;justify-content:center}
+.round:hover{border-color:var(--ink)}
+.me{display:flex;align-items:center;gap:16px;min-width:220px;justify-content:flex-end}
+.synth{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-2);border:1px solid var(--rule);padding:4px 8px;border-radius:3px;white-space:nowrap}
+/* people */
+.av{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;flex:none}
+.av.c{background:var(--cooper)}.av.g{background:var(--greeshma)}
+.av.lg{width:44px;height:44px;font-size:15px}
+.av.sm{width:22px;height:22px;font-size:10px}
+.av.you{box-shadow:0 0 0 2px var(--ground),0 0 0 3.5px var(--ink)}
+.avs{display:flex;gap:6px;align-items:center}
+/* type */
+.label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);letter-spacing:0.02em}
+.h1{font-size:44px;font-weight:500;letter-spacing:-0.025em;line-height:1.08}
+.h2{font-size:22px;font-weight:500;letter-spacing:-0.01em}
+.h3{font-size:16px;font-weight:600}
+.muted{color:var(--ink-3)}
+.crumbs{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;color:var(--ink-3)}
+.crumbs b{color:var(--ink);font-weight:500}
+/* layout */
+.split{display:flex;flex-wrap:wrap;align-items:stretch;min-height:calc(100vh - 81px)}
+.main{flex:999 1 640px;min-width:0;padding:40px 48px 64px}
+.panel{flex:1 1 400px;max-width:100%;min-width:0;background:var(--sheet);border-left:1px solid var(--rule);padding:32px 32px 40px;display:flex;flex-direction:column;gap:28px}
+.sect{display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:1px solid var(--rule)}
+.later{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);border-bottom:1px dotted var(--ink-3);margin-left:6px;vertical-align:2px}
+/* status: results only */
+.st{font-weight:700;font-size:15px}
+.st.ok{color:var(--ok)}.st.mid{color:var(--mid)}.st.bad{color:var(--bad)}
+/* unusual: a drawn revision delta */
+.delta{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linejoin:round}
+/* ask */
+.ask{display:flex;flex-direction:column;gap:10px;padding-top:20px;border-top:1px solid var(--ink)}
+.ask-row{display:flex;gap:8px;align-items:flex-end}
+.ask textarea{flex:1;min-width:0;min-height:76px;resize:none;border:1px solid var(--rule);border-radius:6px;background:#fff;padding:12px 14px;font:inherit;font-size:15px;color:var(--ink)}
+.ask textarea::placeholder{color:#8a857b}
+.scope{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid var(--ink);border-radius:3px;padding:3px 4px 3px 8px;background:#fff}
+.scope button{border:0;background:none;width:20px;height:20px;padding:0;font-size:14px;line-height:1;color:var(--ink-3)}
+.send{width:48px;height:48px;border-radius:50%;border:0;background:var(--ink);color:var(--ground);display:flex;align-items:center;justify-content:center;flex:none}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border:1px solid var(--ink);border-radius:6px;background:transparent;font-size:15px;font-weight:500}
+.btn.ghost{border-color:var(--rule)}
+/* figures */
+.fig{display:block;max-width:100%;height:auto}
+.ch-goal{fill:var(--resin);fill-opacity:.62}
+.ch-grid{stroke:var(--rule-2);stroke-width:1}
+.ch-axis{stroke:var(--ink);stroke-width:1;fill:none}
+.ch-thresh{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:1 3;fill:none}
+.ch-tick{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--ink-3)}
+.ch-title{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-2)}
+.ch-goal-label{font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;fill:var(--ink)}
+.ch-dead{stroke:var(--ink-3);stroke-width:.8}
+.ch-hatch{stroke:#a39d92;stroke-width:.8}
+.ch-dead-label{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:var(--ink-2)}
+.ch-pt.faded{opacity:.28}
+.ch-pt.excluded{fill:#fff;stroke-width:2.2}
+.ch-id{font-family:'IBM Plex Mono',monospace;font-size:11.5px;fill:var(--ink)}
+.ch-sel{fill:none;stroke:var(--sel);stroke-width:1.8}
+.ch-leader{stroke:var(--ink);stroke-width:1;fill:none}
+.chart.mini .ch-thresh{stroke-dasharray:none;stroke:var(--rule)}
+.pl-room{fill:#fff;stroke:var(--ink-3);stroke-width:1}
+.pl-bench{fill:var(--rule-2);stroke:none}
+.pl-fixture{fill:none;stroke:var(--rule);stroke-width:1}
+.pl-inst{fill:#fff;stroke:#a39d92;stroke-width:.8}
+.pl-inst.hi{fill:var(--sel);stroke:var(--sel)}
+.twin .tw-leader{stroke:var(--ink-3);stroke-width:.8;fill:none}
+.twin .tw-balloon circle{fill:var(--sheet);stroke:var(--ink);stroke-width:1}
+.twin .tw-balloon text{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;text-anchor:middle;fill:var(--ink)}
+.twin .tw-balloon.sel circle{fill:var(--ink)}
+.twin .tw-balloon.sel text{fill:var(--sheet)}
+.twin .tw-log{fill:none;stroke:var(--ink);stroke-width:1}
+.twin .tw-log-fill{fill:var(--ink)}
+.twin .tw-bench{font-family:'IBM Plex Mono',monospace;font-size:10.5px;fill:var(--ink-3)}
+.twin .floor .iso-top,.twin .floor .iso-fill{fill:#fdfcf9}
+.twin .surface .iso-top{fill:#fff}
+
+/* Anatomy figures: kit tokens (light theme, warmed to the app canvas) + bench, zoom and specimen layout. */
+
+.iso {
+  --anatomy-paper: #fbfaf7; --anatomy-face: #ffffff; --anatomy-top: #ffffff;
+  --anatomy-shade-0: #d9d5cc; --anatomy-shade-1: #e3dfd6; --anatomy-shade-2: #ece9e1; --anatomy-shade-3: #f4f2ec;
+  --anatomy-lit-top: #ffffff; --anatomy-lit-shade: #eeebe4;
+  --anatomy-hi: #2b2925; --anatomy-mid: #8d877c; --anatomy-lo: #b6b0a5; --anatomy-faint: #d6d1c7; --anatomy-lit: #000;
+  --anatomy-weight: 0.9px;
+  --resin: #ece2c8; --resin-top: #f6efdc;
+  --uv: #6fd0df;
+  --printed: #e9dfc2;
+  overflow: visible;}
+.iso path { vector-effect: non-scaling-stroke;}
+.iso-fill { fill: var(--anatomy-paper); stroke: none;}
+.iso-shade, .iso-top { stroke: none;}
+.iso-shade[data-shade="0"] { fill: var(--anatomy-shade-0);}
+.iso-shade[data-shade="1"] { fill: var(--anatomy-shade-1);}
+.iso-shade[data-shade="2"] { fill: var(--anatomy-shade-2);}
+.iso-shade[data-shade="3"] { fill: var(--anatomy-shade-3);}
+.iso-top { fill: var(--anatomy-top);}
+.iso-line { fill: none; stroke: var(--anatomy-lo); stroke-width: var(--anatomy-weight); stroke-linecap: round; stroke-linejoin: round;}
+.iso-line[data-tone="hi"] { stroke: var(--anatomy-hi);}
+.iso-line[data-tone="mid"] { stroke: var(--anatomy-mid);}
+.iso-line[data-tone="lo"] { stroke: var(--anatomy-lo);}
+.iso-line[data-tone="faint"] { stroke: var(--anatomy-faint);}
+.iso-edge { stroke-width: calc(var(--anatomy-weight) * 1.15);}
+/* materials */
+.iso .resin > .iso-fill, .iso .resin > .iso-shade { fill: var(--resin);}
+.iso .resin > .iso-top { fill: var(--resin-top);}
+.iso .printed > .iso-fill, .iso .printed > .iso-shade { fill: var(--printed);}
+.iso .printed > .iso-top { fill: #f5eedb;}
+.iso .glass > .iso-fill { fill: #d6e6ea; fill-opacity: 0.22;}
+.iso .glass > .iso-shade { fill: #c9dde2; fill-opacity: 0.16;}
+.iso .glass > .iso-top { fill: #e8f2f4; fill-opacity: 0.25;}
+.iso .screen { fill: var(--anatomy-shade-0); stroke: var(--anatomy-mid); stroke-width: 0.6;}
+.iso .screen.lit { fill: #d7f0f4; stroke: var(--anatomy-hi);}
+.iso .window { fill: #6f6a60; fill-opacity: 0.18; stroke: var(--anatomy-mid); stroke-width: 0.6;}
+.iso .uv { fill: var(--uv); fill-opacity: 0.55; stroke: none;}
+.iso .printed-sil { fill: var(--anatomy-hi); fill-opacity: 0.25; stroke: none;}
+.iso .dial-face { fill: #fff; stroke: var(--anatomy-mid); stroke-width: 0.6;}
+.iso .bubble { fill: #fff; stroke: var(--anatomy-mid); stroke-width: 0.5;}
+.iso .needle { stroke-width: 1.3;}
+.iso .progress .bar { stroke-width: 1.6;}
+/* off-SOP: every edge dashed; not run: a ghost */
+.iso.optional .iso-line { stroke-dasharray: 2.2 2;}
+.iso[data-status="skipped"] { opacity: 0.32; filter: grayscale(1);}
+.iso .crack { stroke-width: 1.6;}
+.iso .cut-face { fill: #f4ecd8; stroke: var(--anatomy-hi); stroke-width: 0.9;}
+.iso .void { fill: #3b3830; fill-opacity: 0.85; stroke: none;}
+.iso .ghost { stroke-dasharray: 2 2.5;}
+/* weighed parts: base monomer (ivory), diluent (pale teal), photoinitiator (yellow) */
+.iso .part-base > .iso-fill, .iso .part-base > .iso-shade { fill: #e9dfc6;}
+.iso .part-base > .iso-top { fill: #f5eedc;}
+.iso .part-diluent > .iso-fill, .iso .part-diluent > .iso-shade { fill: #a9d6d0;}
+.iso .part-diluent > .iso-top { fill: #c8e8e3;}
+.iso .part-pi > .iso-fill, .iso .part-pi > .iso-shade { fill: #f0dc5a;}
+.iso .part-pi > .iso-top { fill: #f7ea93;}
+.state{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px 48px;padding:28px 0 32px;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.big{font-size:28px;font-weight:500;letter-spacing:-0.015em;line-height:1.18;text-wrap:balance}
+.ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px 48px}
+.entry{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--rule-2);font-size:16px}
+.cite{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cite a{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--rule)}
+.exps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:24px}
+.exp{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-top:2px solid var(--ink)}
+.exp svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--rule-2)}
+.exp .t{font-size:18px;font-weight:500;line-height:1.2}
+.new{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:24px;border:1px solid var(--ink);border-radius:8px;min-height:250px;background:var(--sheet)}
+.new:hover{background:#fff}
+.doc{display:flex;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid var(--rule-2);font-size:15px}
+</style>
+</helmet>
+<div class="cb">
+<header class="bar">
+<a class="brand" href="Main.dc.html"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 9.5 15 16 3 9.5Z" fill="#fff" stroke="#1b1a17" stroke-width="1.2" stroke-linejoin="round"/><path d="M3 9.5V20.5L15 27V16M27 9.5V20.5L15 27" fill="#ece2c8" stroke="#1b1a17" stroke-width="1.2" stroke-linejoin="round"/><path d="M15 16 27 9.5V20.5L15 27Z" fill="#6fd0df" fill-opacity=".55"/></svg><div><b>Common Bench</b><span>Meridian Dental Materials</span></div></a>
+<nav class="nav" aria-label="Main">
+<div class="seg"><a href="Main.dc.html" class="on" aria-current="page">Projects</a><a href="Lab.dc.html">Lab</a></div>
+<button class="round" type="button" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="#1b1a17" stroke-width="1.5"/><path d="M13 13l5 5" stroke="#1b1a17" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+</nav>
+<div class="me"><span class="synth">Synthetic data</span><button type="button" aria-label="Account menu, Greeshma" style="border:0;background:none;padding:0;display:flex"><span class="av g lg">G</span></button></div>
+</header>
+<div class="split">
+<main class="main" style="display:flex;flex-direction:column;gap:40px">
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="Main.dc.html">Printable dental materials</a><span aria-hidden="true">/</span></nav>
+<h1 class="h1">Fast-print denture base resin</h1>
+</div>
+
+<section class="state" aria-label="Goal and deliverable">
+<div style="display:flex;flex-direction:column;gap:10px"><span class="label">Goal</span><p class="big">Viscosity ≤ 1.5 Pa·s, every guardrail passing</p></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span class="label">Deliverable</span><p class="big">Formulation spec and a manuscript</p></div>
+</section>
+
+<section class="ledger">
+<div style="display:flex;flex-direction:column">
+<h2 class="h3" style="margin-bottom:12px">What we know</h2>
+<div class="entry"><span class="av sm c">CS</span><div><p>Low diluent (15–24%) passes every strength guardrail, but viscosity stays too high (1.98–2.60 Pa·s).</p><div class="cite"><a href="#">T01</a><a href="#">T02</a><a href="#">T03</a><a href="#">T04</a><a href="#">T05</a></div></div></div>
+<div class="entry"><span class="av sm c">CS</span><div><p>Dead end: high diluent (&gt; 30%) too brittle.</p><div class="cite"><a href="Experiment.dc.html">T06</a><a href="Experiment.dc.html">T07</a><a href="Experiment.dc.html">T08</a><a href="Experiment.dc.html">T10</a></div></div></div>
+</div>
+<div style="display:flex;flex-direction:column">
+<h2 class="h3" style="margin-bottom:12px">Open questions</h2>
+<div class="entry"><span class="av sm g">G</span><div><p>Can we reach 1.5 Pa·s without new materials?</p><div class="cite"><a href="#">T14</a></div></div></div>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" aria-labelledby="exps">
+<h2 id="exps" class="h2">Experiments</h2>
+<div class="exps">
+<a class="new" href="#">
+<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="none" stroke="#1b1a17"/><path d="M20 12v16M12 20h16" stroke="#1b1a17" stroke-width="1.5"/></svg>
+<span style="font-size:18px;font-weight:500">New experiment</span>
+<span class="muted" style="font-size:14px">Upload, write or copy an SOP.</span>
+</a>
+<a class="exp" href="#">
+<svg class="chart mini" width="300" height="150" viewBox="0 0 300 150" role="img" aria-label="Experiment A trials"><rect class="ch-goal" x="6.0" y="6.0" width="80.0" height="73.6"/><path class="ch-thresh" d="M86.0 144.0V6.0M6.0 79.6H294.0"/><circle class="ch-pt faded" cx="76.4" cy="99.8" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="63.6" cy="102.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="54.0" cy="105.4" r="2.6" fill="#2a78d6"/><circle class="ch-pt excluded faded" cx="50.8" cy="60.3" r="1.8" stroke="#2a78d6" /><circle class="ch-pt faded" cx="36.4" cy="122.4" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="142.0" cy="19.3" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="127.6" cy="38.2" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="110.0" cy="36.8" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="94.0" cy="30.4" r="2.6" fill="#6250d6"/><circle class="ch-pt" cx="262.0" cy="57.5" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="228.4" cy="44.6" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="202.8" cy="39.6" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="180.4" cy="31.3" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="162.8" cy="30.8" r="3.6" fill="#2a78d6"/></svg>
+<span class="t">Low-diluent formulations</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Oct 2024 – Jan 2025</span><span class="av sm c">CS</span></div>
+</a>
+<a class="exp" href="Experiment.dc.html">
+<svg class="chart mini" width="300" height="150" viewBox="0 0 300 150" role="img" aria-label="Experiment B trials"><rect class="ch-goal" x="6.0" y="6.0" width="80.0" height="73.6"/><path class="ch-thresh" d="M86.0 144.0V6.0M6.0 79.6H294.0"/><defs><pattern id="mini-B-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" class="ch-hatch"/></pattern></defs><rect class="ch-dead" x="25.2" y="92.5" width="62.4" height="37.3" fill="url(#mini-B-hatch)"/><circle class="ch-pt faded" cx="262.0" cy="57.5" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="228.4" cy="44.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="202.8" cy="39.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="180.4" cy="31.3" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="162.8" cy="30.8" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="142.0" cy="19.3" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="127.6" cy="38.2" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="110.0" cy="36.8" r="2.6" fill="#6250d6"/><circle class="ch-pt faded" cx="94.0" cy="30.4" r="2.6" fill="#6250d6"/><circle class="ch-pt" cx="76.4" cy="99.8" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="63.6" cy="102.6" r="3.6" fill="#2a78d6"/><circle class="ch-pt" cx="54.0" cy="105.4" r="3.6" fill="#2a78d6"/><circle class="ch-pt excluded" cx="50.8" cy="60.3" r="2.8" stroke="#2a78d6" /><circle class="ch-pt" cx="36.4" cy="122.4" r="3.6" fill="#2a78d6"/></svg>
+<span class="t">High-diluent formulations</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Feb 2025 – May 2025</span><span class="av sm c">CS</span></div>
+</a>
+<a class="exp" href="#">
+<svg class="chart mini" width="300" height="150" viewBox="0 0 300 150" role="img" aria-label="Experiment G trials"><rect class="ch-goal" x="6.0" y="6.0" width="80.0" height="73.6"/><path class="ch-thresh" d="M86.0 144.0V6.0M6.0 79.6H294.0"/><circle class="ch-pt faded" cx="262.0" cy="57.5" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="228.4" cy="44.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="202.8" cy="39.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="180.4" cy="31.3" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="162.8" cy="30.8" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="76.4" cy="99.8" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="63.6" cy="102.6" r="2.6" fill="#2a78d6"/><circle class="ch-pt faded" cx="54.0" cy="105.4" r="2.6" fill="#2a78d6"/><circle class="ch-pt excluded faded" cx="50.8" cy="60.3" r="1.8" stroke="#2a78d6" /><circle class="ch-pt faded" cx="36.4" cy="122.4" r="2.6" fill="#2a78d6"/><circle class="ch-pt" cx="142.0" cy="19.3" r="3.6" fill="#6250d6"/><circle class="ch-pt" cx="127.6" cy="38.2" r="3.6" fill="#6250d6"/><circle class="ch-pt" cx="110.0" cy="36.8" r="3.6" fill="#6250d6"/><circle class="ch-pt" cx="94.0" cy="30.4" r="3.6" fill="#6250d6"/></svg>
+<span class="t">Mid-diluent, high photoinitiator</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Jul 2026 – Sep 2026</span><span class="av sm g">G</span></div>
+</a>
+</div>
+</section>
+</main>
+
+<aside class="panel" aria-label="Project overview">
+<section style="display:flex;flex-direction:column;gap:10px">
+<span class="label">Why</span>
+<p style="font-size:19px;line-height:1.35">Thinner resin recoats faster between layers, so dentures print faster.</p>
+</section>
+
+<section class="sect">
+<h2 class="h3">People</h2>
+<div style="display:flex;align-items:center;gap:12px;min-height:44px"><span class="av g">G</span><div><div>Greeshma</div><div class="label">Scientist · since Jul 2026</div></div></div>
+<div style="display:flex;align-items:center;gap:12px;min-height:44px"><span class="av c">CS</span><div><div>Cooper Shea</div><div class="label">Former member · 2024–2025</div></div></div>
+</section>
+
+<section class="sect">
+<h2 class="h3">Documents</h2>
+<div style="display:flex;flex-direction:column">
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>Program proposal (2024)</a>
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>SOP v1: resin prep and print</a>
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>Guardrail sources</a>
+</div>
+</section>
+
+<section class="sect" style="flex-direction:row;align-items:center;justify-content:space-between">
+<button class="btn ghost" type="button">Send to report<span class="later">later</span></button>
+</section>
+
+<div style="flex:1"></div>
+<div class="ask">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><label class="h3" for="ask">Ask</label><span class="scope">This project<button type="button" aria-label="Clear scope">×</button></span></div>
+<div class="ask-row"><textarea id="ask" placeholder="Has anyone tried…?"></textarea><button class="send" type="button" aria-label="Send"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 15V3M4 8l5-5 5 5" fill="none" stroke="#f5f4ef" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+</div>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

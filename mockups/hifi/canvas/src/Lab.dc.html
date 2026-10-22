@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lab twin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+<!--CSS-->
+.twinbox svg.twin{width:100%;height:auto;display:block}
+.seg.sm a{height:40px;padding:0 18px;font-size:14px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:20px 32px;border-top:1px solid var(--ink);padding-top:18px}
+.keys ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.keys li a{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;min-height:40px;border-bottom:1px solid var(--rule-2);font-size:14px}
+.keys li a.sel{background:var(--sel-tint)}
+.n{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-3)}
+.lg{width:9px;height:9px;border:1px solid var(--ink);display:inline-block;flex:none}
+.lg.self{background:var(--ink)}
+.lg.hand{background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.use{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:15px;border-top:1px solid var(--ink);padding-top:16px}
+.facts dt{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);padding-top:3px}
+.facts dd{margin:0;display:flex;align-items:center;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips a{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;background:#fff;font-family:'IBM Plex Mono',monospace;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--greeshma)}
+</style>
+</helmet>
+<div class="cb">
+<!--TOPBAR:lab-->
+<div class="split">
+<main class="main" style="display:flex;flex-direction:column;gap:24px">
+
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+<div style="display:flex;flex-direction:column;gap:8px"><span class="label">Meridian Dental Materials</span><h1 class="h1">Room 214</h1></div>
+<div class="seg sm" role="group" aria-label="View"><a href="#" class="on" aria-current="true">Twin</a><a href="#">Floor plan</a></div>
+</div>
+
+<div class="legend">
+<span><i class="lg self"></i>Logs itself</span>
+<span><i class="lg hand"></i>By hand</span>
+<span><i class="lg"></i>Not logged</span>
+<span><svg width="22" height="12" aria-hidden="true"><ellipse cx="11" cy="6" rx="10" ry="5" fill="none" stroke="#6250d6" stroke-width="2"/></svg>In use now</span>
+</div>
+
+<section class="twinbox" aria-label="Isometric view of Room 214">
+<!--FIG:lab-twin-->
+</section>
+
+<section class="keys" aria-label="Instruments">
+<div><h2 class="label" style="margin-bottom:8px">Formulation bench</h2><ol>
+<li><a href="#"><span class="n">1</span>Balance<i class="lg self"></i></a></li>
+<li><a href="#"><span class="n">2</span><span style="display:flex;flex-direction:column">Planetary mixer<span class="use"><span class="dot"></span>until 10:10</span></span><i class="lg self"></i></a></li>
+<li><a href="#" class="sel" aria-current="true"><span class="n">3</span>Vacuum degasser<i class="lg hand"></i></a></li>
+<li><a href="#"><span class="n">4</span>Viscometer<i class="lg self"></i></a></li>
+</ol></div>
+<div><h2 class="label" style="margin-bottom:8px">Print bay</h2><ol>
+<li><a href="#"><span class="n">5</span><span style="display:flex;flex-direction:column">DLP printer<span class="use"><span class="dot"></span>until 11:45</span></span><i class="lg self"></i></a></li>
+<li><a href="#"><span class="n">6</span>Printer 2<i class="lg"></i></a></li>
+<li><a href="#"><span class="n">7</span>UV oven<i class="lg hand"></i></a></li>
+</ol></div>
+<div><h2 class="label" style="margin-bottom:8px">Test bench</h2><ol>
+<li><a href="#"><span class="n">8</span>Test frame<i class="lg self"></i></a></li>
+<li><a href="#"><span class="n">9</span>Cross-section imaging<i class="lg self"></i></a></li>
+<li><a href="#"><span class="n">10</span>Plate reader<i class="lg self"></i></a></li>
+</ol></div>
+<div><h2 class="label" style="margin-bottom:8px">Island</h2><ol>
+<li><a href="#"><span class="n">11</span>Hot plate<i class="lg"></i></a></li>
+</ol></div>
+</section>
+</main>
+
+<aside class="panel" aria-label="Vacuum degasser">
+<header style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+<div style="display:flex;flex-direction:column;gap:6px"><span class="label">3 · Formulation bench</span><h2 style="font-size:30px;font-weight:500;letter-spacing:-0.02em;line-height:1.1">Vacuum degasser</h2></div>
+<button class="round" type="button" aria-label="Close instrument" style="width:44px;height:44px;font-size:18px">×</button>
+</header>
+
+<div style="display:flex;justify-content:center;padding:4px 0 0"><!--FIG:panel-degas@300--></div>
+
+<dl class="facts">
+<dt>Logged</dt><dd><i class="lg hand"></i>By hand</dd>
+<dt>Calibration</dt><dd>None on record</dd>
+<dt>Interface</dt><dd>None</dd>
+</dl>
+
+<section class="sect">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><h3 class="h3">Recent trials</h3><span class="avs"><span class="av sm g">G</span></span></div>
+<div class="chips">
+<a href="#"><span class="dot"></span>T11</a>
+<a href="#"><span class="dot"></span>T12</a>
+<a href="#"><span class="dot"></span>T13</a>
+<a href="#"><span class="dot"></span>T14</a>
+</div>
+<p style="font-size:15px">All four are Greeshma's; Cooper's trials never used it.</p>
+</section>
+
+<section class="sect" style="flex-direction:row">
+<button class="btn ghost" type="button">Book<span class="later">later</span></button>
+</section>
+
+<div style="flex:1"></div>
+<!--ASK:Vacuum degasser|Who degasses, and for how long?-->
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

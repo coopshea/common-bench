@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+<!--CSS-->
+.state{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px 48px;padding:28px 0 32px;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.big{font-size:28px;font-weight:500;letter-spacing:-0.015em;line-height:1.18;text-wrap:balance}
+.ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px 48px}
+.entry{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--rule-2);font-size:16px}
+.cite{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cite a{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--rule)}
+.exps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:24px}
+.exp{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-top:2px solid var(--ink)}
+.exp svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--rule-2)}
+.exp .t{font-size:18px;font-weight:500;line-height:1.2}
+.new{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:24px;border:1px solid var(--ink);border-radius:8px;min-height:250px;background:var(--sheet)}
+.new:hover{background:#fff}
+.doc{display:flex;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid var(--rule-2);font-size:15px}
+</style>
+</helmet>
+<div class="cb">
+<!--TOPBAR:projects-->
+<div class="split">
+<main class="main" style="display:flex;flex-direction:column;gap:40px">
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="Main.dc.html">Printable dental materials</a><span aria-hidden="true">/</span></nav>
+<h1 class="h1">Fast-print denture base resin</h1>
+</div>
+
+<section class="state" aria-label="Goal and deliverable">
+<div style="display:flex;flex-direction:column;gap:10px"><span class="label">Goal</span><p class="big">Viscosity ≤ 1.5 Pa·s, every guardrail passing</p></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span class="label">Deliverable</span><p class="big">Formulation spec and a manuscript</p></div>
+</section>
+
+<section class="ledger">
+<div style="display:flex;flex-direction:column">
+<h2 class="h3" style="margin-bottom:12px">What we know</h2>
+<div class="entry"><span class="av sm c">CS</span><div><p>Low diluent (15–24%) passes every strength guardrail, but viscosity stays too high (1.98–2.60 Pa·s).</p><div class="cite"><a href="#">T01</a><a href="#">T02</a><a href="#">T03</a><a href="#">T04</a><a href="#">T05</a></div></div></div>
+<div class="entry"><span class="av sm c">CS</span><div><p>Dead end: high diluent (&gt; 30%) too brittle.</p><div class="cite"><a href="Experiment.dc.html">T06</a><a href="Experiment.dc.html">T07</a><a href="Experiment.dc.html">T08</a><a href="Experiment.dc.html">T10</a></div></div></div>
+</div>
+<div style="display:flex;flex-direction:column">
+<h2 class="h3" style="margin-bottom:12px">Open questions</h2>
+<div class="entry"><span class="av sm g">G</span><div><p>Can we reach 1.5 Pa·s without new materials?</p><div class="cite"><a href="#">T14</a></div></div></div>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" aria-labelledby="exps">
+<h2 id="exps" class="h2">Experiments</h2>
+<div class="exps">
+<a class="new" href="#">
+<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="none" stroke="#1b1a17"/><path d="M20 12v16M12 20h16" stroke="#1b1a17" stroke-width="1.5"/></svg>
+<span style="font-size:18px;font-weight:500">New experiment</span>
+<span class="muted" style="font-size:14px">Upload, write or copy an SOP.</span>
+</a>
+<a class="exp" href="#">
+<!--FIG:mini-A-->
+<span class="t">Low-diluent formulations</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Oct 2024 – Jan 2025</span><span class="av sm c">CS</span></div>
+</a>
+<a class="exp" href="Experiment.dc.html">
+<!--FIG:mini-B-->
+<span class="t">High-diluent formulations</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Feb 2025 – May 2025</span><span class="av sm c">CS</span></div>
+</a>
+<a class="exp" href="#">
+<!--FIG:mini-G-->
+<span class="t">Mid-diluent, high photoinitiator</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="label">Jul 2026 – Sep 2026</span><span class="av sm g">G</span></div>
+</a>
+</div>
+</section>
+</main>
+
+<aside class="panel" aria-label="Project overview">
+<section style="display:flex;flex-direction:column;gap:10px">
+<span class="label">Why</span>
+<p style="font-size:19px;line-height:1.35">Thinner resin recoats faster between layers, so dentures print faster.</p>
+</section>
+
+<section class="sect">
+<h2 class="h3">People</h2>
+<div style="display:flex;align-items:center;gap:12px;min-height:44px"><span class="av g">G</span><div><div>Greeshma</div><div class="label">Scientist · since Jul 2026</div></div></div>
+<div style="display:flex;align-items:center;gap:12px;min-height:44px"><span class="av c">CS</span><div><div>Cooper Shea</div><div class="label">Former member · 2024–2025</div></div></div>
+</section>
+
+<section class="sect">
+<h2 class="h3">Documents</h2>
+<div style="display:flex;flex-direction:column">
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>Program proposal (2024)</a>
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>SOP v1: resin prep and print</a>
+<a class="doc" href="#"><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M1 1h9l5 5v13H1Z M10 1v5h5" fill="none" stroke="#69655c"/></svg>Guardrail sources</a>
+</div>
+</section>
+
+<section class="sect" style="flex-direction:row;align-items:center;justify-content:space-between">
+<button class="btn ghost" type="button">Send to report<span class="later">later</span></button>
+</section>
+
+<div style="flex:1"></div>
+<!--ASK:This project|Has anyone tried…?-->
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
