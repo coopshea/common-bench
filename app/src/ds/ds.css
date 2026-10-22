@@ -15,7 +15,7 @@ body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var
 
 /* People: one color each, never for status */
 .cb-av { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; font-size: 12px; font-weight: 600; flex: none; }
-.cb-av.cooper { background: var(--person-cooper); } .cb-av.greeshma { background: var(--person-greeshma); } .cb-av.lena { background: var(--person-lena); }
+.cb-av.cooper { background: var(--person-cooper); } .cb-av.greeshma { background: var(--person-greeshma); }
 .cb-av.sm { width: 22px; height: 22px; font-size: 10px; }
 .cb-av.lg { width: 44px; height: 44px; font-size: 15px; }
 .cb-av.you { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 3.5px var(--ink); }
