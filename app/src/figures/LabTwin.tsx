@@ -42,11 +42,18 @@ function useLoop(on: boolean) {
 
 export const instrumentNumber = (id: string) => lab.instruments.findIndex((i) => i.id === id) + 1;
 
-export function LabTwin({ selected, onSelect, booked }: { selected: string | null; onSelect: (id: string) => void; booked?: Set<string> }) {
+/** A consumable to fetch from (get) or return to (put) a fixture: drawn as a bottle on it, with its name. */
+export interface TwinItem { name: string; at: string; mode: "get" | "put" }
+
+export function LabTwin({ selected, onSelect, booked, active, items = [] }: {
+  selected: string | null; onSelect: (id: string) => void; booked?: Set<string>;
+  active?: string; // the bench view's current instrument: only it runs, the rest dim
+  items?: TwinItem[];
+}) {
   const ref: Trial = useMemo(() => [...trials].reverse().find((t) => t.owners.includes("greeshma")) ?? trials[trials.length - 1], []);
   const R = useMemo(() => runsOf(ref), [ref]);
   const PB = useMemo(() => playbackOf(R), [R]);
-  const running = lab.instruments.some((i) => i.in_use && MODEL[i.id]);
+  const running = active !== undefined ? !!MODEL[active] : lab.instruments.some((i) => i.in_use && MODEL[i.id]);
   const t = useLoop(running);
 
   const pR = useMemo(() => {
@@ -75,7 +82,7 @@ export function LabTwin({ selected, onSelect, booked }: { selected: string | nul
   for (const f of lab.fixtures) {
     const h = (f.z ?? 90) * U;
     kids.push(
-      <g key={f.name} className="tw-fixture">
+      <g key={f.name} className={`tw-fixture ${items.some((it) => it.at === f.name) ? "hot" : ""}`}>
         <Solid paths={box(f.x * U, f.y * U, f.w * U, f.h * U, 0, h, pR, 0.2)} tone="faint" crease="none" className="ghost" />
         {f.name === "Sink" && <Line d={disc((f.x + f.w / 2) * U, (f.y + f.h / 2) * U, 2, h + 0.01, pR)} tone="faint" />}
       </g>,
@@ -91,7 +98,7 @@ export function LabTwin({ selected, onSelect, booked }: { selected: string | nul
   function instrument(inst: Instrument, sh: number) {
     const cx = (inst.x + inst.w / 2) * U, cy = (inst.y + inst.h / 2) * U;
     const step = MODEL[inst.id];
-    const live = !!inst.in_use && !!step;
+    const live = !!step && (active !== undefined ? inst.id === active : !!inst.in_use);
     const on = selected === inst.id;
     let top: number;
     let body: React.ReactNode;
@@ -116,10 +123,10 @@ export function LabTwin({ selected, onSelect, booked }: { selected: string | nul
     balloons.push({ id: inst.id, ax, ay, front: inst.y > lab.depth / 2, source: inst.source });
     const ringR = (Math.max(inst.w, inst.h) * U) / 2 + 1;
     return (
-      <g key={inst.id} className={`tw-inst ${live ? "running" : ""} ${on ? "on" : ""}`} role="button" tabIndex={0} aria-label={inst.name}
+      <g key={inst.id} className={`tw-inst ${live ? "running" : ""} ${on ? "on" : ""} ${active !== undefined && inst.id !== active ? "dim" : ""}`} role="button" tabIndex={0} aria-label={inst.name}
         onClick={() => onSelect(inst.id)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(inst.id); } }}>
         {on && <path className="tw-sel" d={disc(cx, cy, ringR + 1.2, sh + 0.02, pR, 48)} />}
-        {inst.in_use && <path className="tw-ring" d={disc(cx, cy, ringR, sh + 0.02, pR, 48)} style={{ stroke: colorOf(inst.in_use.by) }} />}
+        {inst.in_use && active === undefined && <path className="tw-ring" d={disc(cx, cy, ringR, sh + 0.02, pR, 48)} style={{ stroke: colorOf(inst.in_use.by) }} />}
         {body}
       </g>
     );
@@ -131,13 +138,43 @@ export function LabTwin({ selected, onSelect, booked }: { selected: string | nul
     return <text key={`l-${r.name}`} className={cls} x={x} y={y} dy={10} transform={`rotate(26.57 ${x} ${y})`}>{r.name}</text>;
   };
 
+  // Consumables: bottles standing on their fixture, named, solid to fetch and dashed to put back.
+  const itemMarks = lab.fixtures.flatMap((f) => {
+    const here = items.filter((it) => it.at === f.name);
+    const long = f.h > f.w;
+    return here.map((it, j) => {
+      const u = (j + 1) / (here.length + 1);
+      const cx = (f.x + (long ? f.w / 2 : f.w * u)) * U, cy = (f.y + (long ? f.h * u : f.h / 2)) * U;
+      const top = (f.z ?? 90) * U;
+      const [lx, ly] = iso([cx, cy, top + 3.2], pR);
+      return (
+        <g key={`${f.name}-${it.name}`} className={`tw-item ${it.mode}`}>
+          <Solid paths={cyl(cx, cy, 1.3, top, 3, pR)} tone="hi" />
+          <path className="tw-item-ring" d={disc(cx, cy, 3.2, top + 0.02, pR, 32)} />
+          <text x={lx + 10} y={ly - 6}>{it.mode === "put" ? "↩ " : ""}{it.name}</text>
+        </g>
+      );
+    });
+  });
+
+  // Bench view: the current instrument is named above it instead of the numbered balloons.
+  function activeLabel() {
+    const b = balloons.find((x) => x.id === active);
+    const inst = lab.instruments.find((i) => i.id === active);
+    if (!b || !inst) return null;
+    return <g className="tw-item active"><text x={b.ax} y={b.ay - 18} textAnchor="middle">{inst.name}</text></g>;
+  }
+
   const backBand = Math.min(...balloons.filter((b) => !b.front).map((b) => b.ay)) - 34;
   return (
     <svg className="iso twin" viewBox={`0 0 ${TW} ${TH}`} role="img" aria-label={`${lab.room}, isometric`}>
       {kids}
-      {lab.benches.map((b) => floorLabel(b, "tw-bench"))}
-      {lab.fixtures.map((f) => floorLabel(f, "tw-bench fixture"))}
-      {balloons.map((b) => {
+      {itemMarks}
+      {active !== undefined ? activeLabel() : <>
+        {lab.benches.map((b) => floorLabel(b, "tw-bench"))}
+        {lab.fixtures.map((f) => floorLabel(f, "tw-bench fixture"))}
+      </>}
+      {active === undefined && balloons.map((b) => {
         const by = b.front ? b.ay - 46 : backBand;
         const n = instrumentNumber(b.id);
         const on = selected === b.id;

@@ -3,7 +3,7 @@
 import { Fragment, useMemo, useState } from "react";
 import type { Instrument } from "../shared/types.ts";
 import { people, personById, trials } from "../data/notebook.ts";
-import { ME, company, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
+import { ME, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
 import { parseBooking, type BookingDraft } from "../lib/booking.ts";
 import { useStore } from "../state/store.tsx";
@@ -32,7 +32,7 @@ export function LabPage() {
     <div className="pg-split">
       <div className="pg-main lab">
         <div className="pg-titlerow">
-          <div className="pg-title"><span className="cb-label">{company}</span><h1 className="h1">{lab.room}</h1></div>
+          <div className="pg-title"><h1 className="h1">{lab.room}</h1></div>
           <div className="seg sm" role="group" aria-label="View">
             <button className={plan ? "" : "on"} aria-pressed={!plan} onClick={() => setPlan(false)}>Twin</button>
             <button className={plan ? "on" : ""} aria-pressed={plan} onClick={() => setPlan(true)}>Floor plan</button>

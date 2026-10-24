@@ -8,7 +8,6 @@
   "project": {
     "id": "fast-print-denture-resin",
     "name": "Fast-print denture base resin",
-    "customer": "Meridian Dental Materials (fictional)",
     "concept_label": "Concept: project workspace for Claude Science (unofficial)",
     "synthetic_label": "Synthetic data",
     "now": "2026-10-13T09:30:00",
@@ -6510,6 +6509,53 @@
         "w": 80,
         "h": 60,
         "z": 45
+      },
+      {
+        "name": "Chemical shelf",
+        "x": 600,
+        "y": 250,
+        "w": 160,
+        "h": 50,
+        "z": 120
+      },
+      {
+        "name": "Supply cabinet",
+        "x": 430,
+        "y": 300,
+        "w": 60,
+        "h": 90,
+        "z": 100
+      },
+      {
+        "name": "Waste",
+        "x": 345,
+        "y": 470,
+        "w": 40,
+        "h": 40,
+        "z": 60
+      }
+    ],
+    "consumables": [
+      {
+        "id": "base",
+        "name": "Base monomer",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "diluent",
+        "name": "Diluent",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "pi",
+        "name": "Photoinitiator",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "cup",
+        "name": "Mixing cup",
+        "home": "Supply cabinet",
+        "back": "Waste"
       }
     ],
     "instruments": [
@@ -6655,6 +6701,245 @@
       }
     ]
   },
+  "bench": [
+    {
+      "id": "T15a",
+      "title": "Resin batch T15a",
+      "runner": "greeshma",
+      "params": [
+        {
+          "id": "batch_g",
+          "label": "Batch",
+          "value": 50,
+          "unit": "g"
+        },
+        {
+          "id": "diluent_pct",
+          "label": "Diluent",
+          "value": 38,
+          "unit": "%"
+        },
+        {
+          "id": "pi_pct",
+          "label": "Photoinitiator",
+          "value": 1.7,
+          "unit": "%"
+        },
+        {
+          "id": "mix_rpm",
+          "label": "Mix speed",
+          "value": 3000,
+          "unit": "rpm"
+        },
+        {
+          "id": "mix_min",
+          "label": "Mix time",
+          "value": 2,
+          "unit": "min"
+        },
+        {
+          "id": "degas_min",
+          "label": "Degas",
+          "value": 10,
+          "unit": "min"
+        }
+      ],
+      "steps": [
+        {
+          "id": "base",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Weigh base monomer",
+          "get": [
+            "cup",
+            "base"
+          ],
+          "put": [],
+          "detail": [
+            "Place a clean cup on the balance",
+            "Tare",
+            "Pour base monomer slowly",
+            "Stop just short and let it settle"
+          ],
+          "fields": [
+            {
+              "id": "base",
+              "label": "Base monomer",
+              "unit": "g",
+              "formula": "batch_g * (100 - diluent_pct - pi_pct) / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "diluent",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Add diluent",
+          "get": [
+            "diluent"
+          ],
+          "put": [
+            "base"
+          ],
+          "detail": [
+            "Keep the cup on the balance",
+            "Pour diluent on top",
+            "Pipette the last gram"
+          ],
+          "fields": [
+            {
+              "id": "diluent",
+              "label": "Diluent",
+              "unit": "g",
+              "formula": "batch_g * diluent_pct / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "pi",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Add photoinitiator",
+          "get": [
+            "pi"
+          ],
+          "put": [
+            "diluent"
+          ],
+          "detail": [
+            "Weigh the powder on a boat",
+            "Tip it into the cup",
+            "Keep it out of direct light"
+          ],
+          "fields": [
+            {
+              "id": "pi",
+              "label": "Photoinitiator",
+              "unit": "g",
+              "formula": "batch_g * pi_pct / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "mix",
+          "station": "mix",
+          "instrument": "mixer",
+          "title": "Mix",
+          "get": [],
+          "put": [
+            "pi"
+          ],
+          "detail": [
+            "Cap the cup",
+            "Load it and balance the arm",
+            "Run",
+            "Check no powder is left"
+          ],
+          "fields": [
+            {
+              "id": "rpm",
+              "label": "Speed",
+              "unit": "rpm",
+              "formula": "mix_rpm"
+            },
+            {
+              "id": "mix_min",
+              "label": "Time",
+              "unit": "min",
+              "formula": "mix_min"
+            }
+          ]
+        },
+        {
+          "id": "degas",
+          "station": "degas",
+          "instrument": "degasser",
+          "title": "Degas",
+          "get": [],
+          "put": [],
+          "detail": [
+            "Uncap the cup",
+            "Place it in the chamber",
+            "Pull vacuum",
+            "Foam rises, then collapses",
+            "Hold until no bubbles rise"
+          ],
+          "fields": [
+            {
+              "id": "degas_min",
+              "label": "Vacuum",
+              "unit": "min",
+              "formula": "degas_min"
+            }
+          ]
+        },
+        {
+          "id": "print",
+          "station": "print",
+          "instrument": "printer-1",
+          "title": "Print",
+          "get": [],
+          "put": [
+            "cup"
+          ],
+          "photo": true,
+          "detail": [
+            "Pour resin into the vat",
+            "Start the job: 6 dogbones, 3 bend bars",
+            "Photograph the plate when it finishes",
+            "Throw the cup away"
+          ],
+          "fields": []
+        }
+      ],
+      "script": [
+        {
+          "say": "Base monomer, 30.8 grams.",
+          "step": "base",
+          "values": {
+            "base": 30.8
+          }
+        },
+        {
+          "say": "Diluent, 19.41 grams.",
+          "step": "diluent",
+          "values": {
+            "diluent": 19.41
+          }
+        },
+        {
+          "say": "Photoinitiator, 0.87 grams.",
+          "step": "pi",
+          "values": {
+            "pi": 0.87
+          }
+        },
+        {
+          "say": "Mixed at 3000 for 2 minutes.",
+          "step": "mix",
+          "values": {
+            "rpm": 3000,
+            "mix_min": 2
+          }
+        },
+        {
+          "say": "Degassed 10 minutes.",
+          "step": "degas",
+          "values": {
+            "degas_min": 10
+          }
+        },
+        {
+          "say": "Photo.",
+          "step": "print",
+          "photo": "Build plate"
+        }
+      ]
+    }
+  ],
   "landscape": {
     "axes": {
       "diluent": [

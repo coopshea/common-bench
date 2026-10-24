@@ -34,7 +34,7 @@ function projectFacts(): string {
     .map((s) => `${s.label}${s.in_sop ? "" : " (not in SOP " + p.sop.version + ")"} [${s.device}, ${s.source === "mhs" ? "device-logged" : s.source}]`)
     .join(" → ");
   return [
-    `Project: ${p.name}, for ${p.customer}. ${p.synthetic_label}. Today is ${p.now.slice(0, 10)}.`,
+    `Project: ${p.name}. ${p.synthetic_label}. Today is ${p.now.slice(0, 10)}.`,
     `Objective: ${o.label} (from about ${o.baseline}). ${o.why}`,
     `Guardrails (all must pass):\n${guard}`,
     `People:\n${people}`,
