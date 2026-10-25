@@ -299,3 +299,33 @@
   .num b { font-size: 24px; }
   .big { font-size: 22px; }
 }
+
+/* Who's using an instrument right now: a person-colored token beside it */
+.twin .tw-user circle { stroke: var(--canvas); stroke-width: 2.5; }
+.twin .tw-user text { font-family: var(--font-sans); font-size: 12px; font-weight: 600; fill: #fff; text-anchor: middle; pointer-events: none; }
+
+/* Today (react-big-calendar), restyled to the hairline look */
+.labday .rbc-time-view { border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); }
+.labday .rbc-time-header { display: none; }
+.labday .rbc-time-content { border-top: 0; }
+.labday .rbc-timeslot-group { min-height: 44px; border-bottom-color: var(--line-2); }
+.labday .rbc-day-slot .rbc-time-slot { border-top: 0; }
+.labday .rbc-label { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+.labday .rbc-event, .labday .rbc-day-slot .rbc-background-event { border-radius: 4px; padding: 3px 6px; font-size: 12.5px; color: var(--ink); background: color-mix(in srgb, var(--ic) 16%, var(--panel-2)); border: 1px solid color-mix(in srgb, var(--ic) 45%, transparent); border-left: 4px solid var(--ic); }
+.labday .rbc-event.use { background: var(--ic); color: #fff; border-color: var(--ic); }
+.labday .rbc-event.idle { background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--ic) 22%, var(--panel-2)) 0 5px, var(--panel-2) 5px 10px); border-style: dashed; border-left-style: solid; }
+.labday .rbc-event.past { opacity: .45; }
+.labday .rbc-event:focus { outline: 2px solid var(--sel); }
+.labday .rbc-slot-selection { background: color-mix(in srgb, var(--sel) 25%, transparent); color: var(--ink); border-radius: 4px; }
+.labday .rbc-event-label { display: none; }
+.labday .rbc-current-time-indicator { background: var(--sel); height: 2px; }
+.labday-ev { display: inline-flex; align-items: center; gap: 6px; }
+.labday-ev b { font-weight: 600; }
+.labday-who { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; color: #fff; font-style: normal; font-size: 9.5px; font-weight: 600; box-shadow: 0 0 0 1.5px var(--panel-2); flex: none; }
+.labday-key { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); margin-top: 8px; }
+.labday-key span { display: inline-flex; align-items: center; gap: 6px; }
+.labday-key i { width: 14px; height: 12px; border-radius: 2px; border: 1px solid color-mix(in srgb, var(--ic) 45%, transparent); border-left: 3px solid var(--ic); background: color-mix(in srgb, var(--ic) 16%, var(--panel-2)); }
+.labday-key i.use { background: var(--ic); }
+.labday-key i.idle { background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--ic) 25%, var(--panel-2)) 0 3px, var(--panel-2) 3px 6px); border-style: dashed; border-left-style: solid; }
+.labday-key i.free { background: var(--panel-2); border: 1px solid var(--line); }
+.labday .rbc-today { background: transparent; }

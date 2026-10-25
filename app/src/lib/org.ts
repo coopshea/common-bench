@@ -51,13 +51,15 @@ export type Route =
   | { view: "project"; project: string }
   | { view: "experiment"; project: string; experiment: string }
   | { view: "lab" }
-  | { view: "bench"; protocol?: string; run?: boolean }
+  | { view: "bench"; protocol?: string; mode: BenchMode }
   | { view: "evals" };
+
+export type BenchMode = "view" | "run" | "print" | "edit";
 
 export function parseRoute(path: string): Route {
   const seg = path.split("/").filter(Boolean).map(decodeURIComponent);
   if (seg[0] === "lab") return { view: "lab" };
-  if (seg[0] === "bench") return { view: "bench", protocol: seg[1], run: seg[2] === "run" };
+  if (seg[0] === "bench") return { view: "bench", protocol: seg[1], mode: (["run", "print", "edit"] as const).find((m) => m === seg[2]) ?? "view" };
   if (seg[0] === "evals") return { view: "evals" };
   if (seg[0] === "p" && seg[1] && projectById(seg[1])) {
     if (seg[2] && experimentById(seg[2])) return { view: "experiment", project: seg[1], experiment: seg[2] };

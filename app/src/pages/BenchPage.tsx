@@ -1,39 +1,53 @@
-// Bench: a protocol as a programmable document (params + formula blocks) before and after, and a split run view
-// during: the lab twin on the left shows where to go and what to fetch, the steps on the right fill in as you speak.
-// Speech is the browser's recognition plus a local parse (lib/benchSpeech.ts); without it, the recorded script plays.
-import { useEffect, useMemo, useRef, useState } from "react";
+// Bench: a reusable protocol, and runs of it.
+// - View: this run's name and settings at the top; every amount below is typeset math, worked with the run's numbers.
+// - Print: the same page on paper, with blanks where the numbers go, so it can be solved by hand and read back by OCR.
+// - Run: the split bench view (BenchRun.tsx).
+// - Edit: the protocol itself, as a block document (BenchEditor.tsx). The only place the SOP changes.
+import { useEffect, useMemo, useState } from "react";
 import type { BenchField, BenchProtocol } from "../shared/types.ts";
+import { isPlain, toTex } from "../shared/calc.ts";
 import { notebook, personById, trials } from "../data/notebook.ts";
-import { lab } from "../lib/org.ts";
+import type { BenchMode } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
-import { compute, fmt, resetRun, useBenchRun, type Entry } from "../lib/benchRun.ts";
-import { FATAL, listenOnce, parseUtterance, speechAvailable, stepNamed } from "../lib/benchSpeech.ts";
+import { compute, fmt, useBench, useLastActivity } from "../lib/benchRun.ts";
 import { Avatar, Later } from "../ds/index.tsx";
-import { LabTwin, type TwinItem } from "../figures/LabTwin.tsx";
+import { MathTex, texText } from "../components/MathTex.tsx";
 import { PlatePhoto } from "../figures/PlatePhoto.tsx";
 import { InstrumentFigure } from "../figures/bench/InstrumentFigure.tsx";
 import { runsOf, stationAt } from "../figures/bench/timeline.ts";
+import { BenchRun } from "./BenchRun.tsx";
+import { BenchEditor } from "./BenchEditor.tsx";
 import "./bench.css";
 
 const protocols = notebook.bench ?? [];
+const day = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
-export function BenchPage({ protocolId, run }: { protocolId?: string; run?: boolean }) {
+export function BenchPage({ protocolId, mode }: { protocolId?: string; mode: BenchMode }) {
   const proto = protocols.find((p) => p.id === protocolId);
-  if (!proto) return <BenchPicker />;
-  return run ? <BenchRun key={proto.id} proto={proto} /> : <BenchDoc key={proto.id} proto={proto} />;
+  if (!proto) return <BenchList />;
+  if (mode === "run") return <BenchRun key={proto.id} base={proto} />;
+  if (mode === "edit") return <BenchEditor key={proto.id} base={proto} />;
+  return <BenchDoc key={proto.id} base={proto} paper={mode === "print"} />;
 }
 
-function BenchPicker() {
+function BenchList() {
   const go = useGo();
+  const lastOf = useLastActivity();
+  const sorted = [...protocols].sort((a, b) => lastOf(b).localeCompare(lastOf(a)));
   return (
     <div className="bench-pick">
       <h1 className="h1">Protocols</h1>
       <div className="bench-list">
-        {protocols.map((p) => (
-          <button key={p.id} className="bench-item" onClick={() => go(`/bench/${p.id}`)}>
-            <span className="h2">{p.title}</span>
+        {sorted.map((p) => (
+          <div key={p.id} className="bench-item">
+            <button className="bench-item-main" onClick={() => go(`/bench/${p.id}`)}>
+              <span className="h2">{p.title}</span>
+              <span className="mono muted">{day(lastOf(p))}</span>
+            </button>
             <Avatar id={p.runner} size="sm" />
-          </button>
+            <button className="cb-btn ghost sm" onClick={() => go(`/bench/${p.id}`)}>Open</button>
+            <button className="cb-btn ghost sm" onClick={() => go(`/bench/${p.id}/print`)}>Print SOP</button>
+          </div>
         ))}
         <div className="bench-item upload"><span className="h3">Upload a PDF</span><Later /></div>
       </div>
@@ -41,37 +55,75 @@ function BenchPicker() {
   );
 }
 
-// ---------- The document: params and formula blocks; after a run, what was recorded ----------
+// ---------- Amounts as math: the formula in words, then the same shape with numbers (or blanks to fill in) ----------
 
-function BenchDoc({ proto }: { proto: BenchProtocol }) {
+const blankTex = (label: string, w = 3) => `\\underset{\\text{${texText(label)}}}{\\underline{\\hspace{${w}em}}}`;
+const unitTex = (u: string) => (u ? `\\ \\text{${texText(u)}}` : "");
+
+function amountTex(f: BenchField, labels: Record<string, string>, scope: Record<string, number>, result: number | undefined, paper: boolean) {
+  const lhs = `\\text{${texText(f.label)}}`;
+  const res = paper ? blankTex("target", 4) : `\\mathbf{${fmt(result, f.unit)}}`;
+  try {
+    if (isPlain(f.formula)) return `${lhs} = ${res}${unitTex(f.unit)}`;
+    const words = toTex(f.formula, (id) => `\\text{${texText(labels[id] ?? id)}}`);
+    const nums = toTex(f.formula, (id) => (paper ? blankTex(id) : fmt(scope[id], "")));
+    return `\\begin{aligned} ${lhs} &= ${words} \\\\[4pt] &= ${nums} = ${res}${unitTex(f.unit)} \\end{aligned}`;
+  } catch {
+    return `${lhs} = \\text{?}`;
+  }
+}
+
+function BenchDoc({ base, paper }: { base: BenchProtocol; paper: boolean }) {
   const go = useGo();
-  const [s, update] = useBenchRun(proto);
-  const c = compute(proto, s);
+  const { proto, run, editRun, newRun } = useBench(base);
+  const c = compute(proto, run);
   const ref = useMemo(() => [...trials].reverse().find((t) => t.owners.includes(proto.runner)) ?? trials[trials.length - 1], [proto.runner]);
   const runs = useMemo(() => runsOf(ref), [ref]);
-  const setParam = (id: string, v: string) => { const n = Number(v); if (v.trim() && Number.isFinite(n)) update((x) => ({ ...x, params: { ...x.params, [id]: n } })); };
-  const setFormula = (id: string, f: string) => update((x) => ({ ...x, formulas: { ...x.formulas, [id]: f } }));
+  const labels = useMemo(() => Object.fromEntries([...proto.params.map((x) => [x.id, x.label]), ...proto.steps.flatMap((s) => s.fields.map((f) => [f.id, f.label]))]), [proto]);
+  const setParam = (id: string, v: string) => {
+    if (v.trim() === "" || !Number.isFinite(Number(v))) return;
+    editRun((x) => ({ ...x, params: { ...x.params, [id]: Number(v) } }));
+  };
 
   return (
-    <div className="bench-doc">
+    <div className={`bench-doc ${paper ? "print" : "view"}`}>
       <header className="doc-head">
-        <h1 className="h1">{proto.title}</h1>
-        <span className="doc-actions">
-          {c.started && <button className="cb-btn ghost" onClick={() => resetRun(proto)}>New run</button>}
-          {!c.done && <button className="cb-btn primary" onClick={() => go(`/bench/${proto.id}/run`)}>{c.started ? "Resume" : "Run"}</button>}
-        </span>
+        <div className="doc-title">
+          <h1 className="h1">{proto.title}</h1>
+          <label className="trial-name">
+            <span>Trial</span>
+            {paper
+              ? <span className="blank wide"><i>trial</i></span>
+              : <input className="run-name mono" value={run.name} aria-label="Trial" onChange={(e) => editRun((x) => ({ ...x, name: e.target.value }))} />}
+          </label>
+        </div>
+        {paper ? (
+          <span className="doc-actions no-print">
+            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}`)}>Back</button>
+            <button className="cb-btn primary" onClick={() => window.print()}>Print</button>
+          </span>
+        ) : (
+          <span className="doc-actions">
+            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}/edit`)}>Edit SOP</button>
+            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}/print`)}>Print SOP</button>
+            {c.started && <button className="cb-btn ghost" onClick={newRun}>New trial</button>}
+            {!c.done && <button className="cb-btn primary" onClick={() => go(`/bench/${proto.id}/run`)}>{c.started ? "Resume trial" : "Start trial"}</button>}
+          </span>
+        )}
       </header>
+      {paper && <div className="paper-meta"><span className="blank wide"><i>name</i></span><span className="blank wide"><i>date</i></span></div>}
 
       <section className="doc-block params">
         {proto.params.map((p) => (
           <label key={p.id} className="param">
             <span className="param-label">{p.label}</span>
             <span className="param-val">
-              <input className="mono" inputMode="decimal" defaultValue={s.params[p.id]} key={`${p.id}-${s.params[p.id]}`}
-                onBlur={(e) => setParam(p.id, e.target.value)} onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()} />
+              {paper
+                ? <><span className="mono planned">{fmt(run.params[p.id] ?? p.value, p.unit)}</span><span className="blank"><i>{p.id}</i></span></>
+                : <NumberInput label={p.label} value={run.params[p.id] ?? p.value} onChange={(v) => setParam(p.id, v)} />}
               <span className="mono unit">{p.unit}</span>
             </span>
-            <code className="param-id">{p.id}</code>
+            {!paper && <code className="param-id">{p.id}</code>}
           </label>
         ))}
       </section>
@@ -79,21 +131,27 @@ function BenchDoc({ proto }: { proto: BenchProtocol }) {
       {proto.steps.map((st, i) => (
         <section key={st.id} className="doc-block doc-step">
           <div className="doc-step-text">
-            <h2 className="h3"><span className="mono bnum">{i + 1}</span>{st.title}</h2>
-            <ul className="bullets">{st.detail.map((d) => <li key={d}>{d}</li>)}</ul>
+            <h2 className="h3"><span className="mono bnum">{i + 1}</span>{st.title}{paper && <span className="box" />}</h2>
+            <ul className={`bullets ${paper ? "checks" : ""}`}>{st.detail.map((d) => <li key={d}>{d}</li>)}</ul>
             {st.fields.map((f) => {
-              const e = s.entries[f.id];
+              const e = run.entries[f.id];
               return (
                 <div key={f.id} className="doc-field">
-                  <span>{f.label}</span>
-                  <input className={`mono formula ${c.errors[f.id] ? "bad" : ""}`} defaultValue={s.formulas[f.id] ?? f.formula} spellCheck={false}
-                    title={c.errors[f.id]} aria-label={`${f.label} formula`} onChange={(ev) => setFormula(f.id, ev.target.value)} />
-                  <span className="mono planned">{fmt(c.planned[f.id], f.unit)} {f.unit}</span>
-                  <span className={`mono actual ${e ? "has" : ""}`}>{e ? `${fmt(e.value, f.unit)} ${f.unit}` : ""}{e?.ok && <i className="ok">✓</i>}</span>
+                  <MathTex tex={amountTex(f, labels, c.scope, c.target[f.id], paper)} />
+                  {paper
+                    ? <span className="actual-blank"><span className="blank wide"><i>actual</i></span><span className="unit">{f.unit}</span></span>
+                    : e ? <span className="mono doc-actual">{fmt(e.value, f.unit)} {f.unit}{e.ok && <i className="ok">✓</i>}</span> : <span />}
                 </div>
               );
             })}
-            {st.photo && s.photo && <Photo proto={proto} at={s.photo.at} title={st.title} />}
+            {st.photo && (paper
+              ? <div className="doc-field"><span>Photo</span><span className="box" /></div>
+              : run.photo && (
+                <figure className="bphoto">
+                  <PlatePhoto dogbones={6} bars={3} width={260} />
+                  <figcaption className="cb-label">{proto.title} · Trial {run.name} · {personById(proto.runner).name} · {run.photo.at}</figcaption>
+                </figure>
+              ))}
           </div>
           <InstrumentFigure step={st.station} state={stationAt(ref, runs, st.station, Infinity)} t={0.6} width={150} height={130} label={st.title} />
         </section>
@@ -102,195 +160,9 @@ function BenchDoc({ proto }: { proto: BenchProtocol }) {
   );
 }
 
-const Photo = ({ proto, at, title }: { proto: BenchProtocol; at: string; title: string }) => (
-  <figure className="bphoto">
-    <PlatePhoto dogbones={6} bars={3} width={260} />
-    <figcaption className="cb-label">{title} · {proto.id} · {personById(proto.runner).name} · {at}</figcaption>
-  </figure>
-);
-
-// ---------- The run: lab twin | steps ----------
-
-const consumable = (id: string) => lab.consumables.find((k) => k.id === id)!;
-
-function BenchRun({ proto }: { proto: BenchProtocol }) {
-  const go = useGo();
-  const [s, update] = useBenchRun(proto);
-  const c = compute(proto, s);
-  const [heard, setHeard] = useState<string | null>(null);
-  const [fresh, setFresh] = useState<Set<string>>(new Set());
-  const [listening, setListening] = useState(false);
-  const [editing, setEditing] = useState<string | null>(null);
-  const [rerecord, setRerecord] = useState<string | null>(null);
-  const [open, setOpen] = useState<string | null>(null);
-  const [mode, setMode] = useState<"live" | "script">(() =>
-    speechAvailable() && !new URLSearchParams(window.location.search).has("script") ? "live" : "script");
-  const stopRef = useRef<() => void>(() => {});
-  useEffect(() => () => stopRef.current(), []);
-
-  const step = proto.steps[c.done ? proto.steps.length - 1 : c.current];
-  const items: TwinItem[] = c.done ? [] : [
-    ...step.get.map((id) => ({ name: consumable(id).name, at: consumable(id).home, mode: "get" as const })),
-    ...step.put.map((id) => ({ name: consumable(id).name, at: consumable(id).back ?? consumable(id).home, mode: "put" as const })),
-  ];
-
-  const nowRef = useRef<HTMLLIElement>(null);
-  useEffect(() => { nowRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, [c.current]);
-
-  const record = (values: Record<string, number>, by: Entry["by"]) => {
-    update((x) => ({ ...x, entries: { ...x.entries, ...Object.fromEntries(Object.entries(values).map(([id, value]) => [id, { value, by, ok: by === "typed" }])) } }));
-    setFresh(new Set(Object.keys(values)));
-  };
-  const takePhoto = () => update((x) => ({ ...x, photo: { at: new Date().toTimeString().slice(0, 5) } }));
-  const confirm = (id: string) => update((x) => ({ ...x, entries: { ...x.entries, [id]: { ...x.entries[id], ok: true } } }));
-  const stepOfField = (id: string) => proto.steps.find((x) => x.fields.some((f) => f.id === id));
-
-  const playScript = () => {
-    const stepId = rerecord ? stepOfField(rerecord)?.id : proto.steps[c.current]?.id;
-    const u = proto.script.find((x) => x.step === stepId);
-    if (!u) return;
-    setListening(true);
-    setHeard(null);
-    window.setTimeout(() => {
-      setListening(false);
-      setHeard(u.say);
-      if (u.values) record(rerecord ? { [rerecord]: u.values[rerecord] } : u.values, "voice");
-      if (u.photo && !rerecord) takePhoto();
-      setRerecord(null);
-    }, 900);
-  };
-
-  // One heard sentence → fields. "Step 3" in the sentence targets that step; otherwise the current one.
-  const apply = (text: string) => {
-    const named = stepNamed(text);
-    const st = rerecord ? stepOfField(rerecord) : named && proto.steps[named - 1] ? proto.steps[named - 1] : proto.steps[c.current];
-    if (!st) return;
-    const { values, photo } = parseUtterance(text, rerecord ? st.fields.filter((f) => f.id === rerecord) : st.fields);
-    setHeard(text);
-    if (Object.keys(values).length) { record(values, "voice"); setRerecord(null); }
-    if (photo && st.photo) takePhoto();
-  };
-
-  const listen = () => {
-    if (listening || (c.done && !rerecord)) return;
-    if (mode === "script") return playScript();
-    let fallback = false;
-    setListening(true);
-    setHeard(null);
-    stopRef.current = listenOnce({
-      interim: setHeard,
-      final: apply,
-      error: (code) => { if (FATAL.has(code) || code === "unsupported") { fallback = true; setMode("script"); } },
-      end: () => { setListening(false); if (fallback) playScript(); },
-    });
-  };
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.code !== "Space" || editing || (e.target as HTMLElement).closest("input, textarea, button")) return;
-      e.preventDefault();
-      listen();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  });
-
-  const fieldRow = (f: BenchField) => {
-    const e = s.entries[f.id];
-    const t = c.target[f.id];
-    const moved = !e && Math.abs(t - c.planned[f.id]) > 1e-9;
-    return (
-      <div key={f.id} className={`bfield ${fresh.has(f.id) ? "fresh" : ""} ${rerecord === f.id ? "armed" : ""}`}>
-        <span className="blabel">{f.label}</span>
-        {editing === f.id ? (
-          <TypeValue unit={f.unit} initial={e?.value ?? t}
-            onSave={(v) => { record({ [f.id]: v }, "typed"); setEditing(null); setRerecord(null); }}
-            onRerecord={() => { setEditing(null); setRerecord(f.id); }} onCancel={() => setEditing(null)} />
-        ) : (
-          <>
-            <span className="btarget mono">{moved && <s>{fmt(c.planned[f.id], f.unit)}</s>} {fmt(t, f.unit)} {f.unit}</span>
-            {e ? (
-              <>
-                <span className="bactual mono">{fmt(e.value, f.unit)} {f.unit}</span>
-                <span className="bmarks">
-                  <button className={`bok ${e.ok ? "on" : ""}`} aria-label={`Confirm ${f.label}`} onClick={() => confirm(f.id)}>✓</button>
-                  <button className="bno" aria-label={`Fix ${f.label}`} onClick={() => { setRerecord(null); setEditing(f.id); }}>✕</button>
-                </span>
-              </>
-            ) : <span className="bactual blank" />}
-          </>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <div className="bench-split">
-      <section className="split-twin" aria-label="Lab">
-        <LabTwin selected={c.done ? null : step.instrument} onSelect={() => {}} active={c.done ? "" : step.instrument} items={items} />
-      </section>
-
-      <section className="split-steps">
-        <header className="run-head">
-          <button className="cb-round sm" aria-label="Protocol" onClick={() => go(`/bench/${proto.id}`)}>←</button>
-          <h1 className="h2">{proto.title}</h1>
-        </header>
-
-        <ol className="run-steps">
-          {proto.steps.map((st, i) => {
-            const now = i === c.current, did = c.stepDone(i);
-            return (
-              <li key={st.id} ref={now ? nowRef : undefined} className={`rstep ${now ? "now" : did ? "done" : ""}`}>
-                <button className="rstep-title" aria-expanded={open === st.id} onClick={() => setOpen(open === st.id ? null : st.id)}>
-                  <span className="mono bnum">{did ? "✓" : i + 1}</span><span className="h3">{st.title}</span>
-                </button>
-                {open === st.id && <ul className="bullets rstep-detail">{st.detail.map((d) => <li key={d}>{d}</li>)}</ul>}
-                {(now || did) && st.fields.map(fieldRow)}
-                {st.photo && s.photo && <Photo proto={proto} at={s.photo.at} title={st.title} />}
-              </li>
-            );
-          })}
-        </ol>
-
-        <footer className="run-mic">
-          {heard && <p className="heard" aria-live="polite">“{heard}”</p>}
-          {c.done ? (
-            <button className="cb-btn primary" onClick={() => go(`/bench/${proto.id}`)}>Done</button>
-          ) : (
-            <div className="mic-row">
-              <span className="mic-side" />
-              <button className={`mic ${listening ? "on" : ""}`} aria-label="Speak" onClick={listen}>
-                <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
-                  <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
-              </button>
-              <button className="cb-round mic-side" aria-label="Take photo" disabled={!step.photo} onClick={() => { setHeard(null); takePhoto(); }}>
-                <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 8h4l2-3h6l2 3h4v11H3Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                  <circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-              </button>
-            </div>
-          )}
-        </footer>
-      </section>
-    </div>
-  );
-}
-
-function TypeValue({ unit, initial, onSave, onRerecord, onCancel }: {
-  unit: string; initial: number; onSave: (v: number) => void; onRerecord: () => void; onCancel: () => void;
-}) {
-  const [v, setV] = useState(String(initial));
-  const n = Number(v);
-  return (
-    <form className="btype" onSubmit={(e) => { e.preventDefault(); if (v.trim() && Number.isFinite(n)) onSave(n); }}>
-      <input autoFocus onFocus={(e) => e.target.select()} inputMode="decimal" value={v} onChange={(e) => setV(e.target.value)} aria-label="Value"
-        onKeyDown={(e) => e.key === "Escape" && onCancel()} />
-      <span className="mono">{unit}</span>
-      <button type="submit" className="cb-btn primary sm">Save</button>
-      <button type="button" className="cb-btn ghost sm" onClick={onRerecord}>Re-record</button>
-    </form>
-  );
+/** A number box that keeps what you're typing ("0.", "") while the value it reports stays a number. */
+export function NumberInput({ value, onChange, label, className = "" }: { value: number | undefined; onChange: (v: string) => void; label: string; className?: string }) {
+  const [text, setText] = useState(value === undefined ? "" : String(value));
+  useEffect(() => { if (value !== undefined && Number(text) !== value) setText(String(value)); }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  return <input className={`mono ${className}`} inputMode="decimal" aria-label={label} value={text} onChange={(e) => { setText(e.target.value); onChange(e.target.value); }} />;
 }

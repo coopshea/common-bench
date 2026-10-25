@@ -266,6 +266,9 @@ export interface BenchProtocol {
   id: string;
   title: string;
   runner: PersonId;
+  uploaded: string; // ISO date the protocol was added or last revised
+  last_run: string | null; // ISO date of the most recent run, if any
+  next_run?: string; // suggested name for the next run (e.g. a planned trial id); each run can rename itself
   params: BenchParam[];
   steps: BenchStep[];
   script: BenchUtterance[];
@@ -320,7 +323,7 @@ export interface Instrument {
   device?: string; // matches LogEntry.device, so trials can be traced to the instrument
   source: LabSource;
   calibrated: string | null; // ISO date
-  in_use?: { by: PersonId; until: string; what: string };
+  in_use?: { by: PersonId; from: string; until: string; what: string }; // today, HH:MM
   x: number; y: number; w: number; h: number; z: number; // floor plan, cm; z = height for the 3D view
 }
 
@@ -334,6 +337,7 @@ export interface Lab {
   fixtures: { name: string; x: number; y: number; w: number; h: number; z: number }[];
   instruments: Instrument[];
   consumables: Consumable[];
+  schedule: { inst: string; by: PersonId; from: string; to: string; what: string }[]; // today's reservations, HH:MM
 }
 
 // ---------- Protocol diff (returned by diff_protocols, shown inline) ----------

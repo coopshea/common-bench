@@ -6535,6 +6535,43 @@
         "z": 60
       }
     ],
+    "schedule": [
+      {
+        "inst": "balance",
+        "by": "greeshma",
+        "from": "08:45",
+        "to": "09:15",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "viscometer",
+        "by": "greeshma",
+        "from": "09:15",
+        "to": "09:45",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "degasser",
+        "by": "greeshma",
+        "from": "10:15",
+        "to": "10:35",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "uv-oven",
+        "by": "greeshma",
+        "from": "12:00",
+        "to": "12:45",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "viscometer",
+        "by": "greeshma",
+        "from": "14:00",
+        "to": "14:30",
+        "what": "Shade run check"
+      }
+    ],
     "consumables": [
       {
         "id": "base",
@@ -6584,6 +6621,7 @@
         "z": 42,
         "in_use": {
           "by": "greeshma",
+          "from": "09:20",
           "until": "10:10",
           "what": "Cure profiles, round 2"
         }
@@ -6625,6 +6663,7 @@
         "z": 70,
         "in_use": {
           "by": "greeshma",
+          "from": "09:25",
           "until": "11:45",
           "what": "Cure profiles, round 2"
         }
@@ -6703,9 +6742,12 @@
   },
   "bench": [
     {
-      "id": "T15a",
-      "title": "Resin batch T15a",
+      "id": "resin-batch",
+      "title": "Resin batch",
       "runner": "greeshma",
+      "uploaded": "2026-10-13",
+      "last_run": "2026-10-09",
+      "next_run": "T15a",
       "params": [
         {
           "id": "batch_g",
@@ -6936,6 +6978,101 @@
           "say": "Photo.",
           "step": "print",
           "photo": "Build plate"
+        }
+      ]
+    },
+    {
+      "id": "postcure",
+      "title": "Post-cure printed parts",
+      "runner": "greeshma",
+      "uploaded": "2026-09-14",
+      "last_run": "2026-10-02",
+      "params": [
+        {
+          "id": "cure_c",
+          "label": "Oven",
+          "value": 60,
+          "unit": "°C"
+        },
+        {
+          "id": "cure_min",
+          "label": "Cure",
+          "value": 45,
+          "unit": "min"
+        },
+        {
+          "id": "parts",
+          "label": "Parts",
+          "value": 9,
+          "unit": ""
+        }
+      ],
+      "steps": [
+        {
+          "id": "rinse",
+          "station": "postcure",
+          "instrument": "uv-oven",
+          "title": "Rinse parts",
+          "get": [],
+          "put": [],
+          "detail": [
+            "Remove parts from the plate",
+            "Rinse twice in IPA",
+            "Let them dry fully"
+          ],
+          "fields": [
+            {
+              "id": "rinsed",
+              "label": "Parts rinsed",
+              "unit": "",
+              "formula": "parts"
+            }
+          ]
+        },
+        {
+          "id": "cure",
+          "station": "postcure",
+          "instrument": "uv-oven",
+          "title": "Cure",
+          "get": [],
+          "put": [],
+          "detail": [
+            "Preheat the oven",
+            "Lay parts flat, not touching",
+            "Run the cure",
+            "Let parts cool before handling"
+          ],
+          "fields": [
+            {
+              "id": "oven_c",
+              "label": "Oven",
+              "unit": "°C",
+              "formula": "cure_c"
+            },
+            {
+              "id": "oven_min",
+              "label": "Time",
+              "unit": "min",
+              "formula": "cure_min"
+            }
+          ]
+        }
+      ],
+      "script": [
+        {
+          "say": "Rinsed 9 parts.",
+          "step": "rinse",
+          "values": {
+            "rinsed": 9
+          }
+        },
+        {
+          "say": "Cured at 60 for 45 minutes.",
+          "step": "cure",
+          "values": {
+            "oven_c": 60,
+            "oven_min": 45
+          }
         }
       ]
     }

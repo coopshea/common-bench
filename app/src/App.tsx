@@ -55,7 +55,7 @@ function Shell() {
         {route.view === "project" && <ProjectPage projectId={route.project} />}
         {route.view === "experiment" && <ExperimentPage projectId={route.project} experimentId={route.experiment} />}
         {route.view === "lab" && <LabPage />}
-        {route.view === "bench" && <BenchPage protocolId={route.protocol} run={route.run} />}
+        {route.view === "bench" && <BenchPage protocolId={route.protocol} mode={route.mode} />}
         {route.view === "evals" && <EvalsPage />}
       </main>
       {state.back && (

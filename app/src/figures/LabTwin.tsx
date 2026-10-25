@@ -4,7 +4,7 @@
 // each one is logged. Fixtures (fume hood, sink) are drawn as outlines so they never hide equipment.
 import { useEffect, useMemo, useState } from "react";
 import type { Instrument, StepId, Trial } from "../shared/types.ts";
-import { colorOf, trials } from "../data/notebook.ts";
+import { colorOf, personById, trials } from "../data/notebook.ts";
 import { lab } from "../lib/org.ts";
 import { prefersReducedMotion } from "../lib/hooks.ts";
 import { INSTRUMENTS } from "./bench/instruments.tsx";
@@ -151,7 +151,8 @@ export function LabTwin({ selected, onSelect, booked, active, items = [] }: {
         <g key={`${f.name}-${it.name}`} className={`tw-item ${it.mode}`}>
           <Solid paths={cyl(cx, cy, 1.3, top, 3, pR)} tone="hi" />
           <path className="tw-item-ring" d={disc(cx, cy, 3.2, top + 0.02, pR, 32)} />
-          <text x={lx + 10} y={ly - 6}>{it.mode === "put" ? "↩ " : ""}{it.name}</text>
+          <path className="tw-leader" d={`M${lx} ${ly}L${lx + 8} ${ly - 8 - j * 26}`} />
+          <text x={lx + 10} y={ly - 6 - j * 26}>{it.mode === "put" ? "↩ " : ""}{it.name}</text>
         </g>
       );
     });
@@ -170,6 +171,17 @@ export function LabTwin({ selected, onSelect, booked, active, items = [] }: {
     <svg className="iso twin" viewBox={`0 0 ${TW} ${TH}`} role="img" aria-label={`${lab.room}, isometric`}>
       {kids}
       {itemMarks}
+      {balloons.map((b) => {
+        const u = lab.instruments.find((i) => i.id === b.id)?.in_use;
+        if (!u) return null;
+        return (
+          <g key={`u-${b.id}`} className="tw-user">
+            <title>{`${personById(u.by).name} · until ${u.until}`}</title>
+            <circle cx={b.ax - 22} cy={b.ay - 10} r={13} style={{ fill: colorOf(u.by) }} />
+            <text x={b.ax - 22} y={b.ay - 10} dy={4.5}>{personById(u.by).initials}</text>
+          </g>
+        );
+      })}
       {active !== undefined ? activeLabel() : <>
         {lab.benches.map((b) => floorLabel(b, "tw-bench"))}
         {lab.fixtures.map((f) => floorLabel(f, "tw-bench fixture"))}

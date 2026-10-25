@@ -10,6 +10,7 @@ import { useStore } from "../state/store.tsx";
 import { Avatar, LogSquare, SOURCE_TEXT } from "../ds/index.tsx";
 import { FloorPlan } from "../components/FloorPlan.tsx";
 import { ScopedAsk } from "../components/ScopedAsk.tsx";
+import { LabDay, LabDayKey } from "../components/LabDay.tsx";
 import { LabTwin, instrumentNumber } from "../figures/LabTwin.tsx";
 import { InstrumentFigure } from "../figures/bench/InstrumentFigure.tsx";
 import { runsOf, stationAt } from "../figures/bench/timeline.ts";
@@ -109,28 +110,29 @@ function useBooking(context?: Instrument) {
       </div>
     </div>
   ) : miss ? <p className="cb-label">Which instrument? Try “Book the degasser 2–4 pm”.</p> : null;
-  return { intercept, card };
+  // A booking proposed from the calendar shows its card where the Ask is; bring it into view.
+  const propose = (d: BookingDraft) => {
+    setDraft(d);
+    setMiss(false);
+    window.setTimeout(() => document.querySelector(".approve")?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 0);
+  };
+  return { intercept, card, propose };
 }
 
 function LabSummary({ onSelect }: { onSelect: (id: string) => void }) {
   const { state } = useStore();
   const { intercept, card } = useBooking();
-  const busy = lab.instruments.filter((i) => i.in_use);
   return (
     <ScopedAsk scope={lab.room} placeholder="Book the degasser 2–4 pm…" intercept={intercept}>
       {card}
       <section className="pn-sect">
-        <h3 className="h3">In use now</h3>
-        {busy.map((i) => (
-          <button key={i.id} className="line-btn" onClick={() => onSelect(i.id)}>
-            <Avatar id={i.in_use!.by} size="sm" /><span className="grow">{i.name}</span><span className="cb-label">until {i.in_use!.until}</span>
-          </button>
-        ))}
+        <h3 className="h3">Today</h3>
+        <LabDay onSelect={onSelect} />
       </section>
-      {state.bookings.length > 0 && (
+      {state.bookings.some((b) => b.day !== "Today") && (
         <section className="pn-sect">
-          <h3 className="h3">Booked</h3>
-          {state.bookings.map((b) => (
+          <h3 className="h3">Later</h3>
+          {state.bookings.filter((b) => b.day !== "Today").map((b) => (
             <button key={b.id} className="line-btn" onClick={() => onSelect(b.inst)}>
               <Avatar id={b.by} size="sm" /><span className="grow">{instrumentById(b.inst)?.name}</span><span className="cb-label">{b.day.toLowerCase()} {b.from}–{b.to}</span>
             </button>
@@ -144,7 +146,7 @@ function LabSummary({ onSelect }: { onSelect: (id: string) => void }) {
 function InstrumentPanel({ i }: { i: Instrument }) {
   const { state, dispatch } = useStore();
   const go = useGo();
-  const { intercept, card } = useBooking(i);
+  const { intercept, card, propose } = useBooking(i);
   const [draft, setDraft] = useState<{ text: string; nonce: number } | null>(null);
   const recent = recentTrialsAt(i);
   const owners = [...new Set(recent.map((t) => t.owners[0]))];
@@ -169,9 +171,13 @@ function InstrumentPanel({ i }: { i: Instrument }) {
       <dl className="facts">
         <dt>Logged</dt><dd><LogSquare source={i.source} />{SOURCE_TEXT[i.source]}</dd>
         <dt>Calibration</dt><dd>{i.calibrated ?? "None on record"}</dd>
-        <dt>Now</dt><dd>{i.in_use ? <><Avatar id={i.in_use.by} size="sm" />until {i.in_use.until}</> : "Free"}</dd>
-        {bookings.map((b) => <Fragment key={b.id}><dt>Booked</dt><dd><Avatar id={b.by} size="sm" />{b.day} {b.from}–{b.to}</dd></Fragment>)}
+        {bookings.filter((b) => b.day !== "Today").map((b) => <Fragment key={b.id}><dt>Booked</dt><dd><Avatar id={b.by} size="sm" />{b.day} {b.from}–{b.to}</dd></Fragment>)}
       </dl>
+      <section className="pn-sect">
+        <h3 className="h3">Today</h3>
+        <LabDay inst={i.id} height={440} onBook={(from, to) => propose({ inst: i, day: "Today", from, to })} />
+        <LabDayKey inst={i.id} />
+      </section>
       <section className="pn-sect">
         <div className="pn-row"><h3 className="h3">Recent trials</h3><span className="cb-people">{owners.map((o) => <Avatar key={o} id={o} size="sm" />)}</span></div>
         {recent.length ? (

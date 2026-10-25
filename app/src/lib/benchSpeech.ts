@@ -100,6 +100,7 @@ const UNIT: Record<string, RegExp> = {
   g: /^(g|gs|gram|grams|gm)\b/,
   rpm: /^(rpm|rpms|rpn)\b/,
   min: /^(min|mins|minute|minutes)\b/,
+  "°C": /^(c|degrees|celsius)\b/,
 };
 
 /**

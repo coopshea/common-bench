@@ -1,8 +1,9 @@
 /* Bench: the protocol document, and the split run view (lab twin | steps). */
 .bench-pick { max-width: 720px; margin: 0 auto; padding: 56px 16px; display: flex; flex-direction: column; gap: 28px; }
 .bench-list { display: flex; flex-direction: column; border-top: 1px solid var(--ink); }
-.bench-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 4px; border-bottom: 1px solid var(--line); }
-.cb .bench-item:hover { background: var(--panel-2); }
+.bench-item { display: flex; align-items: center; gap: 12px; padding: 16px 4px; border-bottom: 1px solid var(--line); }
+.bench-item-main { flex: 1; display: flex; align-items: baseline; gap: 14px; min-width: 0; padding: 6px 0; }
+.cb .bench-item-main:hover .h2 { color: var(--sel); }
 .bench-item.upload { justify-content: flex-start; align-items: baseline; color: var(--ink-3); }
 
 /* Document: Notion-like blocks */
@@ -24,14 +25,53 @@
 .doc-step-text h2 { display: flex; gap: 12px; align-items: baseline; }
 .bullets { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 3px; color: var(--ink-2); font-size: 15px; }
 .bullets li::marker { color: var(--ink-4); }
-.doc-field { display: grid; grid-template-columns: 120px 1fr 90px 100px; gap: 10px; align-items: center; font-size: 14px; }
+.doc-field { display: grid; grid-template-columns: 1fr 140px; gap: 12px; align-items: center; font-size: 14px; padding: 6px 0; }
+.doc-field .mathtex .katex-display { margin: 0; text-align: left; }
+.doc-field .mathtex .katex-display > .katex { text-align: left; }
+.mathtex .katex { font-size: 1.12em; }
+.doc-title { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.run-name { width: 110px; height: 40px; border: 1px solid var(--line); border-radius: 6px; padding: 0 10px; font-size: 18px; background: var(--panel-2); color: var(--ink); }
+.run-name:focus { outline: none; border-color: var(--ink); }
+.doc-field-label { font-size: 15px; }
+.doc-actual { text-align: right; font-weight: 600; font-size: 15px; }
+
+/* Worked equation: names on top, the same shape with numbers (or blanks) under it */
+.eq { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); font-size: 13px; min-width: 0; }
+.eq-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; }
+.eq-line.eq-names { color: var(--ink-3); }
+.eq var { font-style: normal; }
+.eq-line.eq-nums b { font-weight: 500; color: var(--ink); }
+.eq-line.eq-nums .eq-result { font-weight: 700; font-size: 14px; }
+.unit { color: var(--ink-3); font-family: var(--font-mono); font-size: 12px; }
+
+/* Blanks: write here. The label underneath says what goes in it, for the person and for OCR. */
+.blank { position: relative; display: inline-block; min-width: 54px; height: 24px; border-bottom: 1.2px solid var(--ink); margin-bottom: 12px; }
+.blank.wide { min-width: 84px; }
+.blank i { position: absolute; left: 0; right: 0; top: 100%; font-style: normal; font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-3); text-align: center; white-space: nowrap; }
+.box { display: inline-block; width: 16px; height: 16px; border: 1.2px solid var(--ink); margin-left: 10px; vertical-align: -2px; }
+.actual-blank { display: flex; align-items: baseline; gap: 6px; justify-content: flex-end; }
 .doc-field .formula { height: 32px; border: 1px solid transparent; border-radius: 4px; padding: 0 8px; background: var(--canvas); font-size: 13px; color: var(--ink-2); min-width: 0; }
 .doc-field .formula:hover { border-color: var(--line); }
 .doc-field .formula:focus { outline: none; border-color: var(--ink); background: var(--panel-2); color: var(--ink); }
 .doc-field .formula.bad { border-color: var(--status-fail); }
-.doc-field .planned { text-align: right; color: var(--ink-3); }
-.doc-field .actual { text-align: right; font-weight: 600; }
 .doc-field .ok { color: var(--status-goal); font-style: normal; margin-left: 6px; }
+
+/* Editor: visibly a different mode. Everything editable is dashed, in the selection color. */
+.edit-bar { position: sticky; top: 79px; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; margin-bottom: 18px; background: var(--sel-tint); border: 1px dashed var(--sel); border-radius: 6px; }
+.bench-doc.edit .param-val input, .bench-doc.edit .formula { border: 1px dashed var(--sel); background: var(--panel-2); }
+.bench-doc.edit .formula { height: 32px; border-radius: 4px; padding: 0 8px; font-size: 13px; color: var(--ink); }
+
+/* Paper */
+.paper-meta { display: flex; gap: 22px; padding: 14px 0 0; }
+.bench-doc.print .param-val .planned { color: var(--ink-3); font-size: 12px; margin-right: 8px; }
+.bullets.checks { list-style: none; padding-left: 0; }
+.bullets.checks li::before { content: ""; display: inline-block; width: 11px; height: 11px; border: 1px solid var(--ink); margin-right: 9px; vertical-align: -1px; }
+@media print {
+  .topnav, .no-print, .cb-back { display: none !important; }
+  body, .bench-doc { background: #fff; }
+  .bench-doc { max-width: none; padding: 0; }
+  .doc-block { break-inside: avoid; }
+}
 
 /* Run: half twin, half steps */
 .bench-split { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 79px); }
@@ -51,12 +91,14 @@
 .rstep.done .bnum { color: var(--status-goal); }
 .rstep-detail { margin-left: 30px; font-size: 16px; }
 
-.bfield { display: grid; grid-template-columns: 1fr 130px 100px 80px; align-items: center; gap: 8px; min-height: 42px; padding: 0 6px 0 30px; border-radius: 4px; }
+.bfield { display: grid; grid-template-columns: 1fr 120px 120px 80px; align-items: center; gap: 8px; min-height: 42px; padding: 0 6px 0 30px; border-radius: 4px; }
 .blabel { font-size: 15px; }
 .btarget { font-size: 13px; color: var(--ink-3); text-align: right; white-space: nowrap; }
 .btarget s { margin-right: 4px; }
-.bactual { font-size: 16px; font-weight: 600; text-align: right; white-space: nowrap; }
-.bactual.blank { height: 22px; border-bottom: 1px dashed var(--line); }
+.bvalue { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+.bvalue input { width: 84px; height: 36px; border: 1px solid var(--line); border-radius: 4px; padding: 0 8px; text-align: right; font-size: 16px; font-weight: 600; background: var(--panel-2); color: var(--ink); }
+.bvalue input:focus { outline: none; border-color: var(--ink); }
+.bvalue .unit { width: 26px; }
 .bmarks { display: flex; gap: 6px; justify-content: flex-end; }
 .bmarks button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); font-size: 15px; display: inline-flex; align-items: center; justify-content: center; }
 .bok { color: var(--status-goal); }
@@ -67,8 +109,6 @@
 .bfield.armed { outline: 1.5px dashed var(--sel); }
 @keyframes bench-fresh { from { background: var(--sel-tint); } 70% { background: var(--sel-tint); } to { background: transparent; } }
 
-.btype { grid-column: 2 / 5; display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
-.btype input { width: 84px; height: 34px; border: 1px solid var(--ink); border-radius: 4px; padding: 0 8px; font: inherit; font-family: var(--font-mono); text-align: right; background: var(--panel-2); }
 .cb-btn.sm { height: 34px; padding: 0 10px; font-size: 13px; }
 
 .bphoto { margin: 6px 0 0 30px; display: flex; flex-direction: column; gap: 6px; }
@@ -88,5 +128,48 @@
   .split-twin { border-right: 0; border-bottom: 1px solid var(--line); }
   .doc-step { grid-template-columns: 1fr; }
   .doc-field { grid-template-columns: 1fr auto; }
-  .doc-field .formula { grid-column: 1 / 3; grid-row: 2; }
+  .doc-field .formula, .doc-field .eq { grid-column: 1 / 3; grid-row: 2; }
 }
+
+/* SOP editor blocks (BlockNote) */
+.sop-editor { margin: 8px -54px 0; }
+.sop-editor .bn-editor { background: transparent; font-family: var(--font-sans); padding-inline: 54px; }
+.sop-in { height: 32px; border: 1px dashed var(--sel); border-radius: 4px; padding: 0 8px; background: var(--panel-2); font: inherit; font-size: 14px; color: var(--ink); min-width: 0; }
+.sop-in:focus { outline: none; border-style: solid; }
+.sop-in.mono { font-family: var(--font-mono); font-size: 13px; }
+.sop-in.bad { border-color: var(--status-fail); }
+.sop-setting { display: grid; grid-template-columns: 1fr 90px 70px 140px; gap: 8px; width: 100%; padding: 2px 0; }
+.sop-setting .num { text-align: right; }
+.sop-step { display: flex; align-items: center; gap: 12px; width: 100%; padding-top: 18px; border-top: 1px solid var(--line-2); margin-top: 6px; }
+.sop-editor .bn-block-outer:first-child .sop-step { border-top: 0; }
+.sop-editor { counter-reset: sopstep; }
+.sop-step-num { counter-increment: sopstep; font-family: var(--font-mono); font-size: 14px; color: var(--ink-3); }
+.sop-step-num::before { content: counter(sopstep); }
+.sop-step-title { flex: 1; font-size: 18px; font-weight: 600; margin: 0; min-width: 0; }
+.sop-inst { width: 170px; }
+.sop-amount { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 4px 0 8px; }
+.sop-amount-row { display: grid; grid-template-columns: 140px 1fr 70px 120px; gap: 8px; }
+.sop-amount .mathtex .katex-display { margin: 0; text-align: left; }
+.sop-amount .mathtex .katex-display > .katex { text-align: left; }
+
+/* Editor layout: the document, and the Ask + versions on the right */
+.bench-edit { max-width: 1280px; margin: 0 auto; padding: 24px 24px 80px; }
+.bench-edit .edit-bar { top: 79px; }
+.edit-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; }
+.bench-edit .bench-doc { padding: 0; max-width: none; }
+.edit-side { position: sticky; top: 150px; display: flex; flex-direction: column; gap: 16px; }
+.edit-ask { position: relative; }
+.edit-mic { position: absolute; top: -6px; right: 0; }
+.edit-mic.on { background: var(--sel); color: var(--canvas); }
+.edit-ask .cb-ask-head { padding-right: 52px; }
+.versions { display: flex; flex-direction: column; gap: 10px; }
+.ver { padding: 10px 0; border-top: 1px solid var(--line-2); }
+.ver.now .ver-head b { color: var(--sel); }
+.ver-head { display: flex; align-items: center; gap: 10px; }
+.ver-head .cb-link { margin-left: auto; font-size: 13px; }
+.ver-who { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.cb-av.claude { background: var(--ink); }
+.ver-changes { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink-2); display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); }
+.approve .ver-changes { font-size: 13.5px; color: var(--ink); }
+@media (max-width: 1000px) { .edit-grid { grid-template-columns: 1fr; } .edit-side { position: static; } }
+.trial-name { display: inline-flex; align-items: baseline; gap: 8px; font-size: 15px; color: var(--ink-3); }
