@@ -8,7 +8,6 @@
   "project": {
     "id": "fast-print-denture-resin",
     "name": "Fast-print denture base resin",
-    "customer": "Meridian Dental Materials (fictional)",
     "concept_label": "Concept: project workspace for Claude Science (unofficial)",
     "synthetic_label": "Synthetic data",
     "now": "2026-10-13T09:30:00",
@@ -6232,7 +6231,7 @@
         "id": "materials",
         "title": "Printable dental materials",
         "blurb": "Resins that print faster and last longer.",
-        "funding": "Meridian R&D program DR-07"
+        "funding": "R&D program DR-07"
       },
       {
         "id": "access",
@@ -6510,6 +6509,90 @@
         "w": 80,
         "h": 60,
         "z": 45
+      },
+      {
+        "name": "Chemical shelf",
+        "x": 600,
+        "y": 250,
+        "w": 160,
+        "h": 50,
+        "z": 120
+      },
+      {
+        "name": "Supply cabinet",
+        "x": 430,
+        "y": 300,
+        "w": 60,
+        "h": 90,
+        "z": 100
+      },
+      {
+        "name": "Waste",
+        "x": 345,
+        "y": 470,
+        "w": 40,
+        "h": 40,
+        "z": 60
+      }
+    ],
+    "schedule": [
+      {
+        "inst": "balance",
+        "by": "greeshma",
+        "from": "08:45",
+        "to": "09:15",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "viscometer",
+        "by": "greeshma",
+        "from": "09:15",
+        "to": "09:45",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "degasser",
+        "by": "greeshma",
+        "from": "10:15",
+        "to": "10:35",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "uv-oven",
+        "by": "greeshma",
+        "from": "12:00",
+        "to": "12:45",
+        "what": "Cure profiles, round 2"
+      },
+      {
+        "inst": "viscometer",
+        "by": "greeshma",
+        "from": "14:00",
+        "to": "14:30",
+        "what": "Shade run check"
+      }
+    ],
+    "consumables": [
+      {
+        "id": "base",
+        "name": "Base monomer",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "diluent",
+        "name": "Diluent",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "pi",
+        "name": "Photoinitiator",
+        "home": "Chemical shelf"
+      },
+      {
+        "id": "cup",
+        "name": "Mixing cup",
+        "home": "Supply cabinet",
+        "back": "Waste"
       }
     ],
     "instruments": [
@@ -6538,6 +6621,7 @@
         "z": 42,
         "in_use": {
           "by": "greeshma",
+          "from": "09:20",
           "until": "10:10",
           "what": "Cure profiles, round 2"
         }
@@ -6579,6 +6663,7 @@
         "z": 70,
         "in_use": {
           "by": "greeshma",
+          "from": "09:25",
           "until": "11:45",
           "what": "Cure profiles, round 2"
         }
@@ -6655,6 +6740,347 @@
       }
     ]
   },
+  "bench": [
+    {
+      "id": "resin-batch",
+      "title": "Resin batch",
+      "runner": "greeshma",
+      "uploaded": "2026-10-13",
+      "last_run": "2026-10-09",
+      "next_run": "T15a",
+      "params": [
+        {
+          "id": "batch_g",
+          "label": "Batch",
+          "value": 50,
+          "unit": "g"
+        },
+        {
+          "id": "diluent_pct",
+          "label": "Diluent",
+          "value": 38,
+          "unit": "%"
+        },
+        {
+          "id": "pi_pct",
+          "label": "Photoinitiator",
+          "value": 1.7,
+          "unit": "%"
+        },
+        {
+          "id": "mix_rpm",
+          "label": "Mix speed",
+          "value": 3000,
+          "unit": "rpm"
+        },
+        {
+          "id": "mix_min",
+          "label": "Mix time",
+          "value": 2,
+          "unit": "min"
+        },
+        {
+          "id": "degas_min",
+          "label": "Degas",
+          "value": 10,
+          "unit": "min"
+        }
+      ],
+      "steps": [
+        {
+          "id": "base",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Weigh base monomer",
+          "get": [
+            "cup",
+            "base"
+          ],
+          "put": [],
+          "detail": [
+            "Place a clean cup on the balance",
+            "Tare",
+            "Pour base monomer slowly",
+            "Stop just short and let it settle"
+          ],
+          "fields": [
+            {
+              "id": "base",
+              "label": "Base monomer",
+              "unit": "g",
+              "formula": "batch_g * (100 - diluent_pct - pi_pct) / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "diluent",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Add diluent",
+          "get": [
+            "diluent"
+          ],
+          "put": [
+            "base"
+          ],
+          "detail": [
+            "Keep the cup on the balance",
+            "Pour diluent on top",
+            "Pipette the last gram"
+          ],
+          "fields": [
+            {
+              "id": "diluent",
+              "label": "Diluent",
+              "unit": "g",
+              "formula": "batch_g * diluent_pct / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "pi",
+          "station": "weigh",
+          "instrument": "balance",
+          "title": "Add photoinitiator",
+          "get": [
+            "pi"
+          ],
+          "put": [
+            "diluent"
+          ],
+          "detail": [
+            "Weigh the powder on a boat",
+            "Tip it into the cup",
+            "Keep it out of direct light"
+          ],
+          "fields": [
+            {
+              "id": "pi",
+              "label": "Photoinitiator",
+              "unit": "g",
+              "formula": "batch_g * pi_pct / 100",
+              "scales": true
+            }
+          ]
+        },
+        {
+          "id": "mix",
+          "station": "mix",
+          "instrument": "mixer",
+          "title": "Mix",
+          "get": [],
+          "put": [
+            "pi"
+          ],
+          "timer_min": 2,
+          "detail": [
+            "Cap the cup",
+            "Load it and balance the arm",
+            "Run",
+            "Check no powder is left"
+          ],
+          "fields": [
+            {
+              "id": "rpm",
+              "label": "Speed",
+              "unit": "rpm",
+              "formula": "mix_rpm"
+            },
+            {
+              "id": "mix_min",
+              "label": "Time",
+              "unit": "min",
+              "formula": "mix_min"
+            }
+          ]
+        },
+        {
+          "id": "degas",
+          "station": "degas",
+          "instrument": "degasser",
+          "title": "Degas",
+          "get": [],
+          "put": [],
+          "timer_min": 10,
+          "detail": [
+            "Uncap the cup",
+            "Place it in the chamber",
+            "Pull vacuum",
+            "Foam rises, then collapses",
+            "Hold until no bubbles rise"
+          ],
+          "fields": [
+            {
+              "id": "degas_min",
+              "label": "Vacuum",
+              "unit": "min",
+              "formula": "degas_min"
+            }
+          ]
+        },
+        {
+          "id": "print",
+          "station": "print",
+          "instrument": "printer-1",
+          "title": "Print",
+          "get": [],
+          "put": [
+            "cup"
+          ],
+          "photo": true,
+          "timer_min": 85,
+          "detail": [
+            "Pour resin into the vat",
+            "Start the job: 6 dogbones, 3 bend bars",
+            "Photograph the plate when it finishes",
+            "Throw the cup away"
+          ],
+          "fields": []
+        }
+      ],
+      "script": [
+        {
+          "say": "Base monomer, 30.8 grams.",
+          "step": "base",
+          "values": {
+            "base": 30.8
+          }
+        },
+        {
+          "say": "Diluent, 19.41 grams.",
+          "step": "diluent",
+          "values": {
+            "diluent": 19.41
+          }
+        },
+        {
+          "say": "Photoinitiator, 0.87 grams.",
+          "step": "pi",
+          "values": {
+            "pi": 0.87
+          }
+        },
+        {
+          "say": "Mixed at 3000 for 2 minutes.",
+          "step": "mix",
+          "values": {
+            "rpm": 3000,
+            "mix_min": 2
+          }
+        },
+        {
+          "say": "Degassed 10 minutes.",
+          "step": "degas",
+          "values": {
+            "degas_min": 10
+          }
+        },
+        {
+          "say": "Photo.",
+          "step": "print",
+          "photo": "Build plate"
+        }
+      ]
+    },
+    {
+      "id": "postcure",
+      "title": "Post-cure printed parts",
+      "runner": "greeshma",
+      "uploaded": "2026-09-14",
+      "last_run": "2026-10-02",
+      "params": [
+        {
+          "id": "cure_c",
+          "label": "Oven",
+          "value": 60,
+          "unit": "°C"
+        },
+        {
+          "id": "cure_min",
+          "label": "Cure",
+          "value": 45,
+          "unit": "min"
+        },
+        {
+          "id": "parts",
+          "label": "Parts",
+          "value": 9,
+          "unit": ""
+        }
+      ],
+      "steps": [
+        {
+          "id": "rinse",
+          "station": "postcure",
+          "instrument": "uv-oven",
+          "title": "Rinse parts",
+          "get": [],
+          "put": [],
+          "detail": [
+            "Remove parts from the plate",
+            "Rinse twice in IPA",
+            "Let them dry fully"
+          ],
+          "fields": [
+            {
+              "id": "rinsed",
+              "label": "Parts rinsed",
+              "unit": "",
+              "formula": "parts"
+            }
+          ]
+        },
+        {
+          "id": "cure",
+          "station": "postcure",
+          "instrument": "uv-oven",
+          "title": "Cure",
+          "get": [],
+          "put": [],
+          "timer_min": 45,
+          "detail": [
+            "Preheat the oven",
+            "Lay parts flat, not touching",
+            "Run the cure",
+            "Let parts cool before handling"
+          ],
+          "fields": [
+            {
+              "id": "oven_c",
+              "label": "Oven",
+              "unit": "°C",
+              "formula": "cure_c"
+            },
+            {
+              "id": "oven_min",
+              "label": "Time",
+              "unit": "min",
+              "formula": "cure_min"
+            }
+          ]
+        }
+      ],
+      "script": [
+        {
+          "say": "Rinsed 9 parts.",
+          "step": "rinse",
+          "values": {
+            "rinsed": 9
+          }
+        },
+        {
+          "say": "Cured at 60 for 45 minutes.",
+          "step": "cure",
+          "values": {
+            "oven_c": 60,
+            "oven_min": 45
+          }
+        }
+      ]
+    }
+  ],
   "landscape": {
     "axes": {
       "diluent": [

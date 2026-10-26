@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { people, personById, project, trials } from "./data/notebook.ts";
 import { navigate, usePath } from "./lib/hooks.ts";
-import { ME, company, experimentOfTrial, lab, org, parseRoute, pathOf, projectById } from "./lib/org.ts";
+import { ME, experimentOfTrial, lab, org, parseRoute, pathOf, projectById } from "./lib/org.ts";
 import { StoreProvider, noSel, useStore, type Selection } from "./state/store.tsx";
 import { FutureDialog, FutureProvider, futureLabel, useFuture, useGo } from "./lib/nav.tsx";
 import { Avatar, BackChip, BrandMark, Later, SearchIcon } from "./ds/index.tsx";
@@ -10,6 +10,7 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { ProjectPage } from "./pages/ProjectPage.tsx";
 import { ExperimentPage } from "./pages/ExperimentPage.tsx";
 import { LabPage } from "./pages/LabPage.tsx";
+import { BenchPage } from "./pages/BenchPage.tsx";
 import { EvalsPage } from "./pages/EvalsPage.tsx";
 import { TrialDrawer } from "./components/TrialDrawer.tsx";
 
@@ -48,12 +49,13 @@ function Shell() {
 
   return (
     <div className="app cb" style={personVars}>
-      <TopBar onLab={route.view === "lab"} />
+      <TopBar view={route.view} />
       <main className="page">
         {route.view === "home" && <HomePage />}
         {route.view === "project" && <ProjectPage projectId={route.project} />}
         {route.view === "experiment" && <ExperimentPage projectId={route.project} experimentId={route.experiment} />}
         {route.view === "lab" && <LabPage />}
+        {route.view === "bench" && <BenchPage protocolId={route.protocol} mode={route.mode} />}
         {route.view === "evals" && <EvalsPage />}
       </main>
       {state.back && (
@@ -73,7 +75,7 @@ function Shell() {
   );
 }
 
-function TopBar({ onLab }: { onLab: boolean }) {
+function TopBar({ view }: { view: string }) {
   const { state, dispatch } = useStore();
   const [menu, setMenu] = useState(false);
   const future = useFuture();
@@ -83,12 +85,14 @@ function TopBar({ onLab }: { onLab: boolean }) {
   return (
     <header className="topnav">
       <button className="brand" onClick={() => go(pathOf.home())}>
-        <BrandMark /><span><b>Common Bench</b><span>{company}</span></span>
+        <BrandMark /><span><b>Common Bench</b></span>
       </button>
       <nav className="nav" aria-label="Main">
         <div className="seg" role="group">
-          <button className={onLab ? "" : "on"} aria-pressed={!onLab} onClick={() => go(pathOf.home())}>Projects</button>
-          <button className={onLab ? "on" : ""} aria-pressed={onLab} onClick={() => go(pathOf.lab())}>Lab</button>
+          {([["Projects", pathOf.home()], ["SOPs", pathOf.bench()], ["Lab", pathOf.lab()]] as const).map(([label, path]) => {
+            const on = label === "Lab" ? view === "lab" : label === "SOPs" ? view === "bench" : view !== "lab" && view !== "bench";
+            return <button key={label} className={on ? "on" : ""} aria-pressed={on} onClick={() => go(path)}>{label}</button>;
+          })}
         </div>
         <button className="cb-round" aria-label="Search (⌘K)" title="Search (⌘K)" onClick={() => dispatch({ type: "search", open: true })}><SearchIcon /></button>
       </nav>

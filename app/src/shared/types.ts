@@ -52,7 +52,6 @@ export interface Station {
 export interface Project {
   id: string;
   name: string;
-  customer: string; // fictional
   concept_label: string; // "Concept: project workspace for Claude Science (unofficial)"
   synthetic_label: string;
   now: string; // ISO datetime the demo is "set" at
@@ -228,6 +227,52 @@ export interface Notebook {
   landscape: Landscape;
   org: Org;
   lab: Lab;
+  bench?: BenchProtocol[]; // the demo notebook only; stress haystacks leave it out
+}
+
+// ---------- Bench: a protocol a person runs hands-free ----------
+
+export interface BenchParam { id: string; label: string; value: number; unit: string }
+
+export interface BenchField {
+  id: string;
+  label: string;
+  unit: string;
+  formula: string; // over the protocol's params and earlier field ids, e.g. "batch_g * diluent_pct / 100"
+  scales?: boolean; // a batch mass: the first one weighed sets the batch for everything after it
+}
+
+export interface BenchStep {
+  id: string;
+  station: StepId;
+  instrument: string; // Instrument.id in the lab
+  title: string;
+  detail: string[]; // short bullets, in order; shown when the step is opened
+  fields: BenchField[];
+  get: string[]; // consumable ids to fetch for this step
+  put: string[]; // consumable ids to put back (or throw away) during this step
+  photo?: boolean; // the step ends with a photo of the result
+  timer_min?: number; // unattended time: the run view counts it down and alerts when it's done
+}
+
+/** One scripted thing said at the bench, the offline stand-in for speech. */
+export interface BenchUtterance {
+  say: string;
+  step: string;
+  values?: Record<string, number>; // field id → value heard
+  photo?: string;
+}
+
+export interface BenchProtocol {
+  id: string;
+  title: string;
+  runner: PersonId;
+  uploaded: string; // ISO date the protocol was added or last revised
+  last_run: string | null; // ISO date of the most recent run, if any
+  next_run?: string; // suggested name for the next run (e.g. a planned trial id); each run can rename itself
+  params: BenchParam[];
+  steps: BenchStep[];
+  script: BenchUtterance[];
 }
 
 // ---------- The lab around the project: thrusts → projects → experiments, and the room ----------
@@ -279,9 +324,12 @@ export interface Instrument {
   device?: string; // matches LogEntry.device, so trials can be traced to the instrument
   source: LabSource;
   calibrated: string | null; // ISO date
-  in_use?: { by: PersonId; until: string; what: string };
+  in_use?: { by: PersonId; from: string; until: string; what: string }; // today, HH:MM
   x: number; y: number; w: number; h: number; z: number; // floor plan, cm; z = height for the 3D view
 }
+
+/** Not modeled as objects: just what it is, where it lives, and where it goes after use. */
+export interface Consumable { id: string; name: string; home: string; back?: string } // home, back: fixture names
 
 export interface Lab {
   room: string;
@@ -289,6 +337,8 @@ export interface Lab {
   benches: { name: string; x: number; y: number; w: number; h: number }[];
   fixtures: { name: string; x: number; y: number; w: number; h: number; z: number }[];
   instruments: Instrument[];
+  consumables: Consumable[];
+  schedule: { inst: string; by: PersonId; from: string; to: string; what: string }[]; // today's reservations, HH:MM
 }
 
 // ---------- Protocol diff (returned by diff_protocols, shown inline) ----------

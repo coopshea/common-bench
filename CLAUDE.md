@@ -11,12 +11,12 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 - **Cooper** (former member) searched two years ago and wrongly called high diluent a dead end. His one excluded trial, T09, rested 18 h before printing and passed.
 - **Greeshma** (current) has fewer trials, in a different region, and they're better, because of a degassing habit that isn't in the SOP.
 - The agent finds the unintended difference, revives T09, and proposes T15a/T15b: a crossover with a control arm and nothing to order.
-- Only these two people exist. The company (Meridian Dental Materials) is fictional.
+- Only these two people exist. The lab is unnamed.
 
 ## Build rules
 
 1. **Toy is fine; legible is mandatory.** Radically simple UI: the chart carries the meaning, not captions.
-2. **All data comes from one seeded generator** (`app/data/generate.ts`). Every number on screen traces back to it, and never hand-edit `notebook.json`. Run `npm run data` to regenerate; 24/24 story checks must pass.
+2. **All data comes from one seeded generator** (`app/data/generate.ts`). Every number on screen traces back to it, and never hand-edit `notebook.json`. Run `npm run data` to regenerate; 28/28 story checks must pass.
 3. **Numbers come from tools, not the model.** Draft estimates come from models fitted to the trials (`src/shared/surrogate.ts`).
 4. **The demo works offline.** The hero answer is recorded in `app/server/cache/`, and replays when there's no key or network.
 5. **Nothing changes without an approval card.** The write tools are gated by the Agent SDK permission callback.
@@ -34,8 +34,9 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 - **Ask:** first thing in every right panel, scoped to what the panel shows. The lab's Ask turns "Book the degasser 2–4 pm" into an approval card (`lib/booking.ts`, a local parse).
 - **Review:** double-click a trial, a chart point or a step (or the flag button) to send that exact view to a teammate with a note (`components/Review.tsx`). The recording is roadmap (issue #6).
 - **Lab twin:** `figures/LabTwin.tsx` places the bench instrument models on the room's benches. Instruments in use run their animation and hum. Fixtures are dashed outlines.
+- **SOPs tab (`/sops`):** reusable protocols, sorted by last activity. Protocol page (the trial's name and settings; amounts typeset with KaTeX and worked live), Print SOP (opens the print dialog with fill-in-the-blank paper), Start trial (lab twin | steps, voice or typing), Edit SOP (the SOP as a BlockNote document with Step, Amount and Setting blocks; the only place the SOP changes). See `PRIMITIVES.md`.
 - **Not built yet:** a quiet dotted "later" tag, never a disabled control.
-- **Retired:** the old single-screen `Workspace.tsx` and the Guide (`TourBar`, `tour.ts`) are no longer mounted. The walkthrough needs rewriting for the new structure.
+- **Retired:** the old single-screen `Workspace.tsx` and the Guide (`TourBar`, `tour.ts`) are no longer mounted. `DEMO_WALKTHROUGH.md` is rewritten for this structure (Projects → SOPs/trial → Lab → evals).
 
 ## Layout
 

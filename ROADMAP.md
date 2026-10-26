@@ -1,6 +1,6 @@
 # Roadmap: from POC to design-partner pilot in three weeks
 
-A pilot with design-partner labs: the fictional Meridian Dental Materials, plus 2 more resin or materials teams.
+A pilot with design-partner labs: a resin team like the one in the demo, plus 2 more resin or materials teams.
 
 Each week ships something, then puts it in front of users. **Every interview question is built to produce a number, and every number has a decision rule attached.** The targets below are starting hypotheses that the interviews are designed to confirm or overturn. They are not claims.
 

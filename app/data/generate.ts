@@ -7,11 +7,13 @@ import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type {
+  BenchProtocol,
   Lab,
   Org,
   FittedModels, Guardrail, GuardrailId, LandscapeGrid, LedgerItem, Lens, LogEntry, Notebook, Person,
   PersonId, Pore, Project, Station, StepId, Trial, TrialInputs, TrialOutputs,
 } from "../src/shared/types.ts";
+import { evaluateAll } from "../src/shared/calc.ts";
 import { estimateRecipe, pPassTeam, pPassWithPorosity, predictPorosity } from "../src/shared/surrogate.ts";
 
 const SEED = Number(process.env.SEED ?? 5); // seed 5: first seed where every story check passes
@@ -108,7 +110,6 @@ const stations: Station[] = [
 const project: Project = {
   id: "fast-print-denture-resin",
   name: "Fast-print denture base resin",
-  customer: "Meridian Dental Materials (fictional)",
   concept_label: "Concept: project workspace for Claude Science (unofficial)",
   synthetic_label: "Synthetic data",
   now: "2026-10-13T09:30:00",
@@ -496,7 +497,7 @@ const lastDate = project.now.slice(0, 10); // the notebook project is the one be
 
 const org: Org = {
   thrusts: [
-    { id: "materials", title: "Printable dental materials", blurb: "Resins that print faster and last longer.", funding: "Meridian R&D program DR-07" },
+    { id: "materials", title: "Printable dental materials", blurb: "Resins that print faster and last longer.", funding: "R&D program DR-07" },
     { id: "access", title: "Accessible chairside dentistry", blurb: "Same-day parts on low-cost printers.", funding: "Clinic partnership pilot" },
     { id: "process", title: "Print process reliability", blurb: "Every printer and oven gives the same part.", funding: "Internal" },
     { id: "devices", title: "Bioresorbable devices", blurb: "Closed in 2025.", funding: "SBIR Phase I (fictional)", closed: true },
@@ -548,15 +549,32 @@ const lab: Lab = {
   fixtures: [
     { name: "Fume hood", x: 40, y: 440, w: 160, h: 80, z: 160 },
     { name: "Sink", x: 240, y: 460, w: 80, h: 60, z: 45 },
+    { name: "Chemical shelf", x: 600, y: 250, w: 160, h: 50, z: 120 },
+    { name: "Supply cabinet", x: 430, y: 300, w: 60, h: 90, z: 100 },
+    { name: "Waste", x: 345, y: 470, w: 40, h: 40, z: 60 },
+  ],
+  // Today's other reservations (project.now is 09:30). In-use blocks come from in_use above.
+  schedule: [
+    { inst: "balance", by: "greeshma", from: "08:45", to: "09:15", what: "Cure profiles, round 2" },
+    { inst: "viscometer", by: "greeshma", from: "09:15", to: "09:45", what: "Cure profiles, round 2" },
+    { inst: "degasser", by: "greeshma", from: "10:15", to: "10:35", what: "Cure profiles, round 2" },
+    { inst: "uv-oven", by: "greeshma", from: "12:00", to: "12:45", what: "Cure profiles, round 2" },
+    { inst: "viscometer", by: "greeshma", from: "14:00", to: "14:30", what: "Shade run check" },
+  ],
+  consumables: [
+    { id: "base", name: "Base monomer", home: "Chemical shelf" },
+    { id: "diluent", name: "Diluent", home: "Chemical shelf" },
+    { id: "pi", name: "Photoinitiator", home: "Chemical shelf" },
+    { id: "cup", name: "Mixing cup", home: "Supply cabinet", back: "Waste" },
   ],
   instruments: [
     { id: "balance", name: "Balance", device: "Balance", source: src("Balance"), calibrated: "2026-09-02", x: 60, y: 55, w: 60, h: 50, z: 18 },
     { id: "mixer", name: "Planetary mixer", device: "Planetary mixer", source: src("Planetary mixer"), calibrated: "2026-06-11", x: 150, y: 50, w: 80, h: 60, z: 42,
-      in_use: { by: "greeshma", until: "10:10", what: "Cure profiles, round 2" } },
+      in_use: { by: "greeshma", from: "09:20", until: "10:10", what: "Cure profiles, round 2" } },
     { id: "degasser", name: "Vacuum degasser", device: "Vacuum degasser", source: src("Vacuum degasser"), calibrated: null, x: 260, y: 50, w: 80, h: 60, z: 46 },
     { id: "viscometer", name: "Viscometer", device: "Viscometer", source: src("Viscometer"), calibrated: "2026-08-20", x: 370, y: 55, w: 70, h: 50, z: 50 },
     { id: "printer-1", name: "DLP printer", device: "DLP printer", source: src("DLP printer"), calibrated: "2026-09-30", x: 580, y: 45, w: 100, h: 70, z: 70,
-      in_use: { by: "greeshma", until: "11:45", what: "Cure profiles, round 2" } },
+      in_use: { by: "greeshma", from: "09:25", until: "11:45", what: "Cure profiles, round 2" } },
     { id: "printer-2", name: "Printer 2", source: "none", calibrated: null, x: 700, y: 45, w: 100, h: 70, z: 70 },
     { id: "uv-oven", name: "UV oven", device: "UV oven", source: src("UV oven"), calibrated: "2025-11-04", x: 830, y: 50, w: 110, h: 60, z: 50 },
     { id: "test-frame", name: "Test frame", device: "Test frame", source: "mhs", calibrated: "2026-05-15", x: 580, y: 450, w: 110, h: 60, z: 90 },
@@ -567,11 +585,90 @@ const lab: Lab = {
 };
 const logDevices = new Set(trials.flatMap((t) => t.log.map((e) => e.device)));
 
+// ---------- bench: T15a as a programmable protocol, run hands-free (Bench view) ----------
+// Amounts are formulas over the protocol's parameters, so changing the batch (or overshooting a weigh) recalculates
+// everything after it. The script overshoots the first weigh by 2%, the way a real batch drifts.
+
+const benchParams = [
+  { id: "batch_g", label: "Batch", value: 50, unit: "g" },
+  { id: "diluent_pct", label: "Diluent", value: 38, unit: "%" },
+  { id: "pi_pct", label: "Photoinitiator", value: 1.7, unit: "%" },
+  { id: "mix_rpm", label: "Mix speed", value: 3000, unit: "rpm" },
+  { id: "mix_min", label: "Mix time", value: 2, unit: "min" },
+  { id: "degas_min", label: "Degas", value: 10, unit: "min" },
+];
+const benchSteps: BenchProtocol["steps"] = [
+  { id: "base", station: "weigh", instrument: "balance", title: "Weigh base monomer", get: ["cup", "base"], put: [],
+    detail: ["Place a clean cup on the balance", "Tare", "Pour base monomer slowly", "Stop just short and let it settle"],
+    fields: [{ id: "base", label: "Base monomer", unit: "g", formula: "batch_g * (100 - diluent_pct - pi_pct) / 100", scales: true }] },
+  { id: "diluent", station: "weigh", instrument: "balance", title: "Add diluent", get: ["diluent"], put: ["base"],
+    detail: ["Keep the cup on the balance", "Pour diluent on top", "Pipette the last gram"],
+    fields: [{ id: "diluent", label: "Diluent", unit: "g", formula: "batch_g * diluent_pct / 100", scales: true }] },
+  { id: "pi", station: "weigh", instrument: "balance", title: "Add photoinitiator", get: ["pi"], put: ["diluent"],
+    detail: ["Weigh the powder on a boat", "Tip it into the cup", "Keep it out of direct light"],
+    fields: [{ id: "pi", label: "Photoinitiator", unit: "g", formula: "batch_g * pi_pct / 100", scales: true }] },
+  { id: "mix", station: "mix", instrument: "mixer", title: "Mix", get: [], put: ["pi"], timer_min: 2,
+    detail: ["Cap the cup", "Load it and balance the arm", "Run", "Check no powder is left"],
+    fields: [{ id: "rpm", label: "Speed", unit: "rpm", formula: "mix_rpm" }, { id: "mix_min", label: "Time", unit: "min", formula: "mix_min" }] },
+  { id: "degas", station: "degas", instrument: "degasser", title: "Degas", get: [], put: [], timer_min: 10,
+    detail: ["Uncap the cup", "Place it in the chamber", "Pull vacuum", "Foam rises, then collapses", "Hold until no bubbles rise"],
+    fields: [{ id: "degas_min", label: "Vacuum", unit: "min", formula: "degas_min" }] },
+  { id: "print", station: "print", instrument: "printer-1", title: "Print", get: [], put: ["cup"], photo: true, timer_min: 85,
+    detail: ["Pour resin into the vat", "Start the job: 6 dogbones, 3 bend bars", "Photograph the plate when it finishes", "Throw the cup away"],
+    fields: [] },
+];
+const benchVal = Object.fromEntries(benchParams.map((x) => [x.id, x.value]));
+const benchPlanned = evaluateAll(benchSteps.flatMap((x) => x.fields), benchVal).values;
+const benchK = r1(benchPlanned.base * 1.02) / benchPlanned.base;
+const said = (id: string) => r2(benchPlanned[id] * benchK);
+const bench: BenchProtocol[] = [{
+  id: "resin-batch",
+  title: "Resin batch",
+  runner: "greeshma",
+  uploaded: project.now.slice(0, 10),
+  last_run: "2026-10-09",
+  next_run: "T15a", // the agent's proposed crossover arm; a run's name is filled in per run
+  params: benchParams,
+  steps: benchSteps,
+  script: [
+    { say: `Base monomer, ${r1(benchPlanned.base * benchK)} grams.`, step: "base", values: { base: r1(benchPlanned.base * benchK) } },
+    { say: `Diluent, ${said("diluent")} grams.`, step: "diluent", values: { diluent: said("diluent") } },
+    { say: `Photoinitiator, ${said("pi")} grams.`, step: "pi", values: { pi: said("pi") } },
+    { say: `Mixed at ${benchVal.mix_rpm} for ${benchVal.mix_min} minutes.`, step: "mix", values: { rpm: benchVal.mix_rpm, mix_min: benchVal.mix_min } },
+    { say: `Degassed ${benchVal.degas_min} minutes.`, step: "degas", values: { degas_min: benchVal.degas_min } },
+    { say: "Photo.", step: "print", photo: "Build plate" },
+  ],
+}, {
+  // A second, older protocol so the list has an order: Greeshma's post-cure, last run before T15a was drafted.
+  id: "postcure",
+  title: "Post-cure printed parts",
+  runner: "greeshma",
+  uploaded: "2026-09-14",
+  last_run: "2026-10-02",
+  params: [
+    { id: "cure_c", label: "Oven", value: 60, unit: "°C" },
+    { id: "cure_min", label: "Cure", value: 45, unit: "min" },
+    { id: "parts", label: "Parts", value: 9, unit: "" },
+  ],
+  steps: [
+    { id: "rinse", station: "postcure", instrument: "uv-oven", title: "Rinse parts", get: [], put: [],
+      detail: ["Remove parts from the plate", "Rinse twice in IPA", "Let them dry fully"],
+      fields: [{ id: "rinsed", label: "Parts rinsed", unit: "", formula: "parts" }] },
+    { id: "cure", station: "postcure", instrument: "uv-oven", title: "Cure", get: [], put: [], timer_min: 45,
+      detail: ["Preheat the oven", "Lay parts flat, not touching", "Run the cure", "Let parts cool before handling"],
+      fields: [{ id: "oven_c", label: "Oven", unit: "°C", formula: "cure_c" }, { id: "oven_min", label: "Time", unit: "min", formula: "cure_min" }] },
+  ],
+  script: [
+    { say: "Rinsed 9 parts.", step: "rinse", values: { rinsed: 9 } },
+    { say: "Cured at 60 for 45 minutes.", step: "cure", values: { oven_c: 60, oven_min: 45 } },
+  ],
+}];
+
 // ---------- assemble + write ----------
 
 const notebook: Notebook = {
   meta: { generator: "data/generate.ts", seed: SEED, generated_at: project.now, synthetic: true },
-  project, people, trials, ledger, org, lab,
+  project, people, trials, ledger, org, lab, bench,
   landscape: { axes: { diluent: [10, 45], photoinit: [0.5, 2.0] }, viscosity_target_contour, lenses, models },
 };
 writeFileSync(join(HERE, "notebook.json"), JSON.stringify(notebook, null, 2) + "\n");
@@ -655,6 +752,15 @@ check("Degas lens: barrier recedes past 40% at PI 1.7", degasWall17 === null || 
 check("Campaign B and T15a pass cytotoxicity with margin (≥ 72%)", [...Bc].every((t) => t.outputs.viability_pct >= 72) && GT.viability(38, 1.7) >= 72);
 check("Dead-end hatch covers campaign B", Bc.every((t) => t.inputs.diluent_wt >= 30 && t.inputs.photoinit_wt <= 1.3));
 check("Greeshma's points sit outside the hatch", G.every((t) => t.inputs.photoinit_wt > 1.3));
+{
+  const masses = bench[0].steps.flatMap((x) => x.fields).filter((f) => f.scales);
+  const sum = r2(masses.reduce((acc, f) => acc + benchPlanned[f.id], 0));
+  check("Bench resin-batch masses sum to the batch", sum === benchVal.batch_g, `${sum} g`);
+  const homes = new Set(lab.fixtures.map((f) => f.name));
+  check("Bench steps use lab instruments and consumables kept in the lab",
+    bench[0].steps.every((x) => lab.instruments.some((i) => i.id === x.instrument) && [...x.get, ...x.put].every((c) => lab.consumables.some((k) => k.id === c)))
+      && lab.consumables.every((k) => homes.has(k.home) && (!k.back || homes.has(k.back))));
+}
 
 console.log("\nTrials (synthetic, seed " + SEED + ")\n");
 console.log("id   owner     camp  dil%  PI%   degas rest_h  visc   por%   UTS   flex  viab  fract    T B P C  all  note");

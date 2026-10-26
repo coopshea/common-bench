@@ -1,12 +1,47 @@
-# Common Bench: a collaborative lab notebook
+# Common Bench
 
-A concept for a team project layer for Claude Science (unofficial).
+A team lab notebook where the SOP is the interface: plan a trial on screen or on paper, run it hands-free at the bench, and let Claude reason across everyone's trials. A concept for a project layer for Claude Science (unofficial).
 
 > Lab science is a search run by a team, and nobody can see the whole search.
 
-A 5-minute demo. Two scientists, two years apart, chase one objective: a denture resin thin enough to print fast (viscosity ≤ 1.5 Pa·s) that still passes four guardrails (tensile, 3-point bend, bubbles/porosity, cytotoxicity). One of them wrongly abandoned the best region. The other is closer than anyone, and doesn't know why. This prototype gives them a shared map of the search, catches the one unintended difference between them, and proposes the cheapest experiment that settles it. A person approves every write, and the finding is recorded under the person whose work produced it.
+**Synthetic data.** Two real first names on purpose: Cooper (a former member) and Greeshma (current). The lab is fictional and unnamed.
 
-**Synthetic data, fictional company** (Meridian Dental Materials). Two real first names on purpose: Cooper (former member) and Greeshma (current).
+## The user and the problem
+
+A small materials team developing a 3D-printable denture resin: thin enough to print fast (viscosity ≤ 1.5 Pa·s) while still passing four checks (tensile, 3-point bend, bubbles, cell viability). Research is a search over recipes, run by people over years. Two things break it.
+
+**1. Capture.** The work happens with gloves on, away from a screen. Values go onto paper or into memory, and the variables that matter most are the ones nobody writes down: how long something degassed, how long the resin rested before printing.
+
+**2. Coordination.** Each person searches carefully on their own, but nobody sees the team's whole search:
+
+| Failure | In this story |
+|---|---|
+| A region abandoned for the wrong reason | Cooper's high-diluent "dead end: too brittle" (June 2025) |
+| A dismissed outlier that held the answer | T09 rested 18 h before printing, passed every check at 1.28 Pa·s, and was excluded as "a lucky specimen" |
+| Know-how that never moves between people | Greeshma degasses for 10 minutes out of habit. It isn't in the SOP, and she doesn't know it matters |
+| "The same protocol" run differently | Degassed vs. not, so their results were never comparable |
+
+The physics is real, kept simple: more diluent makes a thinner but more brittle part, brittle parts are flaw-sensitive, and bubbles are flaws. The "barrier" at ~30% diluent was a processing artifact. The two problems are linked: the decisive variable (degassing) was lost at capture, so the analysis could never find it.
+
+## What it does
+
+Four tabs, built on three primitives (`PRIMITIVES.md`): a **protocol** whose amounts are formulas, a **trial** that records planned against actual, and a **registry** of instruments and consumables.
+
+1. **SOPs:** the protocol as a programmable document.
+   - The trial's settings sit at the top (batch 50 g, diluent 38%…). Every amount below is typeset math, worked with this trial's numbers, and updates as you type.
+   - **Edit SOP** is a block editor (Step, Amount and Setting blocks). Its Ask box takes "Set batch to 100" or "Add step Preheat oven before step 1" and shows the change on an approval card. Every change becomes a version with its author: Claude, plus the person who approved it.
+   - **Print SOP** prints a fill-in-the-blank copy: the computed targets printed faintly in their blanks, and every blank labelled with its variable, so it can be solved by hand and read back by OCR.
+2. **Start trial:** the bench view, half lab twin and half steps.
+   - The 3D lab lights the instrument for the current step and shows which consumables to fetch and where to put them back.
+   - Values go in by voice or by typing. One overshoot rescales every amount after it, and values far off target are flagged.
+   - Built for stepping away: the screen stays awake, unattended steps have timers that chime and notify, every value is timestamped, a trial is locked to the SOP version it started on, and it survives a reload.
+3. **Lab:** the room in 3D, with a token on each instrument for whoever is using it now, and a day calendar per instrument (in use, booked, booked-but-idle, free). Drag across free time to book it; clashes are flagged on the approval card.
+4. **Projects:** the analysis across trials.
+   - **One chart and a scorecard**, linked, showing both people's paths toward the goal. T09 sits in the goal zone, excluded.
+   - **Protocol Diff** separates **intended** differences (what was being studied) from **unintended** ones (degassed 10 min vs. not).
+   - **Critic and Proposer** (the agent) answers "has anyone tried this?" with citations, disputes the dead end, and drafts **T15**: a two-arm crossover with a control and nothing to order. Both writes are approval cards.
+
+**How they connect:** the bench view asks "how long?" at the degas step, so the variable that decided this story is captured as a byproduct of doing the work. The agent can then find it, and credit goes to the person whose run produced it.
 
 ## Run it
 
@@ -16,68 +51,44 @@ npm install          # once
 npm run dev          # web on :5173, agent API on :8787
 ```
 
-- Open http://localhost:5173. Two views, toggled at the top:
-  - **Projects:** research thrusts → project (goal, what we know, open questions) → experiment (chart and trials) → trial (how it ran, step by step).
-  - **Lab:** the room as a floor plan or in 3D, showing how each instrument is logged and who is using it.
-  - Every screen has one right panel that follows your selection and ends in an Ask box scoped to it. The demo question is the suggestion under Ask in the *Mid-diluent, high photoinitiator* experiment.
-- `DEMO_WALKTHROUGH.md` and the Guide describe the previous single-screen layout. They haven't been rewritten for this one yet.
-- Live agent answers need `ANTHROPIC_API_KEY` in `app/.env.local` (gitignored). **Without a key or a network, the demo path replays a recorded live run**, so it works offline.
-- `npm run data` regenerates `data/notebook.json` from the seeded generator and re-runs the 26 story checks. `npm run tokens` regenerates `src/ds/tokens.css` from the design system's `src/ds/tokens.json`.
-
-## The user and the problem
-
-A materials team (12 people) developing 3D-printing resin. Research is a search over recipes. Each person does a careful local search, but nobody can see the team's whole search over years and people. That causes four coordination failures:
-
-| Failure | In this story |
-|---|---|
-| A region abandoned for the wrong reason | Cooper's high-diluent "dead end: too brittle" (June 2025) |
-| A dismissed outlier that held the answer | T09: the one trial that rested 18 h before printing passed every guardrail at 1.28 Pa·s, and was excluded as "a lucky specimen" |
-| Know-how that never moves between people | Greeshma degasses for 10 minutes out of habit from her last lab. It isn't in the SOP, and she doesn't know it matters |
-| "The same protocol" run differently | Degassed vs. not, so their results were never comparable |
-
-The mechanism is real physics, kept simple. More diluent gives thinner resin but a more brittle part. Brittle materials are flaw-sensitive, and bubbles are flaws. Without degassing, bubbles pushed high-diluent strength below the floor. The barrier at ~30% diluent was a processing artifact.
-
-## What it does
-
-1. **One chart and a scorecard**, linked, with replay.
-   - The chart shows one check at a time (tabs: viscosity, tensile, bend, bubbles, cells alive), by trial order or by diluent. The limit is drawn once and the passing side is tinted.
-   - Each trial is a status mark: ✓ goal met, ○ passes every check but still too thick, ✕ fails a check. Thin lines trace each person's path.
-   - The default view (viscosity by trial) shows both people walking down toward 1.5. Cooper crosses it into ✕ (thin but weak) and calls a dead end. Greeshma approaches from above. T09 sits ✓ in the goal zone, excluded.
-   - The scorecard table has a status column, and every check cell is tinted pass / not yet / fail. Clicking a check's header focuses the chart on it.
-   - Hovering a trial anywhere highlights it everywhere. Clicking opens the trial: timestamped notes by process step, results, test curves and the instrument log.
-2. **Protocol Diff.** Two trials aligned step by step. **Intended** differences (what was being studied) are separated from **unintended** ones (degas 10 min vs. none), and related evidence is called out (T09's 18 h rest, visible only in the instrument log).
-3. **Critic and Proposer** (the agent). It answers "has anyone tried this?" with citations to trials, log entries and ledger items. It disputes the dead end and drafts **T15**, a two-arm crossover: T15a (Cooper's diluent + Greeshma's photoinitiator + her degas step) and T15b (the same, no degas: **the control**). Nothing needs ordering: an afternoon instead of a six-week, $1,800 order. Both writes are approval cards.
+- Open http://localhost:5173. The demo question for the agent is the suggestion under Ask in the *Mid-diluent, high photoinitiator* experiment. For the bench flow: SOPs → Resin batch → Start trial.
+- Live agent answers need `ANTHROPIC_API_KEY` in `app/.env.local` (gitignored). **Without a key or a network, the demo path replays a recorded live run**, so it works offline. Speech falls back to a script built from the current targets; add `?script` to a trial's URL to force it.
+- `npm run data` regenerates `data/notebook.json` from the seeded generator and re-runs the 28 story checks. `npm run tokens` regenerates the design tokens.
+- `DEMO_WALKTHROUGH.md` is the 5-minute path: Projects (the map, the question, the diff, the proposal), then running T15a at the bench, the lab, and the eval.
 
 ## Architecture
 
 ```
-React UI (Vite)  ──POST /api/ask (NDJSON stream)──▶  Hono server
-     ▲   approval cards ──POST /api/approve/:id──▶     │
-     │                                                 ▼
-     │                                   Claude Agent SDK (claude-sonnet-5-5)
-     │                                     system prompt = lab-notebook-analyst Skill
-     │                                     canUseTool ⇢ write tools wait for human approval
-     │                                                 │
-     │                                   Notebook MCP server (in-process)
-     │                                     search_trials · get_trial · get_log · diff_protocols
-     │                                     compare_groups · correlate
-     │                                     propose_ledger_update* · draft_trial*   (*gated)
-     │                                                 │
-     └──────────── notebook.json ◀── seeded generator (single source of truth)
+React UI (Vite)                                         Hono server
+  SOPs · Trial · Lab · Projects ──POST /api/ask (NDJSON)──▶  Claude Agent SDK (claude-sonnet-5-5)
+  approval cards ─────────────────POST /api/approve/:id──▶     system prompt = lab-notebook-analyst Skill
+        │                                                      canUseTool ⇢ writes wait for a person
+        │ local, in the browser                                    │
+        │  calc.ts       formulas → numbers, typeset as KaTeX       Notebook MCP server (in-process)
+        │  sopEdit.ts    "Set batch to 100" → proposed protocol     search_trials · get_trial · get_log
+        │  booking.ts    "Book the degasser 2–4 pm" → booking       diff_protocols · compare_groups · correlate
+        │  benchSpeech   Web Speech API → field values              propose_ledger_update* · draft_trial* (*gated)
+        │  benchRun.ts   trials and SOP versions (on device)           │
+        └──────────────────────── notebook.json ◀── seeded generator (single source of truth)
 ```
 
-- **Numbers come from tools, not the model.** Arithmetic, log-gap timing, protocol diffs and draft estimates are code. The model plans, reads and explains. Draft-trial estimates come from models fitted to the trials (`src/shared/surrogate.ts`), never from the LLM, and are always labeled "estimate".
-- **Why tools when 14 trials fit in context?** Exact numbers, real citations, and a design that scales to 10k trials and live device logs. The eval measures the difference (below).
-- **Human in the loop by construction.** The write tools are gated by the Agent SDK's permission callback. The UI's Approve buttons are that gate.
-- **One tool implementation, two transports.** The same tools run in-process for the agent and as a stdio MCP server in a Claude Code plugin (`plugin/`), so the same question gets the same cited answer where scientists already work.
-- **Model choice.** Sonnet for the interactive demo; the eval shows Haiku with tools matches it on this question set at 12–13× lower cost, so lookups can route to Haiku.
-- **Offline-safe.** Every demo-path stream is recorded from a live run and replayed with its original pacing if the key or network fails.
+**Where Claude runs, and where it deliberately doesn't**
+
+| Job | What does it | Why |
+|---|---|---|
+| Open questions across trials ("has anyone tried this?") | Sonnet through the Agent SDK, with MCP tools and citations | Needs reading, planning and judgement |
+| Lookups | Haiku can take them | The eval shows the same answers at 12–13× lower cost |
+| Numbers (amounts, rescaling, log gaps, diffs, estimates) | Code: `calc.ts`, the tools, `surrogate.ts` | Exact, checkable, never invented; estimates are always labelled |
+| Simple SOP edits, bookings, spoken values | Local deterministic parsers | Instant, free, offline at the bench. The agent version slots in behind the same approval card |
+| Every write | A person, via approval cards | The SDK permission callback is the gate |
+
+- **One tool implementation, two transports.** The same tools run in-process for the agent and as a stdio MCP server in a Claude Code plugin (`plugin/`), so a scientist gets the same cited answer where they already work.
+- **Offline-safe.** The demo path's agent stream is recorded from a live run and replayed with its original pacing. Fonts, math and the editor are all bundled.
+- **Libraries, not hand-built primitives:** BlockNote for the block editor, KaTeX for math, react-big-calendar for the day views.
 
 ## Eval
 
-`evals/`: 12–15 questions generated from the notebook (lookups, aggregations, the hero question, two that must be declined, one that needs log timing), with automatic graders (cited IDs exist; numbers within tolerance; the hero names the degassing confound and T09 and proposes a control arm; correct abstention) plus a light Claude-as-judge rubric.
-
-All three setups get the same answer rules, asker and effort. One run per question (n = 1).
+`app/evals/`: 12–15 questions generated from the notebook (lookups, aggregations, the hero question, two that must be declined, one that needs log timing). Automatic graders check that cited IDs exist, numbers are within tolerance, the hero answer names the degassing confound and T09 and proposes a control arm, and declines are correct. A light Claude-as-judge rubric sits on top. One run per question (n = 1).
 
 | Setup | Accuracy | Citation validity | Declines correctly | Wrong numbers | Hero | Cost / question | p50 latency |
 |---|---|---|---|---|---|---|---|
@@ -85,33 +96,42 @@ All three setups get the same answer rules, asker and effort. One run per questi
 | B · Agent + tools · Sonnet | 100% | 100% | 2/2 | 0 | pass (judge 4/4) | $0.018 | 7.0 s |
 | C · Agent + tools · Haiku | 100% | 100% | 2/2 | 0 | pass (judge 4/4) | $0.0015 | 5.4 s |
 
-**What it says, honestly:**
-- At 14 trials the whole notebook (~34K tokens) fits in context, so tools don't win on accuracy.
-- Haiku with tools gets the same answers 12–13× cheaper. That's the routing case: Haiku for lookups, Sonnet when a decision is at stake.
-- The case for tools is that numbers are computed in code, every citation comes from a tool result, and the design still works at 10,000 trials and live device logs.
-- The judge scored the whole-notebook hero proposal 2/4 (it didn't credit Greeshma or state uncertainty). With one run each, that's a signal, not a result.
-- Two grader false failures from the first pass were fixed and re-graded on stored answers: "isn't in the notebook" now counts as declining, and a ratio the answer computes from its own numbers isn't flagged.
-
-**Stress eval** (`app/evals/stress/`, 50 / 250 / 1,000 trials with planted needles): whole-notebook-in-context stops fitting at 1,000 trials, and whole notebook in context is perfect up to its window (15/15 at 250 trials) but costs $1.22 per cache write. The tool agents drop to 7–8 of 15 at 250 trials, limited by the tool surface (oversized results, filters frozen to the demo, one call per log), not by the model. The fixes and the SDK feedback are in `ROADMAP.md`.
+- At 14 trials the whole notebook (~34K tokens) fits in context, so tools don't win on accuracy. Haiku with tools gets the same answers 12–13× cheaper: Haiku for lookups, Sonnet when a decision is at stake.
+- **Stress eval** (`app/evals/stress/`, 50 / 250 / 1,000 trials with planted needles): whole-notebook-in-context is perfect up to its window but stops fitting at 1,000 trials. The tool agents drop to 7–8 of 15 at 250 trials, limited by the tool surface (oversized results, filters frozen to the demo, one call per log), not by the model. The fixes and the SDK feedback are in `ROADMAP.md`.
+- **Usability:** a persona walkthrough of the bench flow (a new student, Greeshma mid-batch, a PI editing the SOP, a quick availability check) found 17 screen issues and a second set specific to stepping away from the bench. The highest-yield fixes are built and tested (timers, timestamps, version locking, off-target flags, reload safety).
 
 Re-run with `npx tsx --env-file-if-exists=.env.local evals/run.ts --config A,B,C` from `app/` (about $0.60).
 
 ## What's faked
 
-- All data is synthetic, from one seeded generator (`data/generate.ts`, seed 5, chosen as the first seed where all 23 story checks pass). The chemistry is simplified but directionally plausible. Guardrail thresholds are partly contrived; the cytotoxicity threshold follows ISO 10993-5, and the bend values are modeled on ISO 20795-1 (verify before quoting).
-- "MHS" here means **MHS-style** logging built from the public description of the Model Hardware Standard research preview. There is no access to MHS or its spec. Cooper's 2024–25 logs are marked *backfilled from instrument export*.
-- Claude Science details come from third-party coverage only. This is a concept for a project layer and may overlap with things Anthropic has already built.
-- The company is fictional. No real customer.
+- **All data is synthetic**, from one seeded generator (`data/generate.ts`, seed 5). The chemistry is simplified but directionally plausible. Guardrail thresholds are partly contrived; the cytotoxicity threshold follows ISO 10993-5 and the bend values are modeled on ISO 20795-1 (verify before quoting).
+- **"MHS" means MHS-style:** logging built from the public description of the Model Hardware Standard research preview. There is no access to MHS or its spec. Instruments don't actually report in; the lab's schedule and in-use state are generated.
+- **Trials and SOP versions are saved only in this browser**, not on a server or across devices (#9).
+- **Speech** uses the browser's recognition, which sends audio to the browser vendor's service. The offline fallback is a script built from the current targets. The photo is a drawn placeholder.
+- **SOP edits through the Ask** use a local parser for a handful of edit types, not the agent.
+- **Claude Science details** come from third-party coverage only. This is a concept for a project layer and may overlap with things Anthropic has already built.
+
+## Job description mapping
+
+| Bullet | Where it shows |
+|---|---|
+| Build production-ready agents, Claude Skills and solutions with the SDK and API | Agent SDK server with gated write tools; the lab-notebook-analyst Skill; MCP tools shared with a Claude Code plugin |
+| Develop technical assets: code examples, architectures, integration patterns | The "tools vs. long context" pattern with its eval; approval-gated writes; local parsers with the agent behind the same card |
+| Document best practices for prompting, evaluation, agentic workflows and architecture | The eval harness and stress eval, and the routing guidance (Haiku for lookups, Sonnet for decisions) |
+| Create demo environments and technical POCs | This app, offline-safe, end to end |
+| Run discovery; design scalable architectures and evaluation frameworks | The persona walkthroughs and the bench-switching findings; the stress eval's scale limits; the pilot plan in `ROADMAP.md` |
+| Synthesize feedback into the product roadmap | The two notes below, plus the SDK feedback in `ROADMAP.md` |
 
 ## The six-month version
 
-See `ROADMAP.md` for the first three weeks with design-partner labs. Over six months:
-- real partner data instead of synthetic
-- MHS-style capture for the devices that have interfaces, and quick manual or paper-worksheet capture for the ones that don't
-- versioned SOPs, so the diff separates deviation, SOP change and intended variable
-- a surrogate model that suggests where to sample next, with the team still choosing
-- the eval grown from partners' real questions, with a release bar of 0 wrong numbers and ≥ 95% citation validity
+`ROADMAP.md` covers the first three weeks with design-partner labs. Beyond that, filed as issues:
+- **Server storage with real version control and authorship** for SOPs and trials, with trials locked to the version they ran (#9).
+- **Timers and values driven by MHS-style instruments**, plus what networked instruments make possible for the whole lab: live availability, idle bookings released, comparisons across trials with no data entry (#10).
+- **Scheduling a trial:** book its instruments, find a time in the lab and personal calendars, send invites (#7).
+- **Parallelizing a protocol** so no one stands idle during a 10-minute degas, without changing anything that affects the result (#8).
+- Scanning a filled-in paper copy back in, handing a step to a phone, a surrogate model that suggests where to sample next, and the eval grown from partners' real questions.
 
-## One piece of product feedback for Anthropic
+## Product feedback for Anthropic
 
-**Claude Science is organized around the session; labs are organized around the project.** A project layer (an objective with pass criteria, trials owned by people, a shared findings ledger, approval-gated writes) would let Claude reason across everyone's work instead of one conversation. A second note, for MHS: **a recorder, not just a controller.** Passive, attributed logging of human-run steps, plus a manual or observer path for devices with no interface (here, the degasser), is where the decisive evidence lived.
+1. **Claude Science is organized around the session; labs are organized around the project.** A project layer (an objective with pass criteria, trials owned by people, versioned SOPs, approval-gated writes) would let Claude reason across everyone's work instead of one conversation.
+2. **For MHS: a recorder, not just a controller, with a standard run event.** Passive, attributed logging of human-run steps, a manual path for devices with no interface (here, the degasser), and a standard "run started / progress / done / fault" event in the machine reference file. The decisive evidence in this story lived in exactly those gaps.
