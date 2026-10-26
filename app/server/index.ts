@@ -71,7 +71,7 @@ app.post("/api/approve/:id", async (c) => {
     /* empty body → approve as the default asker */
   }
   const decision = body.decision === "reject" ? "reject" : "approve";
-  const by: PersonId = body.by && PEOPLE.includes(body.by) ? body.by : "greeshma";
+  const by: PersonId = body.by && PEOPLE.includes(body.by) ? body.by : "shreya";
   const r = decide(id, decision, by);
   if (!r.found) {
     const res: ApproveResponse = { ok: false, proposal_id: id, status: "rejected" };
@@ -97,7 +97,7 @@ app.post("/api/ask", async (c) => {
   }
   const question = (req.question ?? "").trim();
   if (!question) return c.json({ error: "question is required" }, 400);
-  const asker: PersonId = req.asker && PEOPLE.includes(req.asker) ? req.asker : "greeshma";
+  const asker: PersonId = req.asker && PEOPLE.includes(req.asker) ? req.asker : "shreya";
   const model = typeof req.model === "string" && /^claude-[a-z0-9-]+$/.test(req.model) ? req.model : undefined;
 
   c.header("Content-Type", "application/x-ndjson; charset=utf-8");

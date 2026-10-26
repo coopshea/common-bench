@@ -9,7 +9,7 @@ import { ProtocolDiffView } from "./ProtocolDiffView.tsx";
 import { DraftApproval, LedgerApproval } from "./ApprovalCards.tsx";
 import { TOUR, tourClass } from "./tour.ts";
 
-// Greeshma's question, verbatim from the brief.
+// Shreya's question, verbatim from the brief.
 export const HERO_QUESTION =
   "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?";
 
@@ -48,7 +48,7 @@ export function AgentPanel({ bare = false }: { bare?: boolean } = {}) {
   const [traceOpen, setTraceOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const stick = useRef(true);
-  const asker = personById("greeshma");
+  const asker = personById("shreya");
   const streaming = a.status === "streaming";
   const proposals = [a.ledgerProposal, a.draftProposal].filter(Boolean);
   const pending = proposals.filter((p) => p!.status === "pending").length;
@@ -183,7 +183,7 @@ export function AgentPanel({ bare = false }: { bare?: boolean } = {}) {
             aria-label="Question"
           />
           <div className="row">
-            <span className="asker" title={`Asking as ${asker.name}`}><Avatar id="greeshma" size="sm" /> {asker.name.split(" ")[0]}</span>
+            <span className="asker" title={`Asking as ${asker.name}`}><Avatar id="shreya" size="sm" /> {asker.name.split(" ")[0]}</span>
             <span style={{ flex: 1 }} />
             <button className={`btn ${a.status === "idle" ? "primary" : ""}`} onClick={submit} disabled={streaming}>
               {a.status === "idle" ? "Ask" : "Ask again"}

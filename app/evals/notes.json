@@ -1,7 +1,7 @@
 [
   "All three setups got the same prompt rules, asker and effort. All three answered 15/15, cited only real ids, declined both questions the notebook can't answer, and stated no number the grader couldn't trace. At 14 trials the whole notebook (about 34K tokens) fits in context, so tools don't win on accuracy here.",
   "Haiku with tools matched them at $0.0015 a question, 12–13× cheaper than Sonnet either way. That's the routing case: Haiku for lookups, Sonnet when a decision is at stake.",
-  "On the hero question, the Haiku judge scored the whole-notebook proposal 2/4 (it didn't credit Greeshma or say what's uncertain) and both tool setups 4/4. One run each, so read it as a signal, not a result.",
+  "On the hero question, the Haiku judge scored the whole-notebook proposal 2/4 (it didn't credit Shreya or say what's uncertain) and both tool setups 4/4. One run each, so read it as a signal, not a result.",
   "Why tools anyway: numbers are computed in code, citations come from tool results, and the design keeps working at 10,000 trials and live device logs, which won't fit in context.",
   "Grader fixes after the first pass, applied to stored answers: \"isn't in the notebook\" now counts as declining, and a ratio of two numbers the answer itself states isn't counted as a wrong number. Both had caused false failures."
 ]

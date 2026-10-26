@@ -12,11 +12,11 @@ These are basic SVG placeholders. Each one is a pure function of one trial's dat
 ## Ideas Cooper raised (for the Anatomy session)
 
 - **A visual SOP:** clicking a process step or a test opens its figure, so the process reads like an illustrated protocol.
-- **A CT-style porosity animation:** sweep slices through the specimen and show `pores[]` as voids. High-diluent, undegassed trials (T06–T10) show 2.4–5.2% voids; T09 and Greeshma's degassed trials show almost none.
+- **A CT-style porosity animation:** sweep slices through the specimen and show `pores[]` as voids. High-diluent, undegassed trials (T06–T10) show 2.4–5.2% voids; T09 and Shreya's degassed trials show almost none.
   - For a 3-D look, seed the z positions from the same per-trial seed so every view of a trial is consistent.
 - **Parametric everywhere:** never hand-tune a figure for one trial. Everything comes from the trial object, so T15a/T15b estimates can render too (`estimateRecipe()` in `src/shared/surrogate.ts` gives `porosity_pct`; pores for drafts can be sampled the same way the generator does).
 
 ## Data notes
 
 - `data/generate.ts` writes the figure data: `tensileCurve`, `flexCurve`, `pores`. If a figure needs more per-trial data (pore z-depth, crack path), add it there so it stays seeded and verified.
-- Person colors: Cooper `#2a78d6`, Greeshma `#6250d6`. Status colors: `#0ca30c` ✓ / `#d99a00` ○ / `#d03b3b` ✕. Never use status colors for people.
+- Person colors: Cooper `#2a78d6`, Shreya `#6250d6`. Status colors: `#0ca30c` ✓ / `#d99a00` ○ / `#d03b3b` ✕. Never use status colors for people.

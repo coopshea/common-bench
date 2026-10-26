@@ -100,7 +100,7 @@ const ANSWER_PROPOSES = /\bT\d{2}[a-d]\b|\b(mark|propos|suggest|recommend|add|fi
 export async function runAgent(opts: RunAgentOptions): Promise<RunAgentResult> {
   const t0 = Date.now();
   const model = opts.model ?? DEFAULT_MODEL;
-  const asker: PersonId = opts.asker ?? "greeshma";
+  const asker: PersonId = opts.asker ?? "shreya";
   const events: AskEvent[] = [];
   const emit = (e: AskEvent) => {
     events.push(e);

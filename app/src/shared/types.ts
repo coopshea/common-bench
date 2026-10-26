@@ -4,8 +4,8 @@
 
 // ---------- People ----------
 
-// Two people on purpose: Cooper (former member) and Greeshma (current). No one else.
-export type PersonId = "cooper" | "greeshma";
+// Two people on purpose: Cooper (former member) and Shreya (current). No one else.
+export type PersonId = "cooper" | "shreya";
 
 export interface Person {
   id: PersonId;
@@ -71,7 +71,7 @@ export interface Project {
 
 // ---------- Trials ----------
 
-export type Campaign = "A" | "B" | "G";
+export type Campaign = "A" | "B" | "S";
 
 export interface TrialInputs {
   diluent_wt: number; // % — map x-axis
@@ -445,7 +445,7 @@ export type AskEvent =
 
 export interface AskRequest {
   question: string;
-  asker: PersonId; // "greeshma" in the demo
+  asker: PersonId; // "shreya" in the demo
   cached?: boolean; // force replay from cache (Tour mode)
 }
 

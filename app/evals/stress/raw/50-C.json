@@ -60,7 +60,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Across the 50 trials [T01]–[T50], the counts are:\n\n- Tomás Herrera: 10 ([T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]). [T07] is excluded by its owner.\n- Ravi Menon: 8 ([T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29])\n- Cooper Shea: 8 ([T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]). [T26] is excluded by its owner.\n- Dana Whitfield: 7 ([T03], [T04], [T33], [T38], [T40], [T43], [T45])\n- Lucia Ferreira: 6 ([T27], [T31], [T32], [T34], [T41], [T48])\n- Ines Kowalski: 5 ([T37], [T42], [T44], [T46], [T50])\n- Dana Whitford: 4 ([T25], [T35], [T36], [T39])\n- Greeshma: 2 ([T47], [T49])\n\nThese totals include excluded trials. The two Danas are separate people in the roster, so I counted them separately.",
+   "answer": "Across the 50 trials [T01]–[T50], the counts are:\n\n- Tomás Herrera: 10 ([T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]). [T07] is excluded by its owner.\n- Ravi Menon: 8 ([T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29])\n- Cooper Shea: 8 ([T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]). [T26] is excluded by its owner.\n- Dana Whitfield: 7 ([T03], [T04], [T33], [T38], [T40], [T43], [T45])\n- Lucia Ferreira: 6 ([T27], [T31], [T32], [T34], [T41], [T48])\n- Ines Kowalski: 5 ([T37], [T42], [T44], [T46], [T50])\n- Dana Whitford: 4 ([T25], [T35], [T36], [T39])\n- Shreya: 2 ([T47], [T49])\n\nThese totals include excluded trials. The two Danas are separate people in the roster, so I counted them separately.",
    "tool_calls": 3,
    "trace": [
     {
@@ -77,11 +77,11 @@
      "tool": "search_trials",
      "input": {
       "filter": {
-       "owner": "greeshma"
+       "owner": "shreya"
       }
      },
      "status": "done",
-     "summary": "2 trials with Greeshma's trials: T47, T49 (Greeshma, G). Viscosity 1.4–1.5 Pa·s"
+     "summary": "2 trials with Shreya's trials: T47, T49 (Shreya, G). Viscosity 1.4–1.5 Pa·s"
     },
     {
      "tool": "search_trials",
@@ -2867,7 +2867,7 @@
       }
      },
      "status": "done",
-     "summary": "12 trials with meets objective: T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T32 (Lucia, K); T37, T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lucia, K); T49 (Greeshma, G); T50 (Ines, P) (T26 excluded by its owner). Viscosity: Dana 1.08 Pa·s, Cooper 1.35 Pa·s, Lucia 1.38–1.49 Pa·s, "
+     "summary": "12 trials with meets objective: T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T32 (Lucia, K); T37, T44, T46 (Ines, P); T47 (Shreya, G); T48 (Lucia, K); T49 (Shreya, G); T50 (Ines, P) (T26 excluded by its owner). Viscosity: Dana 1.08 Pa·s, Cooper 1.35 Pa·s, Lucia 1.38–1.49 Pa·s, "
     }
    ],
    "cost_usd": 0.0012775,
@@ -2938,7 +2938,7 @@
    "question": "Did T33 pass the tensile guardrail? Give its measured tensile strength.",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "No, T33 failed the tensile guardrail. Its measured tensile strength was 36.8 MPa, below the 40 MPa floor [T33]. The note from the test step says the tensile \"looked solid, comfortably over the 40 MPa floor\" [T33-N3], but the recorded value doesn't support that. T33 also failed the bend and porosity guardrails (flexural strength 56.7 MPa against a 65 MPa minimum, porosity 4.27% against a 1% limit) and missed the viscosity objective at 1.42 Pa·s, though that value is under 1.5 [T33]. Its fracture mode was recorded as brittle [T33]. Dana's campaign D, where T33 was the first trial, has no trials that passed every guardrail [L13]. Greeshma, you may want to confirm the 36.8 MPa figure against the raw test record before anyone relies on the note.",
+   "answer": "No, T33 failed the tensile guardrail. Its measured tensile strength was 36.8 MPa, below the 40 MPa floor [T33]. The note from the test step says the tensile \"looked solid, comfortably over the 40 MPa floor\" [T33-N3], but the recorded value doesn't support that. T33 also failed the bend and porosity guardrails (flexural strength 56.7 MPa against a 65 MPa minimum, porosity 4.27% against a 1% limit) and missed the viscosity objective at 1.42 Pa·s, though that value is under 1.5 [T33]. Its fracture mode was recorded as brittle [T33]. Dana's campaign D, where T33 was the first trial, has no trials that passed every guardrail [L13]. Shreya, you may want to confirm the 36.8 MPa figure against the raw test record before anyone relies on the note.",
    "tool_calls": 1,
    "trace": [
     {
@@ -2989,7 +2989,7 @@
       }
      },
      "status": "done",
-     "summary": "22 trials with viscosity ≤ 1.5 Pa·s: T08, T11 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T32 (Lucia, K); T33 (Dana, D); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lu"
+     "summary": "22 trials with viscosity ≤ 1.5 Pa·s: T08, T11 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T32 (Lucia, K); T33 (Dana, D); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46 (Ines, P); T47 (Shreya, G); T48 (Lu"
     },
     {
      "tool": "search_trials",
@@ -2999,7 +2999,7 @@
       }
      },
      "status": "error",
-     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"shreya\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
     },
     {
      "tool": "search_trials",
@@ -3155,7 +3155,7 @@
    "question": "What porosity did Cooper Shea's degassed trials show?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Cooper Shea has no vacuum-degassed trials in the notebook. All eight of Cooper's trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21] and [T26], have degas_min 0. Their cross-section porosities were 0.54, 0.53, 0.32, 0.9, 0.32, 0.71, 2 and 0.07 % respectively. [T21] failed the porosity guardrail at 2 %, and [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe.\"\n\nThe degassed trials in the notebook were run by others: Dana Whitford, Ines Kowalski and Greeshma Their porosities are in the notebook, and Greeshma's [T47] and [T49] both passed with porosity 0.24 % and 0.19 %.",
+   "answer": "Cooper Shea has no vacuum-degassed trials in the notebook. All eight of Cooper's trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21] and [T26], have degas_min 0. Their cross-section porosities were 0.54, 0.53, 0.32, 0.9, 0.32, 0.71, 2 and 0.07 % respectively. [T21] failed the porosity guardrail at 2 %, and [T26] was excluded by Cooper, who noted it was \"anomalously strong for its recipe.\"\n\nThe degassed trials in the notebook were run by others: Dana Whitford, Ines Kowalski and Shreya Their porosities are in the notebook, and Shreya's [T47] and [T49] both passed with porosity 0.24 % and 0.19 %.",
    "tool_calls": 3,
    "trace": [
     {
@@ -3187,7 +3187,7 @@
       }
      },
      "status": "done",
-     "summary": "11 trials with degassed: T25, T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T42, T44, T46 (Ines, P); T47, T49 (Greeshma, G); T50 (Ines, P). Viscosity: Dana 1.02–1.15 Pa·s, Ines 1.15–1.72 Pa·s, Greeshma 1.4–1.5 Pa·s"
+     "summary": "11 trials with degassed: T25, T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T42, T44, T46 (Ines, P); T47, T49 (Shreya, G); T50 (Ines, P). Viscosity: Dana 1.02–1.15 Pa·s, Ines 1.15–1.72 Pa·s, Shreya 1.4–1.5 Pa·s"
     }
    ],
    "cost_usd": 0.00196278,

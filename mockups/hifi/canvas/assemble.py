@@ -22,7 +22,7 @@ def topbar(active):
 <div class="seg"><a href="Main.dc.html"{on("projects")}>Projects</a><a href="Lab.dc.html"{on("lab")}>Lab</a></div>
 <button class="round" type="button" aria-label="Search">{SEARCH}</button>
 </nav>
-<div class="me"><span class="synth">Synthetic data</span><button type="button" aria-label="Account menu, Greeshma" style="border:0;background:none;padding:0;display:flex"><span class="av g lg">G</span></button></div>
+<div class="me"><span class="synth">Synthetic data</span><button type="button" aria-label="Account menu, Shreya" style="border:0;background:none;padding:0;display:flex"><span class="av g lg">S</span></button></div>
 </header>'''
 
 

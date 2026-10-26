@@ -15,7 +15,7 @@ export interface TourStep {
   action: TourAction;
 }
 
-const g = firstNameOf("greeshma");
+const g = firstNameOf("shreya");
 const c = firstNameOf("cooper");
 
 export const ALL_PANELS: Panel[] = ["tradeoff", "focus", "table", "agent", "process"];

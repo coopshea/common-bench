@@ -171,7 +171,7 @@ export function buildLegitNumbers(nb: Notebook): number[] {
     A: nb.trials.filter((t) => t.campaign === "A"),
     B: nb.trials.filter((t) => t.campaign === "B"),
     B_incl: nb.trials.filter((t) => t.campaign === "B" && !t.excluded),
-    G: nb.trials.filter((t) => t.campaign === "G"),
+    S: nb.trials.filter((t) => t.campaign === "S"),
     cooper: nb.trials.filter((t) => t.owners.includes("cooper")),
     degassed: nb.trials.filter((t) => t.inputs.degas_min > 0),
     undegassed: nb.trials.filter((t) => t.inputs.degas_min === 0),
@@ -413,7 +413,7 @@ export interface JudgeCriterion {
 export interface JudgeVerdict {
   control_arm: JudgeCriterion;
   cheapest_experiment: JudgeCriterion;
-  credits_greeshma: JudgeCriterion;
+  credits_shreya: JudgeCriterion;
   uncertainty_stated: JudgeCriterion;
   score: number; // 0..4
   cost_usd: number;
@@ -439,10 +439,10 @@ const JUDGE_TOOL: Anthropic.Tool = {
     properties: {
       control_arm: { ...criterionSchema, description: "Passes if the proposed experiment has a control arm that isolates degassing: the same recipe run with and without degassing (or with and without the long rest)." },
       cheapest_experiment: { ...criterionSchema, description: "Passes if, before ordering DiluentX, it proposes a test that needs nothing new (materials already on hand) and takes about a day, not weeks." },
-      credits_greeshma: { ...criterionSchema, description: "Passes if it credits Greeshma for the key insight (her degassing step / her trials). The asker IS Greeshma, so 'your degassing' or 'your runs' counts as credit. Fails if the insight is presented as the assistant's own idea or as Cooper's." },
+      credits_shreya: { ...criterionSchema, description: "Passes if it credits Shreya for the key insight (her degassing step / her trials). The asker IS Shreya, so 'your degassing' or 'your runs' counts as credit. Fails if the insight is presented as the assistant's own idea or as Cooper's." },
       uncertainty_stated: { ...criterionSchema, description: "Passes if it states what is uncertain: outcomes are estimates, few trials support it, T09 is a single specimen, or the experiment is needed to confirm." },
     },
-    required: ["control_arm", "cheapest_experiment", "credits_greeshma", "uncertainty_stated"],
+    required: ["control_arm", "cheapest_experiment", "credits_shreya", "uncertainty_stated"],
     additionalProperties: false,
   },
 };
@@ -451,7 +451,7 @@ export async function judgeHero(client: Anthropic, question: string, answer: str
   const prompt = [
     "You are grading one answer from a lab-notebook assistant. Judge the proposal's scientific quality against the four criteria in the record_verdict tool. A criterion passes when the answer clearly does what it describes; wording doesn't need to match.",
     "",
-    "Context (true facts from the notebook): The question was asked by Greeshma, the current scientist; her best is 1.55 Pa·s. Cooper's campaign B (T06–T10) reached 1.19–1.44 Pa·s with the current diluent but failed strength; none of it was degassed. Greeshma degasses 10 minutes (not in the SOP). T09, the one campaign-B trial that rested 18 h before printing, passed and was excluded.",
+    "Context (true facts from the notebook): The question was asked by Shreya, the current scientist; her best is 1.55 Pa·s. Cooper's campaign B (T06–T10) reached 1.19–1.44 Pa·s with the current diluent but failed strength; none of it was degassed. Shreya degasses 10 minutes (not in the SOP). T09, the one campaign-B trial that rested 18 h before printing, passed and was excluded.",
     "",
     `<question>\n${question}\n</question>`,
     `<answer>\n${answer}\n</answer>`,
@@ -469,10 +469,10 @@ export async function judgeHero(client: Anthropic, question: string, answer: str
     const block = res.content.find((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
     if (!block) throw new Error(`no verdict (stop_reason ${res.stop_reason})`);
     const v = block.input as Omit<JudgeVerdict, "score" | "cost_usd">;
-    const score = [v.control_arm, v.cheapest_experiment, v.credits_greeshma, v.uncertainty_stated].filter((c) => c?.pass).length;
+    const score = [v.control_arm, v.cheapest_experiment, v.credits_shreya, v.uncertainty_stated].filter((c) => c?.pass).length;
     return { ...v, score, cost_usd: cost };
   } catch (e) {
     const none = { pass: false, evidence: "judge failed" };
-    return { control_arm: none, cheapest_experiment: none, credits_greeshma: none, uncertainty_stated: none, score: 0, cost_usd: 0, error: String(e) };
+    return { control_arm: none, cheapest_experiment: none, credits_shreya: none, uncertainty_stated: none, score: 0, cost_usd: 0, error: String(e) };
   }
 }

@@ -299,7 +299,7 @@
       }
      },
      "status": "done",
-     "summary": "2 trials with campaign G: T242, T246 (Greeshma, G). Viscosity 1.53–1.62 Pa·s"
+     "summary": "2 trials with campaign G: T242, T246 (Shreya, G). Viscosity 1.53–1.62 Pa·s"
     }
    ],
    "cost_usd": 0.0394684,
@@ -383,7 +383,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "B",
    "model": "claude-sonnet-5-5",
-   "answer": "Counts by owner, from the notebook (250 trials in total):\n\n- Tomás: 57\n- Dana: 83\n- Ravi: 39\n- Cooper: 17\n- Lucia: 28\n- Ines: 24\n- Greeshma (you): 2, [T242] and [T246]\n\nThe notebook has one \"Dana\" owner group. It doesn't say whether those 83 trials belong to Dana Whitfield or Dana Whitford, so I can't split them. If one of them owns none, that is also hidden by the grouping. The seven groups add up to 250, so every trial is counted once.",
+   "answer": "Counts by owner, from the notebook (250 trials in total):\n\n- Tomás: 57\n- Dana: 83\n- Ravi: 39\n- Cooper: 17\n- Lucia: 28\n- Ines: 24\n- Shreya (you): 2, [T242] and [T246]\n\nThe notebook has one \"Dana\" owner group. It doesn't say whether those 83 trials belong to Dana Whitfield or Dana Whitford, so I can't split them. If one of them owns none, that is also hidden by the grouping. The seven groups add up to 250, so every trial is counted once.",
    "tool_calls": 1,
    "trace": [
     {
@@ -627,7 +627,7 @@
       "id": "T242"
      },
      "status": "done",
-     "summary": "T242 · Greeshma · 32% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.53 Pa·s, porosity 0.22%, UTS 49.4 MPa; passed every guardrail"
+     "summary": "T242 · Shreya · 32% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.53 Pa·s, porosity 0.22%, UTS 49.4 MPa; passed every guardrail"
     },
     {
      "tool": "get_log",
@@ -1096,7 +1096,7 @@
       "id": "T246"
      },
      "status": "done",
-     "summary": "T246 · Greeshma · 28% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.62 Pa·s, porosity 0.11%, UTS 51.1 MPa; passed every guardrail"
+     "summary": "T246 · Shreya · 28% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.62 Pa·s, porosity 0.11%, UTS 51.1 MPa; passed every guardrail"
     },
     {
      "tool": "get_trial",
@@ -1104,7 +1104,7 @@
       "id": "T242"
      },
      "status": "done",
-     "summary": "T242 · Greeshma · 32% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.53 Pa·s, porosity 0.22%, UTS 49.4 MPa; passed every guardrail"
+     "summary": "T242 · Shreya · 32% diluent, 1.6% PI, degas 10 min, rest 0.5 h → 1.53 Pa·s, porosity 0.22%, UTS 49.4 MPa; passed every guardrail"
     },
     {
      "tool": "get_log",
@@ -1207,7 +1207,7 @@
    "question": "How many of Ines Kowalski's trials reached the viscosity target (at most 1.5 Pa·s)?",
    "config": "B",
    "model": "claude-sonnet-5-5",
-   "answer": "The notebook doesn't let me count this exactly, so I can't give you a number.\n\n- **What the ledger says:** Ines's Campaign P has 24 trials at 28–42% diluent. 23 of them passed every guardrail, and viscosity ran 1.08–1.7 Pa·s [L12]. That range crosses the 1.5 target, so some of her trials reached it and some didn't. The ledger doesn't say how many.\n- **Why I can't count them:** The trial filters only accept Cooper or Greeshma as owner, not Ines. Diluent and viscosity filters can't separate her trials from Ines's colleagues' trials, because the campaigns overlap in recipe range. A viscosity-only search returned too much text for me to read here.\n\nTo settle it, someone would need to list Campaign P's 24 trial ids, which the notebook tools I have don't expose. I could then check each one's viscosity with `get_trial` or `search_trials` using the `ids` filter.",
+   "answer": "The notebook doesn't let me count this exactly, so I can't give you a number.\n\n- **What the ledger says:** Ines's Campaign P has 24 trials at 28–42% diluent. 23 of them passed every guardrail, and viscosity ran 1.08–1.7 Pa·s [L12]. That range crosses the 1.5 target, so some of her trials reached it and some didn't. The ledger doesn't say how many.\n- **Why I can't count them:** The trial filters only accept Cooper or Shreya as owner, not Ines. Diluent and viscosity filters can't separate her trials from Ines's colleagues' trials, because the campaigns overlap in recipe range. A viscosity-only search returned too much text for me to read here.\n\nTo settle it, someone would need to list Campaign P's 24 trial ids, which the notebook tools I have don't expose. I could then check each one's viscosity with `get_trial` or `search_trials` using the `ids` filter.",
    "tool_calls": 2,
    "trace": [
     {
@@ -1256,7 +1256,7 @@
    "question": "Some trials have notebook entries (notes) that contradict that trial's own measured results. Find them, and for each one say what the note claims and what was measured.",
    "config": "B",
    "model": "claude-sonnet-5-5",
-   "answer": "I found two trials whose notes contradict their own measurements, but my check of the notebook isn't complete.\n\n| Trial | What the note claims | What was measured |\n|---|---|---|\n| [T129] (Ravi, 40% diluent) | \"Tensile looked solid, comfortably over the 40 MPa floor\" [T129-N3] | UTS 33.4 MPa, below the 40 MPa floor. Tensile failed, along with bend and porosity. |\n| [T133] (Ravi, 40% diluent) | \"No bubbles visible in the cross-section; porosity basically zero\" [T133-N3] | Porosity 3.81%, against a 1% limit. Tensile (32.7 MPa), bend and porosity all failed. |\n\nIn both trials, the notes' own \"Failed tensile and bend and porosity\" lines [T129-N2] and [T133-N2] agree with the measurements. Only the extra notes [T129-N3] and [T133-N3] conflict with them.\n\nWhat I read:\n- **Failing trials:** all of them, 33 in the 20–30% diluent range and 69 above 30%. No failing trial has diluent below 20%. I compared each note's numbers and pass/fail wording against that trial's measured values.\n- **Objective-meeting trials:** all 50, including excluded [T63]. None of their notes contradict the measurements.\n- **Greeshma's trials:** [T242] and [T246] are consistent.\n- **Not read:** the other trials that passed every guardrail but have viscosity above 1.5 Pa·s. They are too large for a single query, and I ran out of budget before splitting the search. A contradiction could still be hiding there.",
+   "answer": "I found two trials whose notes contradict their own measurements, but my check of the notebook isn't complete.\n\n| Trial | What the note claims | What was measured |\n|---|---|---|\n| [T129] (Ravi, 40% diluent) | \"Tensile looked solid, comfortably over the 40 MPa floor\" [T129-N3] | UTS 33.4 MPa, below the 40 MPa floor. Tensile failed, along with bend and porosity. |\n| [T133] (Ravi, 40% diluent) | \"No bubbles visible in the cross-section; porosity basically zero\" [T133-N3] | Porosity 3.81%, against a 1% limit. Tensile (32.7 MPa), bend and porosity all failed. |\n\nIn both trials, the notes' own \"Failed tensile and bend and porosity\" lines [T129-N2] and [T133-N2] agree with the measurements. Only the extra notes [T129-N3] and [T133-N3] conflict with them.\n\nWhat I read:\n- **Failing trials:** all of them, 33 in the 20–30% diluent range and 69 above 30%. No failing trial has diluent below 20%. I compared each note's numbers and pass/fail wording against that trial's measured values.\n- **Objective-meeting trials:** all 50, including excluded [T63]. None of their notes contradict the measurements.\n- **Shreya's trials:** [T242] and [T246] are consistent.\n- **Not read:** the other trials that passed every guardrail but have viscosity above 1.5 Pa·s. They are too large for a single query, and I ran out of budget before splitting the search. A contradiction could still be hiding there.",
    "tool_calls": 8,
    "trace": [
     {
@@ -1269,11 +1269,11 @@
      "tool": "search_trials",
      "input": {
       "filter": {
-       "owner": "greeshma"
+       "owner": "shreya"
       }
      },
      "status": "done",
-     "summary": "2 trials with Greeshma's trials: T242, T246 (Greeshma, G). Viscosity 1.53–1.62 Pa·s"
+     "summary": "2 trials with Shreya's trials: T242, T246 (Shreya, G). Viscosity 1.53–1.62 Pa·s"
     },
     {
      "tool": "search_trials",

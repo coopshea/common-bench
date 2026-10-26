@@ -54,7 +54,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "A",
    "model": "claude-sonnet-5-5",
-   "answer": "Counts are by trial owner. All 50 trials are counted, including the two excluded ones, [T07] and [T26].\n\nCurrent team:\n- Dana Whitfield: 7 [T03, T04, T33, T38, T40, T43, T45]\n- Dana Whitford: 4 [T25, T35, T36, T39]\n- Lucia Ferreira: 6 [T27, T31, T32, T34, T41, T48]\n- Ines Kowalski: 5 [T37, T42, T44, T46, T50]\n- You (Greeshma): 2 [T47, T49]\n\nFormer members:\n- Tomás Herrera: 10 [T01, T02, T05, T06, T07, T09, T15, T22, T23, T30]\n- Ravi Menon: 8 [T08, T11, T12, T18, T20, T24, T28, T29]\n- Cooper Shea: 8 [T10, T13, T14, T16, T17, T19, T21, T26]\n\nThese add up to 50. Each trial lists a single owner, so there is no double counting. The notebook only records the owner, so any help someone gave on another person's trial isn't reflected here.",
+   "answer": "Counts are by trial owner. All 50 trials are counted, including the two excluded ones, [T07] and [T26].\n\nCurrent team:\n- Dana Whitfield: 7 [T03, T04, T33, T38, T40, T43, T45]\n- Dana Whitford: 4 [T25, T35, T36, T39]\n- Lucia Ferreira: 6 [T27, T31, T32, T34, T41, T48]\n- Ines Kowalski: 5 [T37, T42, T44, T46, T50]\n- You (Shreya): 2 [T47, T49]\n\nFormer members:\n- Tomás Herrera: 10 [T01, T02, T05, T06, T07, T09, T15, T22, T23, T30]\n- Ravi Menon: 8 [T08, T11, T12, T18, T20, T24, T28, T29]\n- Cooper Shea: 8 [T10, T13, T14, T16, T17, T19, T21, T26]\n\nThese add up to 50. Each trial lists a single owner, so there is no double counting. The notebook only records the owner, so any help someone gave on another person's trial isn't reflected here.",
    "tool_calls": 0,
    "usage": {
     "input_tokens": 26,

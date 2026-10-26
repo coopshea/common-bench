@@ -27,8 +27,8 @@ import {
 } from "./tools.ts";
 import type { PersonId } from "../src/shared/types.ts";
 
-// Who approves in Claude Code. The demo asker is Greeshma; override with NOTEBOOK_USER=cooper.
-const approver = (process.env.NOTEBOOK_USER === "cooper" ? "cooper" : "greeshma") as PersonId;
+// Who approves in Claude Code. The demo asker is Shreya; override with NOTEBOOK_USER=cooper.
+const approver = (process.env.NOTEBOOK_USER === "cooper" ? "cooper" : "shreya") as PersonId;
 
 function writeTool(name: string, args: Record<string, unknown>): CallToolResult {
   try {

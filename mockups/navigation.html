@@ -8,7 +8,7 @@
 <style>
   :root {
     --paper: #f4f2ed; --card: #fff; --ink: #1b1a17; --ink-2: #5d5a52; --ink-3: #75716a; --line: #e2ddd2;
-    --cooper: #2a78d6; --greeshma: #6250d6; --lena: #8a8780;
+    --cooper: #2a78d6; --shreya: #6250d6; --lena: #8a8780;
     --ok: #0ca30c; --close: #b98200; --fail: #d03b3b;
     --mhs: #1f8a8a; --cam: #63b3b3; --hand: #efe6d0;
     --rail: 360px;
@@ -187,10 +187,10 @@
 
 <script>
 // ---------- Data (hand-written for this mock; the app's seeded generator stays the source of truth) ----------
-const ME = "greeshma";
+const ME = "shreya";
 const PEOPLE = {
   cooper: { name: "Cooper Shea", short: "Cooper", ini: "CS", color: "var(--cooper)", role: "Former member" },
-  greeshma: { name: "Greeshma N.", short: "Greeshma", ini: "GN", color: "var(--greeshma)", role: "Scientist" },
+  shreya: { name: "Shreya N.", short: "Shreya", ini: "GN", color: "var(--shreya)", role: "Scientist" },
   lena: { name: "Dr. Lena Ortiz", short: "Lena", ini: "LO", color: "var(--lena)", role: "PI" },
 };
 
@@ -204,7 +204,7 @@ const THRUSTS = [
 
 const PROJECTS = [
   {
-    id: "resin", thrust: "materials", last: "2026-10-06", people: ["greeshma", "cooper", "lena"],
+    id: "resin", thrust: "materials", last: "2026-10-06", people: ["shreya", "cooper", "lena"],
     title: "Low-viscosity crown resin",
     goal: "Viscosity below 1.5 Pa·s with every strength and safety check passing.",
     deliverable: "Formulation spec for production, and a manuscript",
@@ -212,7 +212,7 @@ const PROJECTS = [
     known: [["Diluent above 30% brings viscosity under 1.5 Pa·s", "T06–T10"], ["With degassing, strength holds up to 32% diluent", "T11–T14"], ["Weak high-diluent trials were also the porous ones", "T06–T10"]],
     unknowns: [["Does degassing keep strength above 32% diluent?", ""], ["Is T09 repeatable, or a lucky specimen?", "T09"], ["Is “high diluent is a dead end” still true?", "Ledger, Jun 2025"]],
     docs: ["Program proposal (2024)", "Funding: Meridian R&D program DR-07", "SOP v3: resin prep and print"],
-    activity: [["Oct 2026", "greeshma", "T14: 1.55 Pa·s, closest yet"], ["Jul 2026", "greeshma", "Joined; T11–T14"], ["Jun 2025", "cooper", "Called high diluent a dead end"]],
+    activity: [["Oct 2026", "shreya", "T14: 1.55 Pa·s, closest yet"], ["Jul 2026", "shreya", "Joined; T11–T14"], ["Jun 2025", "cooper", "Called high diluent a dead end"]],
   },
   { id: "shade", thrust: "materials", last: "2026-05-30", people: ["lena", "cooper"], title: "Match crown shades A1–A3 with two pigments",
     goal: "Two pigments cover shades A1–A3 within ΔE 2.", deliverable: "Pigment recipe", why: "Fewer pigments, fewer mixing errors.",
@@ -220,15 +220,15 @@ const PROJECTS = [
   { id: "shelf", thrust: "materials", last: "2026-08-14", people: ["lena"], title: "How long does opened resin stay printable?",
     goal: "A shelf life for opened bottles, backed by data.", deliverable: "Storage guideline", why: "Opened bottles get thrown out on a guess.",
     known: [], unknowns: [["Does viscosity drift before print quality does?", ""]], docs: ["Notes"], activity: [["Aug 2026", "lena", "Bottles opened and dated"]] },
-  { id: "chairside", thrust: "access", last: "2026-09-12", people: ["lena", "greeshma"], title: "Same-day crowns on a $3k printer",
+  { id: "chairside", thrust: "access", last: "2026-09-12", people: ["lena", "shreya"], title: "Same-day crowns on a $3k printer",
     goal: "A crown that fits within 50 µm from a low-cost printer.", deliverable: "Clinic protocol", why: "Most clinics can't afford a lab printer.",
-    known: [["Fit is within 80 µm on the first try", "Fit test 1"]], unknowns: [["Is the gap from the printer or from the resin?", ""]], docs: ["Pilot agreement"], activity: [["Sep 2026", "greeshma", "First fit test"]] },
-  { id: "drift", thrust: "process", last: "2026-10-02", people: ["greeshma"], title: "Measure printer-to-printer dimensional drift",
+    known: [["Fit is within 80 µm on the first try", "Fit test 1"]], unknowns: [["Is the gap from the printer or from the resin?", ""]], docs: ["Pilot agreement"], activity: [["Sep 2026", "shreya", "First fit test"]] },
+  { id: "drift", thrust: "process", last: "2026-10-02", people: ["shreya"], title: "Measure printer-to-printer dimensional drift",
     goal: "Know how far printers 1 and 2 disagree.", deliverable: "Calibration note", why: "Printers 1 and 2 seem to disagree on small features. Nobody has measured it.",
-    known: [], unknowns: [["Is the drift bigger than the fit tolerance?", ""]], docs: ["Draft proposal"], activity: [["Oct 2026", "greeshma", "Drafted"]] },
-  { id: "cure", thrust: "process", last: "2026-09-29", people: ["greeshma", "lena"], title: "Halve post-cure time without lowering strength",
+    known: [], unknowns: [["Is the drift bigger than the fit tolerance?", ""]], docs: ["Draft proposal"], activity: [["Oct 2026", "shreya", "Drafted"]] },
+  { id: "cure", thrust: "process", last: "2026-09-29", people: ["shreya", "lena"], title: "Halve post-cure time without lowering strength",
     goal: "Post-cure in 30 min with no loss of strength.", deliverable: "Oven profile", why: "The UV oven is the bottleneck between printing and testing.",
-    known: [["48 min is the shortest profile that passes so far", "Cure run 1"]], unknowns: [["Does temperature matter more than time?", ""]], docs: ["Scoping note"], activity: [["Sep 2026", "greeshma", "Three cure profiles tried"]] },
+    known: [["48 min is the shortest profile that passes so far", "Cure run 1"]], unknowns: [["Does temperature matter more than time?", ""]], docs: ["Scoping note"], activity: [["Sep 2026", "shreya", "Three cure profiles tried"]] },
   { id: "stent", thrust: "devices", last: "2025-06-20", people: ["cooper", "lena"], title: "Stent resin: control degradation rate in saline",
     goal: "Hold strength 8 weeks, then degrade.", deliverable: "Phase I report", why: "A resin that holds strength for 8 weeks, then degrades.",
     known: [], unknowns: [], docs: ["Phase I final report"], activity: [["Jun 2025", "cooper", "Closed"]] },
@@ -238,9 +238,9 @@ const PROJECTS = [
 const EXPERIMENTS = [
   { id: "A", project: "resin", title: "Low-diluent formulations", people: ["cooper"], when: "Oct–Dec 2024", sop: "SOP v3" },
   { id: "B", project: "resin", title: "High-diluent formulations", people: ["cooper"], when: "Jan–Jun 2025", sop: "SOP v3" },
-  { id: "G", project: "resin", title: "Mid-diluent, high photoinitiator", people: ["greeshma"], when: "Jul 2026–now", sop: "SOP v3 + degassing" },
-  { id: "C1", project: "cure", title: "Cure profiles, round 1", people: ["greeshma"], when: "Sep 2026", sop: "Oven SOP v1" },
-  { id: "F1", project: "chairside", title: "Fit test 1", people: ["greeshma"], when: "Sep 2026", sop: "Fit SOP draft" },
+  { id: "G", project: "resin", title: "Mid-diluent, high photoinitiator", people: ["shreya"], when: "Jul 2026–now", sop: "SOP v3 + degassing" },
+  { id: "C1", project: "cure", title: "Cure profiles, round 1", people: ["shreya"], when: "Sep 2026", sop: "Oven SOP v1" },
+  { id: "F1", project: "chairside", title: "Fit test 1", people: ["shreya"], when: "Sep 2026", sop: "Fit SOP draft" },
   { id: "S1", project: "shade", title: "Shade run 1", people: ["cooper"], when: "May 2026", sop: "Color SOP v1" },
 ];
 
@@ -255,8 +255,8 @@ const TRIALS = [
   // Outlier: a plain rule (far from the trend of its neighbors), not a model call.
   T("T09", "cooper", "2025-04-29", 40, 1.15, 48, 0.4, { rest: "18 h 12 min", outlier: "Much stronger than the trials around it", note: "Anomalous, likely a lucky specimen; excluded." }),
   T("T10", "cooper", "2025-06-03", 42, 1.1, 27, 5.0),
-  T("T11", "greeshma", "2026-07-14", 26, 1.9, 58, 0.3, { degas: true }), T("T12", "greeshma", "2026-08-11", 28, 1.78, 56, 0.3, { degas: true }),
-  T("T13", "greeshma", "2026-09-08", 30, 1.66, 53, 0.2, { degas: true }), T("T14", "greeshma", "2026-10-06", 32, 1.55, 50, 0.3, { degas: true }),
+  T("T11", "shreya", "2026-07-14", 26, 1.9, 58, 0.3, { degas: true }), T("T12", "shreya", "2026-08-11", 28, 1.78, 56, 0.3, { degas: true }),
+  T("T13", "shreya", "2026-09-08", 30, 1.66, 53, 0.2, { degas: true }), T("T14", "shreya", "2026-10-06", 32, 1.55, 50, 0.3, { degas: true }),
 ];
 TRIALS.forEach((t) => {
   t.status = t.uts < 40 ? "fail" : t.visc < 1.5 ? "goal" : "close";
@@ -275,10 +275,10 @@ const BENCHES = [
 const FIXTURES = [{ name: "Fume hood", x: 40, y: 440, w: 160, h: 80 }, { name: "Sink", x: 240, y: 460, w: 80, h: 60 }];
 const INSTRUMENTS = [
   { id: "balance", name: "Balance", x: 60, y: 55, w: 60, h: 50, z: 18, src: "mhs", cal: "2026-09-02" },
-  { id: "mixer", name: "Mixer", x: 150, y: 50, w: 80, h: 60, z: 42, src: "mhs", cal: "2026-06-11", use: "greeshma", job: "until 11:40" },
+  { id: "mixer", name: "Mixer", x: 150, y: 50, w: 80, h: 60, z: 42, src: "mhs", cal: "2026-06-11", use: "shreya", job: "until 11:40" },
   { id: "degasser", name: "Vacuum degasser", x: 260, y: 50, w: 80, h: 60, z: 46, src: "manual", cal: null },
   { id: "visc", name: "Viscometer", x: 370, y: 55, w: 70, h: 50, z: 50, src: "mhs", cal: "2026-08-20" },
-  { id: "printer1", name: "Printer 1", x: 580, y: 45, w: 100, h: 70, z: 70, src: "mhs", cal: "2026-09-30", use: "greeshma", job: "until 14:30" },
+  { id: "printer1", name: "Printer 1", x: 580, y: 45, w: 100, h: 70, z: 70, src: "mhs", cal: "2026-09-30", use: "shreya", job: "until 14:30" },
   { id: "printer2", name: "Printer 2", x: 700, y: 45, w: 100, h: 70, z: 70, src: "none", cal: null },
   { id: "uvoven", name: "UV oven", x: 830, y: 50, w: 110, h: 60, z: 50, src: "manual", cal: "2025-11-04" },
   { id: "testframe", name: "Test frame", x: 580, y: 450, w: 110, h: 60, z: 90, src: "mhs", cal: "2026-05-15" },
@@ -292,7 +292,7 @@ const label = (i) => (i.name.startsWith("Printer") ? i.name : i.name.split(" ")[
 
 // SOP v3 as written, and how each trial actually ran. Each step carries its own log lines.
 function asRun(t) {
-  const g = t.who === "greeshma";
+  const g = t.who === "shreya";
   return [
     { id: "weigh", step: "Weigh", inst: "balance", sop: "±0.01 g", run: `${t.dil}% diluent`, src: "mhs", log: [["16:31", `Diluent ${t.dil}% by mass`]] },
     { id: "mix", step: "Mix", inst: "mixer", sop: "2,000 rpm, 3 min", run: "3 min", src: "mhs", log: [["16:37", "Start, 2,000 rpm"], ["16:40", "Done"]] },
@@ -441,7 +441,7 @@ function chart(trials, current) {
         <text x="${x(t.visc)}" y="${y(t.uts) + 6}" text-anchor="middle" font-size="18" font-weight="700" fill="${PEOPLE[t.who].color}">${GLYPH[t.status]}</text>
         ${here ? `<text x="${x(t.visc) + 11}" y="${y(t.uts) - 7}" font-size="10" fill="#75716a">${t.id}</text>` : ""}</g>`; }).join("")}
     </svg>
-    <div class="small muted">Solid: this experiment. Faded: the project's other experiments. &nbsp;${who("cooper")} &nbsp; ${who("greeshma")}</div>`;
+    <div class="small muted">Solid: this experiment. Faded: the project's other experiments. &nbsp;${who("cooper")} &nbsp; ${who("shreya")}</div>`;
 }
 
 function trialRail(t) {

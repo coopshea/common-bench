@@ -7,7 +7,7 @@
 <style>
   :root {
     --paper: #efebe3; --card: #fff; --ink: #1b1a17; --ink-2: #5d5a52; --ink-3: #8f8b81; --line: #dcd6ca;
-    --cooper: #2a78d6; --greeshma: #6250d6; --goal: #e6f2e2; --goal-ink: #2f7a2f; --amber: #b7791f; --amber-bg: #fbf1dc; --fail: #d03b3b;
+    --cooper: #2a78d6; --shreya: #6250d6; --goal: #e6f2e2; --goal-ink: #2f7a2f; --amber: #b7791f; --amber-bg: #fbf1dc; --fail: #d03b3b;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.45 -apple-system, "Inter", system-ui, sans-serif; }
@@ -42,7 +42,7 @@
   .dots { margin-top: 10px; display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; }
   .dots i { width: 10px; height: 10px; border-radius: 50%; display: block; }
   .gap { align-self: center; color: var(--ink-3); font-size: 13px; text-align: center; width: 110px; border-top: 1.5px dashed var(--line); padding-top: 6px; }
-  .tacit { display: inline-block; margin-top: 10px; border: 1.5px dashed var(--greeshma); color: var(--greeshma); border-radius: 8px; padding: 2px 8px; font-size: 12.5px; }
+  .tacit { display: inline-block; margin-top: 10px; border: 1.5px dashed var(--shreya); color: var(--shreya); border-radius: 8px; padding: 2px 8px; font-size: 12.5px; }
 
   /* Screen 1: flow */
   .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 10px; }
@@ -127,10 +127,10 @@ const TRIALS = [
   ["T08","cooper","Apr 2025",38,1.0,0,0.4,1.30,34.4,53.7,3.74,87.2,"Brittle again. High diluent seems to make it porous and brittle."],
   ["T09","cooper","Apr 2025",38,1.0,0,18.2,1.28,44.2,67.9,0.38,83.0,"Replicate of T08, but it passed. \"Anomalous, likely a lucky specimen.\" Excluded."],
   ["T10","cooper","May 2025",40,1.2,0,0.4,1.19,30.7,49.2,5.22,75.5,"Didn't help. Calling high diluent a dead end."],
-  ["T11","greeshma","Jul 2026",26,1.5,10,0.5,1.85,53.1,84.3,0.12,93.3,"First trial, from the SOP walkthrough. Everything passes."],
-  ["T12","greeshma","Aug 2026",28,1.8,10,0.6,1.76,49.0,77.4,0.13,90.6,"All checks pass. 1.76 Pa·s."],
-  ["T13","greeshma","Aug 2026",30,1.7,10,0.5,1.65,49.3,79.8,0.15,89.6,"Brittle fracture, but strength is fine."],
-  ["T14","greeshma","Sep 2026",32,1.6,10,0.5,1.55,50.7,82.0,0.22,90.4,"Closest yet, still above 1.5. Might need DiluentX ($1,800, 6 weeks)?"],
+  ["T11","shreya","Jul 2026",26,1.5,10,0.5,1.85,53.1,84.3,0.12,93.3,"First trial, from the SOP walkthrough. Everything passes."],
+  ["T12","shreya","Aug 2026",28,1.8,10,0.6,1.76,49.0,77.4,0.13,90.6,"All checks pass. 1.76 Pa·s."],
+  ["T13","shreya","Aug 2026",30,1.7,10,0.5,1.65,49.3,79.8,0.15,89.6,"Brittle fracture, but strength is fine."],
+  ["T14","shreya","Sep 2026",32,1.6,10,0.5,1.55,50.7,82.0,0.22,90.4,"Closest yet, still above 1.5. Might need DiluentX ($1,800, 6 weeks)?"],
 ].map(([id,who,date,dil,pi,degas,rest,v,uts,flex,por,via,note]) => ({id,who,date,dil,pi,degas,rest,v,uts,flex,por,via,note,
   excluded: id === "T09"}));
 const EST = [
@@ -145,8 +145,8 @@ const CHECKS = [
 ];
 const passAll = t => CHECKS.every(c => c[1](t));
 const goal = t => t.v <= 1.5 && passAll(t);
-const NAME = { cooper: "Cooper", greeshma: "Greeshma" };
-const COLOR = { cooper: "var(--cooper)", greeshma: "var(--greeshma)" };
+const NAME = { cooper: "Cooper", shreya: "Shreya" };
+const COLOR = { cooper: "var(--cooper)", shreya: "var(--shreya)" };
 
 // The mental model: three questions in a loop. Screens 0–1 set it up; 2–4 walk it.
 const QUESTIONS = ["What have we tried?", "How well did it work?", "What do we try next?"];
@@ -191,7 +191,7 @@ function toggleMore(b) {
 
 // ---------- 1. The problem ----------
 function problem(st) {
-  const cooper = TRIALS.filter(t => t.who === "cooper"), g = TRIALS.filter(t => t.who === "greeshma");
+  const cooper = TRIALS.filter(t => t.who === "cooper"), g = TRIALS.filter(t => t.who === "shreya");
   const dots = (ts, c) => `<div class="dots">${ts.map(() => `<i style="background:${c}"></i>`).join("")}</div>`;
   st.innerHTML = `
     <h1>Every experiment answers three questions</h1>
@@ -199,14 +199,14 @@ function problem(st) {
     <div class="row">
       <div class="card nb"><div class="who" style="color:var(--cooper)">Cooper's notebook</div><div class="when">2024–25 · ${cooper.length} trials</div>${dots(cooper, "var(--cooper)")}</div>
       <div class="gap">never compared</div>
-      <div class="card nb"><div class="who" style="color:var(--greeshma)">Greeshma's notebook</div><div class="when">2026 · ${g.length} trials</div>${dots(g, "var(--greeshma)")}
+      <div class="card nb"><div class="who" style="color:var(--shreya)">Shreya's notebook</div><div class="when">2026 · ${g.length} trials</div>${dots(g, "var(--shreya)")}
         <div class="tacit">degasses 10 min, out of habit</div></div>
     </div>
     <div style="text-align:center">${more("What gets lost between notebooks", `
       <ul style="text-align:left;max-width:520px;margin:6px auto">
         <li><b>Dead ends</b> nobody re-checks: Cooper gave up on high diluent.</li>
         <li><b>Outliers</b> thrown away: his one trial that passed was called "lucky".</li>
-        <li><b>Habits</b> nobody writes down: Greeshma's degassing isn't in the SOP.</li>
+        <li><b>Habits</b> nobody writes down: Shreya's degassing isn't in the SOP.</li>
       </ul>`)}</div>`;
 }
 
@@ -238,7 +238,7 @@ function tried(st) {
     <h1>Everyone's trials, on one map</h1>
     <p class="sub">The goal is the green corner: thin enough to print fast, strong enough to use. Click any trial.</p>
     <div class="card">${mapSVG()}
-      <div class="legend"><span><i style="background:var(--cooper)"></i>Cooper</span><span><i style="background:var(--greeshma)"></i>Greeshma</span><span>✕ fails a check</span>${approved ? `<span>◌ estimate</span>` : ""}</div>
+      <div class="legend"><span><i style="background:var(--cooper)"></i>Cooper</span><span><i style="background:var(--shreya)"></i>Shreya</span><span>✕ fails a check</span>${approved ? `<span>◌ estimate</span>` : ""}</div>
     </div>
     <div style="text-align:center">${more("Every check, for every trial", checksTable())}</div>`;
   bindPoints(st);
@@ -261,8 +261,8 @@ function mapSVG() {
   }).join("");
   const est = approved ? EST.map(e => {
     const X = x(e.v), Y = y(e.uts);
-    return `<circle cx="${X}" cy="${Y}" r="8" fill="none" stroke="var(--greeshma)" stroke-width="2" stroke-dasharray="3 3"/>
-      <text x="${X-12}" y="${Y+4}" text-anchor="end" font-size="12" fill="var(--greeshma)">${e.id}</text>`;
+    return `<circle cx="${X}" cy="${Y}" r="8" fill="none" stroke="var(--shreya)" stroke-width="2" stroke-dasharray="3 3"/>
+      <text x="${X-12}" y="${Y+4}" text-anchor="end" font-size="12" fill="var(--shreya)">${e.id}</text>`;
   }).join("") : "";
   return `<svg class="map" viewBox="0 0 ${W} ${H}" role="img" aria-label="Viscosity against strength for every trial">
     <rect x="${gx}" y="${M.t}" width="${W - M.r - gx}" height="${gy - M.t}" fill="var(--goal)"/>
@@ -270,7 +270,7 @@ function mapSVG() {
     <line x1="${gx}" x2="${gx}" y1="${M.t}" y2="${H - M.b}" stroke="var(--ink-3)" stroke-dasharray="4 4"/>
     <line x1="${M.l}" x2="${W - M.r}" y1="${gy}" y2="${gy}" stroke="var(--ink-3)" stroke-dasharray="4 4"/>
     <polyline points="${path("cooper")}" fill="none" stroke="var(--cooper)" stroke-opacity="0.35"/>
-    <polyline points="${path("greeshma")}" fill="none" stroke="var(--greeshma)" stroke-opacity="0.35"/>
+    <polyline points="${path("shreya")}" fill="none" stroke="var(--shreya)" stroke-opacity="0.35"/>
     <text x="${x(1.3)}" y="${y(29.2)}" text-anchor="middle" font-size="12" fill="var(--cooper)">his "dead end"</text>
     ${pts}${est}
     <text x="${(M.l + W - M.r) / 2}" y="${H - 10}" text-anchor="middle" font-size="12.5" fill="var(--ink-2)">thicker  ←  viscosity  →  thinner</text>
@@ -325,7 +325,7 @@ function differ(st) {
     <p class="sub">Claude lines up two runs step by step and separates what was changed on purpose from what differed by accident.</p>
     <div class="card">
       <table class="diff">
-        <tr><th></th><th style="color:var(--cooper)">Cooper · T08 <span class="bad">✕</span></th><th style="color:var(--greeshma)">Greeshma · T14 <span class="ok">✓</span></th></tr>
+        <tr><th></th><th style="color:var(--cooper)">Cooper · T08 <span class="bad">✕</span></th><th style="color:var(--shreya)">Shreya · T14 <span class="ok">✓</span></th></tr>
         ${tr(rows[4])}
         <tbody id="allsteps" hidden>${rows.filter(r => r[0] !== "accident").map(tr).join("")}</tbody>
       </table>
@@ -352,8 +352,8 @@ function next(st) {
         <div class="arm"><b>T15a · degassed 10 min</b>Should pass.<div class="est">estimate: ${EST[0].uts} MPa, under 1.5 Pa·s</div></div>
         <div class="arm"><b>T15b · not degassed</b>The control. Should fail like T08.<div class="est">estimate: ${EST[1].uts} MPa, under 1.5 Pa·s</div></div>
       </div>
-      <button class="approve" id="approve" ${approved ? "disabled" : ""}>${approved ? "Approved" : "Approve as Greeshma"}</button>
-      ${approved ? `<span class="stamp">Added to the map. Finding credited to Greeshma.</span>` : ""}
+      <button class="approve" id="approve" ${approved ? "disabled" : ""}>${approved ? "Approved" : "Approve as Shreya"}</button>
+      ${approved ? `<span class="stamp">Added to the map. Finding credited to Shreya.</span>` : ""}
       ${approved ? `<div style="margin-top:14px">${mapSVG()}</div>` : ""}
     </div>
     <div style="text-align:center">

@@ -147,7 +147,7 @@
     },
     "team": [
       "cooper",
-      "greeshma"
+      "shreya"
     ]
   },
   "people": [
@@ -162,9 +162,9 @@
       "status": "former"
     },
     {
-      "id": "greeshma",
-      "name": "Greeshma",
-      "initials": "G",
+      "id": "shreya",
+      "name": "Shreya",
+      "initials": "S",
       "role": "Scientist · formulation",
       "color": "#6250d6",
       "joined": "2026-07-06",
@@ -4657,9 +4657,9 @@
       "id": "T11",
       "date": "2026-07-09",
       "owners": [
-        "greeshma"
+        "shreya"
       ],
-      "campaign": "G",
+      "campaign": "S",
       "parent": null,
       "sop_version": "v1",
       "inputs": {
@@ -4878,7 +4878,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Weighed base monomer",
           "value": 36.25,
           "unit": "g"
@@ -4889,7 +4889,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added diluent (26%)",
           "value": 13,
           "unit": "g"
@@ -4900,7 +4900,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added photoinitiator (1.5%)",
           "value": 0.75,
           "unit": "g"
@@ -4911,7 +4911,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix started",
           "value": 3000,
           "unit": "rpm"
@@ -4922,7 +4922,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix ended",
           "value": 2,
           "unit": "min"
@@ -4933,7 +4933,7 @@
           "step": "degas",
           "device": "Vacuum degasser",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Vacuum degas, 10 min (from worksheet)",
           "value": 10,
           "unit": "min"
@@ -4944,7 +4944,7 @@
           "step": "viscosity",
           "device": "Viscometer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Viscosity at 25 °C",
           "value": 1.85,
           "unit": "Pa·s"
@@ -4955,7 +4955,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job started: 6 dogbones + 3 bend bars"
         },
         {
@@ -4964,7 +4964,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job finished",
           "value": 85,
           "unit": "min"
@@ -4975,7 +4975,7 @@
           "step": "postcure",
           "device": "UV oven",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Post-cure at 60 °C",
           "value": 45,
           "unit": "min"
@@ -4986,7 +4986,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: ultimate strength",
           "value": 53.1,
           "unit": "MPa"
@@ -4997,7 +4997,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: elongation at break (ductile)",
           "value": 5.9,
           "unit": "%"
@@ -5008,7 +5008,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural strength",
           "value": 84.3,
           "unit": "MPa"
@@ -5019,7 +5019,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural modulus",
           "value": 2412,
           "unit": "MPa"
@@ -5030,7 +5030,7 @@
           "step": "test",
           "device": "Cross-section imaging",
           "source": "camera",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cross-section porosity",
           "value": 0.12,
           "unit": "%"
@@ -5041,7 +5041,7 @@
           "step": "test",
           "device": "Plate reader",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cell viability (extract test)",
           "value": 93.3,
           "unit": "%"
@@ -5052,9 +5052,9 @@
       "id": "T12",
       "date": "2026-08-04",
       "owners": [
-        "greeshma"
+        "shreya"
       ],
-      "campaign": "G",
+      "campaign": "S",
       "parent": "T11",
       "sop_version": "v1",
       "inputs": {
@@ -5273,7 +5273,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Weighed base monomer",
           "value": 35.1,
           "unit": "g"
@@ -5284,7 +5284,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added diluent (28%)",
           "value": 14,
           "unit": "g"
@@ -5295,7 +5295,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added photoinitiator (1.8%)",
           "value": 0.9,
           "unit": "g"
@@ -5306,7 +5306,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix started",
           "value": 3000,
           "unit": "rpm"
@@ -5317,7 +5317,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix ended",
           "value": 2,
           "unit": "min"
@@ -5328,7 +5328,7 @@
           "step": "degas",
           "device": "Vacuum degasser",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Vacuum degas, 10 min (from worksheet)",
           "value": 10,
           "unit": "min"
@@ -5339,7 +5339,7 @@
           "step": "viscosity",
           "device": "Viscometer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Viscosity at 25 °C",
           "value": 1.76,
           "unit": "Pa·s"
@@ -5350,7 +5350,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job started: 6 dogbones + 3 bend bars"
         },
         {
@@ -5359,7 +5359,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job finished",
           "value": 85,
           "unit": "min"
@@ -5370,7 +5370,7 @@
           "step": "postcure",
           "device": "UV oven",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Post-cure at 60 °C",
           "value": 45,
           "unit": "min"
@@ -5381,7 +5381,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: ultimate strength",
           "value": 49,
           "unit": "MPa"
@@ -5392,7 +5392,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: elongation at break (ductile)",
           "value": 4.4,
           "unit": "%"
@@ -5403,7 +5403,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural strength",
           "value": 77.4,
           "unit": "MPa"
@@ -5414,7 +5414,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural modulus",
           "value": 2464,
           "unit": "MPa"
@@ -5425,7 +5425,7 @@
           "step": "test",
           "device": "Cross-section imaging",
           "source": "camera",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cross-section porosity",
           "value": 0.13,
           "unit": "%"
@@ -5436,7 +5436,7 @@
           "step": "test",
           "device": "Plate reader",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cell viability (extract test)",
           "value": 90.6,
           "unit": "%"
@@ -5447,9 +5447,9 @@
       "id": "T13",
       "date": "2026-08-27",
       "owners": [
-        "greeshma"
+        "shreya"
       ],
-      "campaign": "G",
+      "campaign": "S",
       "parent": "T12",
       "sop_version": "v1",
       "inputs": {
@@ -5642,7 +5642,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Weighed base monomer",
           "value": 34.15,
           "unit": "g"
@@ -5653,7 +5653,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added diluent (30%)",
           "value": 15,
           "unit": "g"
@@ -5664,7 +5664,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added photoinitiator (1.7%)",
           "value": 0.85,
           "unit": "g"
@@ -5675,7 +5675,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix started",
           "value": 3000,
           "unit": "rpm"
@@ -5686,7 +5686,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix ended",
           "value": 2,
           "unit": "min"
@@ -5697,7 +5697,7 @@
           "step": "degas",
           "device": "Vacuum degasser",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Vacuum degas, 10 min (from worksheet)",
           "value": 10,
           "unit": "min"
@@ -5708,7 +5708,7 @@
           "step": "viscosity",
           "device": "Viscometer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Viscosity at 25 °C",
           "value": 1.65,
           "unit": "Pa·s"
@@ -5719,7 +5719,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job started: 6 dogbones + 3 bend bars"
         },
         {
@@ -5728,7 +5728,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job finished",
           "value": 85,
           "unit": "min"
@@ -5739,7 +5739,7 @@
           "step": "postcure",
           "device": "UV oven",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Post-cure at 60 °C",
           "value": 45,
           "unit": "min"
@@ -5750,7 +5750,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: ultimate strength",
           "value": 49.3,
           "unit": "MPa"
@@ -5761,7 +5761,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: elongation at break (brittle)",
           "value": 3.2,
           "unit": "%"
@@ -5772,7 +5772,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural strength",
           "value": 79.8,
           "unit": "MPa"
@@ -5783,7 +5783,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural modulus",
           "value": 2557,
           "unit": "MPa"
@@ -5794,7 +5794,7 @@
           "step": "test",
           "device": "Cross-section imaging",
           "source": "camera",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cross-section porosity",
           "value": 0.15,
           "unit": "%"
@@ -5805,7 +5805,7 @@
           "step": "test",
           "device": "Plate reader",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cell viability (extract test)",
           "value": 89.6,
           "unit": "%"
@@ -5816,9 +5816,9 @@
       "id": "T14",
       "date": "2026-09-22",
       "owners": [
-        "greeshma"
+        "shreya"
       ],
-      "campaign": "G",
+      "campaign": "S",
       "parent": "T13",
       "sop_version": "v1",
       "inputs": {
@@ -6001,7 +6001,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Weighed base monomer",
           "value": 33.2,
           "unit": "g"
@@ -6012,7 +6012,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added diluent (32%)",
           "value": 16,
           "unit": "g"
@@ -6023,7 +6023,7 @@
           "step": "weigh",
           "device": "Balance",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Added photoinitiator (1.6%)",
           "value": 0.8,
           "unit": "g"
@@ -6034,7 +6034,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix started",
           "value": 3000,
           "unit": "rpm"
@@ -6045,7 +6045,7 @@
           "step": "mix",
           "device": "Planetary mixer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Mix ended",
           "value": 2,
           "unit": "min"
@@ -6056,7 +6056,7 @@
           "step": "degas",
           "device": "Vacuum degasser",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Vacuum degas, 10 min (from worksheet)",
           "value": 10,
           "unit": "min"
@@ -6067,7 +6067,7 @@
           "step": "viscosity",
           "device": "Viscometer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Viscosity at 25 °C",
           "value": 1.55,
           "unit": "Pa·s"
@@ -6078,7 +6078,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job started: 6 dogbones + 3 bend bars"
         },
         {
@@ -6087,7 +6087,7 @@
           "step": "print",
           "device": "DLP printer",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Print job finished",
           "value": 85,
           "unit": "min"
@@ -6098,7 +6098,7 @@
           "step": "postcure",
           "device": "UV oven",
           "source": "manual",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Post-cure at 60 °C",
           "value": 45,
           "unit": "min"
@@ -6109,7 +6109,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: ultimate strength",
           "value": 50.7,
           "unit": "MPa"
@@ -6120,7 +6120,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Tensile: elongation at break (brittle)",
           "value": 2.7,
           "unit": "%"
@@ -6131,7 +6131,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural strength",
           "value": 82,
           "unit": "MPa"
@@ -6142,7 +6142,7 @@
           "step": "test",
           "device": "Test frame",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "3-pt bend: flexural modulus",
           "value": 2594,
           "unit": "MPa"
@@ -6153,7 +6153,7 @@
           "step": "test",
           "device": "Cross-section imaging",
           "source": "camera",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cross-section porosity",
           "value": 0.22,
           "unit": "%"
@@ -6164,7 +6164,7 @@
           "step": "test",
           "device": "Plate reader",
           "source": "mhs",
-          "actor": "greeshma",
+          "actor": "shreya",
           "event": "Cell viability (extract test)",
           "value": 90.4,
           "unit": "%"
@@ -6216,7 +6216,7 @@
     {
       "id": "L3",
       "kind": "question",
-      "owner": "greeshma",
+      "owner": "shreya",
       "status": "open",
       "recorded_at": "2026-09-24",
       "text": "Can we reach 1.5 Pa·s without new materials?",
@@ -6259,7 +6259,7 @@
         "thrust": "materials",
         "title": "Fast-print denture base resin",
         "people": [
-          "greeshma",
+          "shreya",
           "cooper"
         ],
         "last": "2026-10-13",
@@ -6304,7 +6304,7 @@
         "thrust": "access",
         "title": "Same-day denture fit on a $3k printer",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "last": "2026-09-12",
         "goal": "Fit within 50 µm from a low-cost printer",
@@ -6331,7 +6331,7 @@
         "thrust": "process",
         "title": "Measure printer-to-printer drift",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "last": "2026-10-02",
         "goal": "Know how far printers 1 and 2 disagree",
@@ -6353,7 +6353,7 @@
         "thrust": "process",
         "title": "Halve post-cure time",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "last": "2026-09-29",
         "goal": "Post-cure in 25 min, no strength lost",
@@ -6417,12 +6417,12 @@
         "protocol": "SOP v1"
       },
       {
-        "id": "G",
+        "id": "S",
         "project": "fast-print-denture-resin",
-        "campaign": "G",
+        "campaign": "S",
         "title": "Mid-diluent, high photoinitiator",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "when": "Jul 2026 – Sep 2026",
         "protocol": "SOP v1"
@@ -6432,7 +6432,7 @@
         "project": "fast-cure",
         "title": "Cure profiles, round 1",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "when": "Sep 2026",
         "protocol": "Oven SOP draft"
@@ -6442,7 +6442,7 @@
         "project": "chairside-fit",
         "title": "Fit test 1",
         "people": [
-          "greeshma"
+          "shreya"
         ],
         "when": "Sep 2026",
         "protocol": "Fit SOP draft"
@@ -6538,35 +6538,35 @@
     "schedule": [
       {
         "inst": "balance",
-        "by": "greeshma",
+        "by": "shreya",
         "from": "08:45",
         "to": "09:15",
         "what": "Cure profiles, round 2"
       },
       {
         "inst": "viscometer",
-        "by": "greeshma",
+        "by": "shreya",
         "from": "09:15",
         "to": "09:45",
         "what": "Cure profiles, round 2"
       },
       {
         "inst": "degasser",
-        "by": "greeshma",
+        "by": "shreya",
         "from": "10:15",
         "to": "10:35",
         "what": "Cure profiles, round 2"
       },
       {
         "inst": "uv-oven",
-        "by": "greeshma",
+        "by": "shreya",
         "from": "12:00",
         "to": "12:45",
         "what": "Cure profiles, round 2"
       },
       {
         "inst": "viscometer",
-        "by": "greeshma",
+        "by": "shreya",
         "from": "14:00",
         "to": "14:30",
         "what": "Shade run check"
@@ -6620,7 +6620,7 @@
         "h": 60,
         "z": 42,
         "in_use": {
-          "by": "greeshma",
+          "by": "shreya",
           "from": "09:20",
           "until": "10:10",
           "what": "Cure profiles, round 2"
@@ -6662,7 +6662,7 @@
         "h": 70,
         "z": 70,
         "in_use": {
-          "by": "greeshma",
+          "by": "shreya",
           "from": "09:25",
           "until": "11:45",
           "what": "Cure profiles, round 2"
@@ -6744,7 +6744,7 @@
     {
       "id": "resin-batch",
       "title": "Resin batch",
-      "runner": "greeshma",
+      "runner": "shreya",
       "uploaded": "2026-10-13",
       "last_run": "2026-10-09",
       "next_run": "T15a",
@@ -6987,7 +6987,7 @@
     {
       "id": "postcure",
       "title": "Post-cure printed parts",
-      "runner": "greeshma",
+      "runner": "shreya",
       "uploaded": "2026-09-14",
       "last_run": "2026-10-02",
       "params": [

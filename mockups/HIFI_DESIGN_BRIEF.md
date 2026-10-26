@@ -18,7 +18,7 @@ Hand-off for the agent doing the high-fidelity design pass. Read this, then `../
 1. **Home.** Your projects (cards: title and people only, your avatar emphasized), then research thrusts, each with its projects as rows. Closed thrusts hidden. Top bar: brand, a big **Projects | Lab** toggle with a round search button beside it, and an avatar menu (admin tools: import lab scan, add instrument, connect instruments, device files; Evals).
 2. **Project page** (Fast-print denture base resin). Goal ("Viscosity ≤ 1.5 Pa·s, every guardrail passing"), deliverable ("Formulation spec and a manuscript"), *What we know* / *Open questions* (from the ledger), an experiments grid with a **New experiment** card first. Right panel: why, people, documents, "Send to report" (future), and a scoped Ask box.
 3. **Experiment with a trial open** (High-diluent formulations, T09 selected). Main: the trade-off chart (viscosity ← lower is better × tensile ↑ higher is better, goal corner, this experiment's trials solid, the project's others faded, Cooper's "dead end" region), and the trials table. Right panel: T09's numbers (1.28 Pa·s, 44 MPa, 0.4% porosity, goal met), Cooper's quote ("Anomalous, likely a lucky specimen; excluded."), **How it ran**: the 7 SOP steps drawn with the real Anatomy instrument figures, the print step's 18 h rest marked as differing from the SOP. One step is open, showing its log lines and where the instrument is in the room. Then the scoped Ask.
-4. **Lab** (Room 214): an isometric **digital twin** built from the Anatomy instruments on benches, with a floor-plan toggle. It shows how each instrument is logged (logs itself / by hand / not logged) and who is using it now (a ring in the person's color). Right panel: the selected instrument (Vacuum degasser: logged by hand, no calibration record, recent trials T11–T14, all Greeshma's, because Cooper never degassed), Book (future), and Ask.
+4. **Lab** (Room 214): an isometric **digital twin** built from the Anatomy instruments on benches, with a floor-plan toggle. It shows how each instrument is logged (logs itself / by hand / not logged) and who is using it now (a ring in the person's color). Right panel: the selected instrument (Vacuum degasser: logged by hand, no calibration record, recent trials T11–T14, all Shreya's, because Cooper never degassed), Book (future), and Ask.
 
 All data is in `app/data/notebook.json` (`org`, `lab`, `trials`, `ledger`). Use real values, never invented ones.
 
@@ -31,12 +31,12 @@ All data is in `app/data/notebook.json` (`org`, `lab`, `trials`, `ledger`). Use 
 - **Figures are heroes:** big, not thumbnails.
 - **Typefaces:** one precise sans plus one mono for data (Google Fonts; not Inter, Roboto, Arial or Space Grotesk). The app must work offline later, so pick faces that can be bundled.
 - **Fixed colors (project rules):**
-  - People: Cooper #2a78d6, Greeshma #6250d6, used only for people.
+  - People: Cooper #2a78d6, Shreya #6250d6, used only for people.
   - Status: ✓ #0ca30c, ○ #d99a00, ✕ #d03b3b, used only for results.
 - **Text budgets:** titles ≤ 8 words, labels ≤ 3, one sentence per panel. Navigation screens show a title and people only.
 - **"Unusual"** (an SOP deviation) is drawn, not colored. Find a better treatment than a dashed box.
 - **Not built yet:** shown with a quiet marker, never disabled.
-- Only two people exist (Cooper, Greeshma). The company is fictional (Meridian Dental Materials). Show a visible "Synthetic data" label.
+- Only two people exist (Cooper, Shreya). The company is fictional (Meridian Dental Materials). Show a visible "Synthetic data" label.
 
 ## Anatomy figures: generate real SVGs (don't redraw them)
 

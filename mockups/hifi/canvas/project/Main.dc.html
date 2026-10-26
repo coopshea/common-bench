@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#f5f4ef}
-.cb{--ground:#f5f4ef;--sheet:#fbfaf7;--ink:#1b1a17;--ink-2:#47443d;--ink-3:#69655c;--rule:#d6d2c8;--rule-2:#e6e3db;--sel:#13808f;--sel-tint:#e6f3f4;--resin:#ece2c8;--uv:#6fd0df;--cooper:#2a78d6;--greeshma:#6250d6;--ok:#0ca30c;--mid:#d99a00;--bad:#d03b3b;
+.cb{--ground:#f5f4ef;--sheet:#fbfaf7;--ink:#1b1a17;--ink-2:#47443d;--ink-3:#69655c;--rule:#d6d2c8;--rule-2:#e6e3db;--sel:#13808f;--sel-tint:#e6f3f4;--resin:#ece2c8;--uv:#6fd0df;--cooper:#2a78d6;--shreya:#6250d6;--ok:#0ca30c;--mid:#d99a00;--bad:#d03b3b;
 font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:var(--ink);background:var(--ground);min-height:100vh;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 .cb *{box-sizing:border-box}
 .cb a{color:inherit;text-decoration:none}
@@ -37,7 +37,7 @@ font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:va
 .synth{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-2);border:1px solid var(--rule);padding:4px 8px;border-radius:3px;white-space:nowrap}
 /* people */
 .av{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;flex:none}
-.av.c{background:var(--cooper)}.av.g{background:var(--greeshma)}
+.av.c{background:var(--cooper)}.av.g{background:var(--shreya)}
 .av.lg{width:44px;height:44px;font-size:15px}
 .av.sm{width:22px;height:22px;font-size:10px}
 .av.you{box-shadow:0 0 0 2px var(--ground),0 0 0 3.5px var(--ink)}
@@ -183,11 +183,11 @@ font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:va
 <div class="seg"><a href="Main.dc.html" class="on" aria-current="page">Projects</a><a href="Lab.dc.html">Lab</a></div>
 <button class="round" type="button" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="#1b1a17" stroke-width="1.5"/><path d="M13 13l5 5" stroke="#1b1a17" stroke-width="1.5" stroke-linecap="round"/></svg></button>
 </nav>
-<div class="me"><span class="synth">Synthetic data</span><button type="button" aria-label="Account menu, Greeshma" style="border:0;background:none;padding:0;display:flex"><span class="av g lg">G</span></button></div>
+<div class="me"><span class="synth">Synthetic data</span><button type="button" aria-label="Account menu, Shreya" style="border:0;background:none;padding:0;display:flex"><span class="av g lg">S</span></button></div>
 </header>
 
 <div class="menu" role="menu" aria-label="Account">
-<div style="display:flex;gap:12px;align-items:center;padding:10px 12px 12px"><span class="av g">G</span><div><div class="h3">Greeshma</div><div class="label">Scientist · formulation</div></div></div>
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px 12px"><span class="av g">S</span><div><div class="h3">Shreya</div><div class="label">Scientist · formulation</div></div></div>
 <hr>
 <a role="menuitem" href="#">Import lab scan</a>
 <a role="menuitem" href="#">Add instrument</a>
@@ -204,19 +204,19 @@ font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:va
 <div class="yours">
 <a class="card" href="Project.dc.html">
 <div style="display:flex;flex-direction:column;gap:14px"><span class="label">01</span><span class="t">Fast-print denture base resin</span></div>
-<div class="avs"><span class="av g you">G</span><span class="av c">CS</span></div>
+<div class="avs"><span class="av g you">S</span><span class="av c">CS</span></div>
 </a>
 <a class="card" href="#">
 <div style="display:flex;flex-direction:column;gap:14px"><span class="label">02</span><span class="t">Same-day denture fit on a $3k printer</span></div>
-<div class="avs"><span class="av g you">G</span></div>
+<div class="avs"><span class="av g you">S</span></div>
 </a>
 <a class="card" href="#">
 <div style="display:flex;flex-direction:column;gap:14px"><span class="label">03</span><span class="t">Measure printer-to-printer drift</span></div>
-<div class="avs"><span class="av g you">G</span></div>
+<div class="avs"><span class="av g you">S</span></div>
 </a>
 <a class="card" href="#">
 <div style="display:flex;flex-direction:column;gap:14px"><span class="label">04</span><span class="t">Halve post-cure time</span></div>
-<div class="avs"><span class="av g you">G</span></div>
+<div class="avs"><span class="av g you">S</span></div>
 </a>
 </div>
 </section>
@@ -227,7 +227,7 @@ font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:va
 <div class="thrust">
 <div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Printable dental materials</h3><p class="muted">Resins that print faster and last longer.</p></div>
 <div class="rows">
-<a class="row" href="Project.dc.html"><span>Fast-print denture base resin</span><span class="avs"><span class="av sm g you">G</span><span class="av sm c">CS</span></span></a>
+<a class="row" href="Project.dc.html"><span>Fast-print denture base resin</span><span class="avs"><span class="av sm g you">S</span><span class="av sm c">CS</span></span></a>
 <a class="row" href="#"><span>Match shades A1–A3 with two pigments</span><span class="avs"><span class="av sm c">CS</span></span></a>
 </div>
 </div>
@@ -235,15 +235,15 @@ font-family:'Instrument Sans',ui-sans-serif,'Helvetica Neue',sans-serif;color:va
 <div class="thrust">
 <div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Accessible chairside dentistry</h3><p class="muted">Same-day parts on low-cost printers.</p></div>
 <div class="rows">
-<a class="row" href="#"><span>Same-day denture fit on a $3k printer</span><span class="avs"><span class="av sm g you">G</span></span></a>
+<a class="row" href="#"><span>Same-day denture fit on a $3k printer</span><span class="avs"><span class="av sm g you">S</span></span></a>
 </div>
 </div>
 
 <div class="thrust" style="border-bottom:1px solid var(--rule)">
 <div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:20px;font-weight:500">Print process reliability</h3><p class="muted">Every printer and oven gives the same part.</p></div>
 <div class="rows">
-<a class="row" href="#"><span>Measure printer-to-printer drift</span><span class="avs"><span class="av sm g you">G</span></span></a>
-<a class="row" href="#"><span>Halve post-cure time</span><span class="avs"><span class="av sm g you">G</span></span></a>
+<a class="row" href="#"><span>Measure printer-to-printer drift</span><span class="avs"><span class="av sm g you">S</span></span></a>
+<a class="row" href="#"><span>Halve post-cure time</span><span class="avs"><span class="av sm g you">S</span></span></a>
 </div>
 </div>
 

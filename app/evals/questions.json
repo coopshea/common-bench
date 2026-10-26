@@ -270,13 +270,13 @@
     {
       "id": "q08",
       "category": "aggregation",
-      "question": "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+      "question": "What's Shreya's mean porosity across her trials, compared with Cooper's campaign A?",
       "should_abstain": false,
       "expected": {
-        "summary": "Greeshma (T11, T12, T13, T14): 0.16%; campaign A (T01, T02, T03, T04, T05): 0.54%",
+        "summary": "Shreya (T11, T12, T13, T14): 0.16%; campaign A (T01, T02, T03, T04, T05): 0.54%",
         "numbers": [
           {
-            "label": "Greeshma mean porosity",
+            "label": "Shreya mean porosity",
             "values": [
               0.155
             ],
@@ -448,7 +448,7 @@
       "question": "My best is 1.55 Pa·s. I want to order DiluentX ($1,800, 6 weeks) to get under 1.5. Has anyone tried something like this?",
       "should_abstain": false,
       "expected": {
-        "summary": "Yes: Cooper's campaign B (T06–T10) reached 1.19–1.44 Pa·s with the current diluent but failed strength. T08 vs T13 differs by an unintended 10-min degas. Every >30% failure was undegassed; T09 rested 18.17 h, passed, and was excluded. Propose T15: T15a degassed vs T15b undegassed control, nothing to order. Credit Greeshma.",
+        "summary": "Yes: Cooper's campaign B (T06–T10) reached 1.19–1.44 Pa·s with the current diluent but failed strength. T08 vs T13 differs by an unintended 10-min degas. Every >30% failure was undegassed; T09 rested 18.17 h, passed, and was excluded. Propose T15: T15a degassed vs T15b undegassed control, nothing to order. Credit Shreya.",
         "numbers": [
           {
             "label": "a campaign B viscosity under the target",

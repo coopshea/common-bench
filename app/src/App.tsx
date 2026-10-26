@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { Suspense, lazy, useEffect, useState, type CSSProperties } from "react";
 import { people, personById, project, trials } from "./data/notebook.ts";
 import { navigate, usePath } from "./lib/hooks.ts";
 import { ME, experimentOfTrial, lab, org, parseRoute, pathOf, projectById } from "./lib/org.ts";
@@ -10,9 +10,11 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { ProjectPage } from "./pages/ProjectPage.tsx";
 import { ExperimentPage } from "./pages/ExperimentPage.tsx";
 import { LabPage } from "./pages/LabPage.tsx";
-import { BenchPage } from "./pages/BenchPage.tsx";
 import { EvalsPage } from "./pages/EvalsPage.tsx";
 import { TrialDrawer } from "./components/TrialDrawer.tsx";
+
+// The SOPs tab carries the block editor, math and lab-twin bench view: load it only when it's opened.
+const BenchPage = lazy(() => import("./pages/BenchPage.tsx").then((m) => ({ default: m.BenchPage })));
 
 export function App() {
   return (
@@ -55,7 +57,7 @@ function Shell() {
         {route.view === "project" && <ProjectPage projectId={route.project} />}
         {route.view === "experiment" && <ExperimentPage projectId={route.project} experimentId={route.experiment} />}
         {route.view === "lab" && <LabPage />}
-        {route.view === "bench" && <BenchPage protocolId={route.protocol} mode={route.mode} />}
+        {route.view === "bench" && <Suspense fallback={null}><BenchPage protocolId={route.protocol} mode={route.mode} /></Suspense>}
         {route.view === "evals" && <EvalsPage />}
       </main>
       {state.back && (

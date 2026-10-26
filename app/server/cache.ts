@@ -133,7 +133,7 @@ export async function replay(rec: Recording, o: ReplayOptions): Promise<string[]
   const idMap = new Map<string, string>();
   const decisions = new Map<string, Promise<Decision>>();
   const latestByKind = new Map<string, string>(); // "ledger" | "draft" → replay proposal id
-  const approver = o.asker ?? "Greeshma";
+  const approver = o.asker ?? "Shreya";
 
   for (const entry of rec.entries) {
     if (o.signal?.aborted) break;

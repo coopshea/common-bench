@@ -3,7 +3,7 @@
 // - Print: the same page on paper, with blanks where the numbers go, so it can be solved by hand and read back by OCR.
 // - Run: the split bench view (BenchRun.tsx).
 // - Edit: the protocol itself, as a block document (BenchEditor.tsx). The only place the SOP changes.
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import type { BenchField, BenchProtocol } from "../shared/types.ts";
 import { isPlain, toTex } from "../shared/calc.ts";
 import { notebook, personById, trials } from "../data/notebook.ts";
@@ -16,8 +16,10 @@ import { PlatePhoto } from "../figures/PlatePhoto.tsx";
 import { InstrumentFigure } from "../figures/bench/InstrumentFigure.tsx";
 import { runsOf, stationAt } from "../figures/bench/timeline.ts";
 import { BenchRun } from "./BenchRun.tsx";
-import { BenchEditor } from "./BenchEditor.tsx";
 import "./bench.css";
+
+// The block editor (BlockNote + Mantine) is the heaviest piece: load it only when Edit SOP is opened.
+const BenchEditor = lazy(() => import("./BenchEditor.tsx").then((m) => ({ default: m.BenchEditor })));
 
 const protocols = notebook.bench ?? [];
 const day = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -26,7 +28,7 @@ export function BenchPage({ protocolId, mode }: { protocolId?: string; mode: Ben
   const proto = protocols.find((p) => p.id === protocolId);
   if (!proto) return <BenchList />;
   if (mode === "run") return <BenchRun key={proto.id} base={proto} />;
-  if (mode === "edit") return <BenchEditor key={proto.id} base={proto} />;
+  if (mode === "edit") return <Suspense fallback={null}><BenchEditor key={proto.id} base={proto} /></Suspense>;
   return <BenchDoc key={proto.id} base={proto} paper={mode === "print"} />;
 }
 

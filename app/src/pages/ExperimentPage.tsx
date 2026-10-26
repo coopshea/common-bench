@@ -55,7 +55,7 @@ export function ExperimentPage({ projectId, experimentId }: { projectId: string;
                 onSelect={select} onFlag={flagTrial} onHover={(id) => dispatch({ type: "hover", id })} />
               <div className="key">
                 {x.people.map((id) => <span key={id}><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill={`var(--person-${id})`} /></svg>This experiment</span>)}
-                <span><svg width="26" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="var(--person-cooper)" opacity=".28" /><circle cx="19" cy="6" r="4.5" fill="var(--person-greeshma)" opacity=".28" /></svg>Rest of project</span>
+                <span><svg width="26" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4.5" fill="var(--person-cooper)" opacity=".28" /><circle cx="19" cy="6" r="4.5" fill="var(--person-shreya)" opacity=".28" /></svg>Rest of project</span>
                 <span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4.2" fill="#fff" stroke="var(--ink-2)" strokeWidth="2" /></svg>Excluded or estimate</span>
                 {trial && stepsOf(trial).some((s) => s.dev) && <span><Delta size={13} />Differs from SOP</span>}
                 <span><svg width="18" height="12" aria-hidden="true"><rect x=".5" y=".5" width="17" height="11" fill="none" stroke="var(--ink-3)" /><path d="M3 11 11 1M9 11 17 1" stroke="#a39d92" /></svg>Called a dead end</span>

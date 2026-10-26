@@ -1,7 +1,7 @@
 // Stress haystack generator: seeded, synthetic, eval-only.
 //
 // Writes notebooks in the same `Notebook` shape as data/notebook.json, at several sizes, with
-// 8 fictional people (Cooper and Greeshma plus six invented colleagues), multiple campaigns,
+// 8 fictional people (Cooper and Shreya plus six invented colleagues), multiple campaigns,
 // full step-by-step logs and notes. Then plants needles and traps at every size, and builds the
 // question set from the generated data (evals/stress/questions.ts).
 //
@@ -74,7 +74,7 @@ const fmt = (m: number) => new Date(EPOCH + Math.round(m) * 60000).toISOString()
 const dateOf = (m: number) => fmt(m).slice(0, 10);
 const startOfDay = (m: number) => Math.floor(m / 1440) * 1440;
 
-// ---------- the team (fictional except Cooper and Greeshma, who match the demo) ----------
+// ---------- the team (fictional except Cooper and Shreya, who match the demo) ----------
 
 interface CampaignSpec {
   code: string;
@@ -109,8 +109,8 @@ const PEOPLE: PersonSpec[] = [
     campaigns: [{ code: "K", dil: [28, 38], pi: [1.2, 1.8] }] },
   { id: "ines", name: "Ines Kowalski", initials: "IK", role: "Scientist · materials", color: "#6B8E23", joined: "2025-09-15", degas: 10,
     campaigns: [{ code: "P", dil: [30, 42], pi: [1.4, 2.0] }] },
-  { id: "greeshma", name: "Greeshma", initials: "GN", role: "Scientist · formulation", color: "#E4674F", joined: "2026-07-06", degas: 10,
-    campaigns: [{ code: "G", dil: [26, 34], pi: [1.5, 1.8] }] },
+  { id: "shreya", name: "Shreya", initials: "GN", role: "Scientist · formulation", color: "#E4674F", joined: "2026-07-06", degas: 10,
+    campaigns: [{ code: "S", dil: [26, 34], pi: [1.5, 1.8] }] },
 ];
 const spec = (id: string) => PEOPLE.find((p) => p.id === id)!;
 
@@ -269,7 +269,7 @@ export function generate(size: number, seed: number): { nb: Notebook; plants: Pl
   ensure("lucia", 2, PAIR_FROM, PAIR_TO, ["ravi"]);
   ensure("ines", 4, dayOf("2025-09-15"), LAST_DAY);
   ensure("dana_whitford", 4, dayOf("2025-02-10"), LAST_DAY);
-  ensure("greeshma", 2, dayOf("2026-07-06"), LAST_DAY);
+  ensure("shreya", 2, dayOf("2026-07-06"), LAST_DAY);
   ensure("cooper", 3, dayOf("2024-09-16"), dayOf("2025-06-27"));
   ensure("tomas", 3, FIRST_DAY, POSTCURE30_BEFORE - 1);
   ensure("tomas", 3, dayOf("2024-11-15"), dayOf("2025-09-26"));
@@ -650,13 +650,13 @@ function buildLedger(trials: Trial[], _opts: { superseded: boolean }): LedgerIte
     });
   }
   items.push({
-    key: "question-greeshma",
+    key: "question-shreya",
     kind: "question",
-    owner: "greeshma" as PersonId,
+    owner: "shreya" as PersonId,
     status: "open",
     recorded_at: "2026-09-24",
     text: "Can we reach 1.5 Pa·s without new materials?",
-    evidence: trials.filter((t) => t.owners[0] === "greeshma").slice(-1).map((t) => t.id),
+    evidence: trials.filter((t) => t.owners[0] === "shreya").slice(-1).map((t) => t.id),
   });
 
   items.sort((a, b) => a.recorded_at.localeCompare(b.recorded_at) || a.key.localeCompare(b.key));
