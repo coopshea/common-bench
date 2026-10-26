@@ -61,7 +61,7 @@ export function TourBar() {
       if (a.ledgerProposal && a.draftProposal && !ran.current.has(`approve-${step}`)) {
         ran.current.add(`approve-${step}`);
         setTimeout(() => scrollTo("approvals-section"), 100);
-        // Give the viewer a beat to read the cards, then Greeshma approves both.
+        // Give the viewer a beat to read the cards, then Shreya approves both.
         pending.forEach((p, i) => setTimeout(() => decide(p!.id, "approve"), 1600 + i * 700));
       }
     }

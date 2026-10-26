@@ -97,7 +97,7 @@ function channel<T>() {
 
 export async function* askManaged(question: string, opts: AskOptions): AsyncGenerator<ManagedEvent> {
   const client = opts.client ?? new Anthropic();
-  const asker = opts.asker ?? "greeshma";
+  const asker = opts.asker ?? "shreya";
   const state = loadState();
   const out = channel<ManagedEvent>();
   const reports: Reports = {};
@@ -293,7 +293,7 @@ export async function* askManaged(question: string, opts: AskOptions): AsyncGene
 // when the Analyst starts, to exercise the async path.
 
 const LIVE_EVENT =
-  "Degasser worksheet (Greeshma): every batch she has run, T11–T14, was degassed 10 min before printing. " +
+  "Degasser worksheet (Shreya): every batch she has run, T11–T14, was degassed 10 min before printing. " +
   "Cooper's 2024–25 runs have no degas entries because the lab had no degasser then.";
 
 async function main() {

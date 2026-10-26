@@ -85,7 +85,7 @@
      "tool": "get_ledger",
      "input": {},
      "status": "done",
-     "summary": "3 ledger items: L1 finding (Cooper, accepted); L2 dead end (Cooper, active); L3 question (Greeshma, open)",
+     "summary": "3 ledger items: L1 finding (Cooper, accepted); L2 dead end (Cooper, active); L3 question (Shreya, open)",
      "citations": [
       "L1",
       "L2",
@@ -105,7 +105,7 @@
      "tool": "search_trials",
      "input": {},
      "status": "done",
-     "summary": "14 trials: T01–T05 (Cooper, A); T06–T10 (Cooper, B); T11–T14 (Greeshma, G) (T09 excluded by its owner). Viscosity: Cooper 1.19–2.6 Pa·s, Greeshma 1.55–1.85 Pa·s",
+     "summary": "14 trials: T01–T05 (Cooper, A); T06–T10 (Cooper, B); T11–T14 (Shreya, G) (T09 excluded by its owner). Viscosity: Cooper 1.19–2.6 Pa·s, Shreya 1.55–1.85 Pa·s",
      "citations": [
       "T01",
       "T02",
@@ -237,7 +237,7 @@
        "a": null,
        "b": 10,
        "kind": "unintended",
-       "note": "Greeshma degassed 10 min (T13-L06, from her worksheet); T08's log has no degas step. Degassing is not in SOP v1.",
+       "note": "Shreya degassed 10 min (T13-L06, from her worksheet); T08's log has no degas step. Degassing is not in SOP v1.",
        "log_ids": [
         "T13-L06"
        ]
@@ -1108,7 +1108,7 @@
      {
       "id": "T14",
       "kind": "trial",
-      "label": "T14 · Greeshma · 32% diluent, 1.6% PI, degas 10 min"
+      "label": "T14 · Shreya · 32% diluent, 1.6% PI, degas 10 min"
      },
      {
       "id": "T07",
@@ -1123,7 +1123,7 @@
      {
       "id": "T13",
       "kind": "trial",
-      "label": "T13 · Greeshma · 30% diluent, 1.7% PI, degas 10 min"
+      "label": "T13 · Shreya · 30% diluent, 1.7% PI, degas 10 min"
      },
      {
       "id": "T09",
@@ -1167,7 +1167,7 @@
        {
         "op": "add",
         "kind": "finding",
-        "owner": "greeshma",
+        "owner": "shreya",
         "status": "candidate",
         "text": "Degassing removes the strength barrier at high diluent.",
         "evidence": [
@@ -1176,7 +1176,7 @@
          "T09"
         ],
         "pending_on": "T15",
-        "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+        "reason": "Degassing is Shreya's routine step, and degassed trials at high diluent kept their strength."
        }
       ]
      },
@@ -1191,8 +1191,8 @@
     "proposal": {
      "id": "p-ledger-mv6zb25l-1",
      "kind": "ledger",
-     "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
-     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma): Degassing removes the strength barrier at high diluent. · pending T15",
+     "title": "Ledger: L2 → disputed · add L4 (Shreya)",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Shreya): Degassing removes the strength barrier at high diluent. · pending T15",
      "payload": [
       {
        "op": "update",
@@ -1217,7 +1217,7 @@
         "id": "L4",
         "kind": "finding",
         "text": "Degassing removes the strength barrier at high diluent.",
-        "owner": "greeshma",
+        "owner": "shreya",
         "evidence": [
          "T13",
          "T14",
@@ -1234,7 +1234,7 @@
          }
         ]
        },
-       "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+       "reason": "Degassing is Shreya's routine step, and degassed trials at high diluent kept their strength."
       }
      ],
      "status": "pending"
@@ -1253,8 +1253,8 @@
     "proposal": {
      "id": "p-ledger-mv6zb25l-1",
      "kind": "ledger",
-     "title": "Ledger: L2 → disputed · add L4 (Greeshma)",
-     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Greeshma): Degassing removes the strength barrier at high diluent. · pending T15",
+     "title": "Ledger: L2 → disputed · add L4 (Shreya)",
+     "summary": "L2 → disputed: reason disputed: confounded by degassing (see T09, T13); new finding L4 (Shreya): Degassing removes the strength barrier at high diluent. · pending T15",
      "payload": [
       {
        "op": "update",
@@ -1279,7 +1279,7 @@
         "id": "L4",
         "kind": "finding",
         "text": "Degassing removes the strength barrier at high diluent.",
-        "owner": "greeshma",
+        "owner": "shreya",
         "evidence": [
          "T13",
          "T14",
@@ -1296,7 +1296,7 @@
          }
         ]
        },
-       "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+       "reason": "Degassing is Shreya's routine step, and degassed trials at high diluent kept their strength."
       }
      ],
      "status": "approved"
@@ -1327,7 +1327,7 @@
        {
         "op": "add",
         "kind": "finding",
-        "owner": "greeshma",
+        "owner": "shreya",
         "status": "candidate",
         "text": "Degassing removes the strength barrier at high diluent.",
         "evidence": [
@@ -1336,12 +1336,12 @@
          "T09"
         ],
         "pending_on": "T15",
-        "reason": "Degassing is Greeshma's routine step, and degassed trials at high diluent kept their strength."
+        "reason": "Degassing is Shreya's routine step, and degassed trials at high diluent kept their strength."
        }
       ]
      },
      "status": "done",
-     "summary": "Approved by Greeshma",
+     "summary": "Approved by Shreya",
      "ms": 1530
     }
    }
@@ -1356,7 +1356,7 @@
      "tool": "draft_trial",
      "input": {
       "title": "Does degassing rescue the 38% diluent recipe?",
-      "owner": "greeshma",
+      "owner": "shreya",
       "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
       "linked_trials": [
        "T08",
@@ -1398,11 +1398,11 @@
      "id": "p-draft-mv6zb3qn-2",
      "kind": "draft",
      "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
-     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Shreya",
      "payload": {
       "id": "T15",
       "title": "Does degassing rescue the 38% diluent recipe?",
-      "owner": "greeshma",
+      "owner": "shreya",
       "linked_trials": [
        "T08",
        "T13",
@@ -1515,11 +1515,11 @@
      "id": "p-draft-mv6zb3qn-2",
      "kind": "draft",
      "title": "Draft T15: Does degassing rescue the 38% diluent recipe?",
-     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Greeshma",
+     "summary": "T15a (treatment): 38% diluent, 1.7% PI, degas 10 min → est. 1.29 Pa·s, porosity 0.41%, P(pass all) 0.8; T15b (control): 38% diluent, 1.7% PI, no degas → est. 1.29 Pa·s, porosity 3.72%, P(pass all) 0.25. Nothing to order. Owner: Shreya",
      "payload": {
       "id": "T15",
       "title": "Does degassing rescue the 38% diluent recipe?",
-      "owner": "greeshma",
+      "owner": "shreya",
       "linked_trials": [
        "T08",
        "T13",
@@ -1629,7 +1629,7 @@
      "tool": "draft_trial",
      "input": {
       "title": "Does degassing rescue the 38% diluent recipe?",
-      "owner": "greeshma",
+      "owner": "shreya",
       "hypothesis": "A 10-minute vacuum degas may let bubbles escape so the 38% diluent resin keeps its strength while staying under 1.5 Pa·s. If the treatment passes and the control fails, degassing is confirmed.",
       "linked_trials": [
        "T08",
@@ -1660,7 +1660,7 @@
       ]
      },
      "status": "done",
-     "summary": "Approved by Greeshma",
+     "summary": "Approved by Shreya",
      "ms": 1515
     }
    }

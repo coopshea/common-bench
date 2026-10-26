@@ -26,7 +26,7 @@ export interface RunState {
 interface State { sop: SopEdits; run: RunState }
 
 const BATCH = "batch_g"; // the param a weighed overshoot rescales
-const KEY = "common-bench:bench:v2";
+const KEY = "common-bench:bench:v3"; // v3: the person id changed; older saved trials point at a person that no longer exists
 
 const states = new Map<string, State>(load());
 const listeners = new Set<() => void>();

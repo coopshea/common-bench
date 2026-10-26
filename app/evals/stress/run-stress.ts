@@ -301,7 +301,7 @@ How to answer:
 - Lookups and aggregations: answer briefly and stop. Only decision questions ("has anyone tried…", "should I…", "what next") get a proposed experiment and ledger change.
 - Decision answers: at most 140 words. Plain text: no headings, no bold, no tables, no lists.
 
-The person asking is Greeshma (id greeshma, current member). Address them as "you"; credit their work by name where it matters.`;
+The person asking is Shreya (id shreya, current member). Address them as "you"; credit their work by name where it matters.`;
 
 // ---------- report ----------
 
@@ -473,7 +473,7 @@ function renderMd(res: { generated_at: string; sizes: number[]; cells: Cell[]; p
   L.push("");
   L.push("`✓` correct · `✗` confidently wrong · `–✗` gave up or hedged (said it couldn't answer) · `c✗` citation problem (an id that doesn't exist, or the required evidence not cited) · `–` not run. Core-15 templates are marked ●.", "");
   L.push("## How it's graded", "");
-  L.push("- **Data:** `generate-haystack.ts` (seed 11) writes one notebook per size in the same `Notebook` shape as `data/notebook.json`: 8 people (Cooper and Greeshma plus six fictional colleagues, two of them named Dana), 15 campaigns, ~15 log entries and 1–3 notes per trial, and a findings ledger. `data/notebook.json` is never modified.");
+  L.push("- **Data:** `generate-haystack.ts` (seed 11) writes one notebook per size in the same `Notebook` shape as `data/notebook.json`: 8 people (Cooper and Shreya plus six fictional colleagues, two of them named Dana), 15 campaigns, ~15 log entries and 1–3 notes per trial, and a findings ledger. `data/notebook.json` is never modified.");
   L.push("- **Planted at every size:** an overnight rest (T09-like), a >24 h post-cure delay and an aborted print (log only), a loaner mixer in winter 2025–26 (log device field only), two same-recipe trials that differ only by an unlogged pre-warm habit (notes only), three notes that contradict their own measurements, two people named Dana, lookalike ids, a superseded ledger finding, and four abstention traps with a tempting near-match.");
   L.push("- **Expected answers** are computed by `questions.ts` from the generated notebook, and each planted fact is re-derived and asserted unique.");
   L.push("- **Accuracy:** every expected number within tolerance (counts exact; means ±0.01 Pa·s or ±0.06 MPa; hours ±0.25), every required concept or id named, per-person counts next to the right name. Abstention traps: the answer must say it isn't in the notebook.");

@@ -11,6 +11,7 @@ import type { PersonId } from "../shared/types.ts";
 import { colorOf, firstNameOf, personById, project } from "../data/notebook.ts";
 import { instrumentById, lab } from "../lib/org.ts";
 import { useStore } from "../state/store.tsx";
+import { INSTRUMENT_COLOR } from "./instrumentColors.ts";
 
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek: (d: Date) => startOfWeek(d, { weekStartsOn: 1 }), getDay, locales: { "en-US": enUS } });
 const NOW = new Date(project.now);
@@ -18,12 +19,6 @@ const today = project.now.slice(0, 10);
 const at = (hhmm: string) => new Date(`${today}T${hhmm}:00`);
 const hhmm = (d: Date) => format(d, "HH:mm");
 
-/** One color per instrument: earthy hues kept clear of the two person colors and the three status colors. */
-export const INSTRUMENT_COLOR: Record<string, string> = {
-  balance: "#9a7b2f", mixer: "#2f6b5a", degasser: "#55606e", viscometer: "#6b7a3a",
-  "printer-1": "#9c4f2e", "printer-2": "#b07a5a", "uv-oven": "#8a4b5c", "test-frame": "#6a5a4a",
-  imaging: "#4b6470", "plate-reader": "#7d6b8f", "hot-plate": "#8f6a3a",
-};
 const colorOfInst = (id: string) => INSTRUMENT_COLOR[id] ?? "#69655c";
 
 type State = "use" | "booked" | "idle" | "past";
@@ -88,9 +83,3 @@ export function LabDay({ onSelect, inst, onBook, height = 560 }: {
   );
 }
 
-/** The drawn states, for a one-line key under an instrument's calendar. */
-export const LabDayKey = ({ inst }: { inst: string }) => (
-  <div className="labday-key" style={{ "--ic": colorOfInst(inst) } as React.CSSProperties}>
-    <span><i className="use" />In use</span><span><i className="booked" />Booked</span><span><i className="idle" />Booked, idle</span><span><i className="free" />Free</span>
-  </div>
-);

@@ -8,7 +8,7 @@ import { DraftPlanShape, LedgerChangeInput } from "../server/tools.ts";
 
 const TrialId = z.string().regex(/^T\d{2,4}[a-z]?$/, 'A trial id, e.g. "T09"');
 const EvidenceId = z.string().describe('A trial ("T09"), log entry ("T09-L04") or ledger item ("L2") id');
-const Person = z.enum(["cooper", "greeshma"]);
+const Person = z.enum(["cooper", "shreya"]);
 
 // ---------- 1. Historian: "What have we tried?" ----------
 

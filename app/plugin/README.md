@@ -54,7 +54,7 @@ Claude searches the trials and reads the ledger. It diffs T08 against T13, compa
 
 **Writes always ask a person.** The write tools carry `_meta["anthropic/requiresUserInteraction"]`. Claude Code shows a permission prompt for `propose_ledger_update` and `draft_trial` even under allow rules or auto mode, and that prompt is the approval card. After you approve, the change applies to this session's in-memory ledger, so `get_ledger` shows it. Restart the session to reset the ledger.
 
-To approve as Cooper instead of Greeshma, launch with `NOTEBOOK_USER=cooper` in the environment.
+To approve as Cooper instead of Shreya, launch with `NOTEBOOK_USER=cooper` in the environment.
 
 ## Headless (one shot)
 

@@ -124,20 +124,20 @@ const project: Project = {
   },
   guardrails,
   sop: { version: "v1", stations },
-  team: ["cooper", "greeshma"],
+  team: ["cooper", "shreya"],
 };
 
 const people: Person[] = [
   { id: "cooper", name: "Cooper Shea", initials: "CS", role: "Former member · formulation", color: "#2a78d6",
     joined: "2024-09-16", left: "2025-06-27", status: "former" },
-  { id: "greeshma", name: "Greeshma", initials: "G", role: "Scientist · formulation", color: "#6250d6",
+  { id: "shreya", name: "Shreya", initials: "S", role: "Scientist · formulation", color: "#6250d6",
     joined: "2026-07-06", status: "current" },
 ];
 
 // ---------- the trials the story needs ----------
 
 interface Plan {
-  id: string; date: string; owner: PersonId; campaign: "A" | "B" | "G";
+  id: string; date: string; owner: PersonId; campaign: "A" | "B" | "S";
   d: number; p: number; degas: number;
   mixAt: string; // HH:MM on `date`
   printAt?: { dayOffset: number; time: string }; // explicit print time (T09)
@@ -171,14 +171,14 @@ const PLANS: Plan[] = [
     notes: (o) => [["weigh", "Replicate of T08."], ["test", `UTS ${o.uts_mpa} MPa, porosity ${o.porosity_pct}%: nothing like T08. Anomalous, likely a lucky specimen. Excluded.`]] },
   { id: "T10", date: "2025-05-20", owner: "cooper", campaign: "B", d: 40, p: 1.2, degas: 0, mixAt: "10:10", printDelayMin: 25,
     notes: (o) => [["weigh", "40%, PI up to 1.2% to help the cure."], ["test", `Didn't help: UTS ${o.uts_mpa} MPa, porosity ${o.porosity_pct}%. Calling high diluent a dead end.`]] },
-  // Greeshma: a different region (mid diluent, high PI). Degasses 10 min out of habit; never mentions it.
-  { id: "T11", date: "2026-07-09", owner: "greeshma", campaign: "G", d: 26, p: 1.5, degas: 10, mixAt: "10:05", printDelayMin: 31,
+  // Shreya: a different region (mid diluent, high PI). Degasses 10 min out of habit; never mentions it.
+  { id: "T11", date: "2026-07-09", owner: "shreya", campaign: "S", d: 26, p: 1.5, degas: 10, mixAt: "10:05", printDelayMin: 31,
     notes: (o) => [["weigh", "First trial, following the SOP walkthrough. 26% diluent, PI 1.5% for a stronger cure."], ["test", `Everything passes. ${o.viscosity_pa_s} Pa·s.`]] },
-  { id: "T12", date: "2026-08-04", owner: "greeshma", campaign: "G", d: 28, p: 1.8, degas: 10, mixAt: "09:45", printDelayMin: 33,
+  { id: "T12", date: "2026-08-04", owner: "shreya", campaign: "S", d: 28, p: 1.8, degas: 10, mixAt: "09:45", printDelayMin: 33,
     notes: (o) => [["weigh", "28%, PI 1.8%."], ["test", `All guardrails pass. ${o.viscosity_pa_s} Pa·s.`]] },
-  { id: "T13", date: "2026-08-27", owner: "greeshma", campaign: "G", d: 30, p: 1.7, degas: 10, mixAt: "10:20", printDelayMin: 30,
+  { id: "T13", date: "2026-08-27", owner: "shreya", campaign: "S", d: 30, p: 1.7, degas: 10, mixAt: "10:20", printDelayMin: 30,
     notes: (o) => [["weigh", "30%, PI back to 1.7%."], ["test", `Brittle fracture, but strength is fine (UTS ${o.uts_mpa} MPa).`]] },
-  { id: "T14", date: "2026-09-22", owner: "greeshma", campaign: "G", d: 32, p: 1.6, degas: 10, mixAt: "09:55", printDelayMin: 32,
+  { id: "T14", date: "2026-09-22", owner: "shreya", campaign: "S", d: 32, p: 1.6, degas: 10, mixAt: "09:55", printDelayMin: 32,
     notes: (o) => [["viscosity", `32%, PI 1.6%: ${o.viscosity_pa_s} Pa·s. Closest yet, still above 1.5.`], ["test", "All pass. Might need a lower-viscosity diluent (DiluentX?)."]] },
 ];
 
@@ -362,7 +362,7 @@ const ledger: LedgerItem[] = [
     text: "Dead end: high diluent (> 30%) too brittle.",
     status_note: `Porous with brittle fracture; UTS ${bUtsLo}–${bUtsHi} MPa, below the 40 MPa floor in 4 of 4 included trials. T09 excluded as anomalous.`,
     evidence: bFails, region: { diluent: [30, 45], photoinit: [0.5, 1.3] } },
-  { id: "L3", kind: "question", owner: "greeshma", status: "open", recorded_at: "2026-09-24",
+  { id: "L3", kind: "question", owner: "shreya", status: "open", recorded_at: "2026-09-24",
     text: "Can we reach 1.5 Pa·s without new materials?", evidence: ["T14"] },
 ];
 
@@ -488,7 +488,7 @@ const viscosity_target_contour = PI_.map((p) => ({
 // ---------- the lab around the project ----------
 // Thrusts → projects → experiments. Only the notebook project has trials; its siblings exist so it isn't alone.
 
-const span = (c: "A" | "B" | "G") => {
+const span = (c: "A" | "B" | "S") => {
   const ds = trials.filter((t) => t.campaign === c).map((t) => t.date).sort();
   const m = (d: string) => new Date(d + "T12:00:00").toLocaleString("en-US", { month: "short", year: "numeric" });
   return `${m(ds[0])} – ${m(ds[ds.length - 1])}`;
@@ -503,21 +503,21 @@ const org: Org = {
     { id: "devices", title: "Bioresorbable devices", blurb: "Closed in 2025.", funding: "SBIR Phase I (fictional)", closed: true },
   ],
   projects: [
-    { id: project.id, thrust: "materials", title: project.name, people: ["greeshma", "cooper"], last: lastDate,
+    { id: project.id, thrust: "materials", title: project.name, people: ["shreya", "cooper"], last: lastDate,
       goal: `${project.objective.label}, every guardrail passing`, deliverable: "Formulation spec and a manuscript",
       why: project.objective.why, docs: ["Program proposal (2024)", `SOP ${project.sop.version}: resin prep and print`, "Guardrail sources"] },
     { id: "shade-match", thrust: "materials", title: "Match shades A1–A3 with two pigments", people: ["cooper"], last: "2025-05-30",
       goal: "Two pigments cover A1–A3 within ΔE 2", deliverable: "Pigment recipe", why: "Fewer pigments, fewer mixing errors.",
       docs: ["Shade guide scans"], known: [{ text: "One pigment reaches A1 and A2", cite: "Shade run 1" }],
       open: [{ text: "Can A3 be reached without a third?", cite: "" }] },
-    { id: "chairside-fit", thrust: "access", title: "Same-day denture fit on a $3k printer", people: ["greeshma"], last: "2026-09-12",
+    { id: "chairside-fit", thrust: "access", title: "Same-day denture fit on a $3k printer", people: ["shreya"], last: "2026-09-12",
       goal: "Fit within 50 µm from a low-cost printer", deliverable: "Clinic protocol", why: "Most clinics can't afford a lab printer.",
       docs: ["Pilot agreement"], known: [{ text: "First fit is within 80 µm", cite: "Fit test 1" }],
       open: [{ text: "Is the gap from the printer or the resin?", cite: "" }] },
-    { id: "printer-drift", thrust: "process", title: "Measure printer-to-printer drift", people: ["greeshma"], last: "2026-10-02",
+    { id: "printer-drift", thrust: "process", title: "Measure printer-to-printer drift", people: ["shreya"], last: "2026-10-02",
       goal: "Know how far printers 1 and 2 disagree", deliverable: "Calibration note", why: "Printer 2 isn't logged, so nobody has compared them.",
       docs: ["Draft proposal"], known: [], open: [{ text: "Is drift larger than fit tolerance?", cite: "" }] },
-    { id: "fast-cure", thrust: "process", title: "Halve post-cure time", people: ["greeshma"], last: "2026-09-29",
+    { id: "fast-cure", thrust: "process", title: "Halve post-cure time", people: ["shreya"], last: "2026-09-29",
       goal: "Post-cure in 25 min, no strength lost", deliverable: "Oven profile", why: "The UV oven is the bottleneck between print and test.",
       docs: ["Scoping note"], known: [{ text: "35 min is the shortest passing profile", cite: "Cure run 1" }],
       open: [{ text: "Does temperature matter more than time?", cite: "" }] },
@@ -528,9 +528,9 @@ const org: Org = {
   experiments: [
     { id: "A", project: project.id, campaign: "A", title: "Low-diluent formulations", people: ["cooper"], when: span("A"), protocol: `SOP ${project.sop.version}` },
     { id: "B", project: project.id, campaign: "B", title: "High-diluent formulations", people: ["cooper"], when: span("B"), protocol: `SOP ${project.sop.version}` },
-    { id: "G", project: project.id, campaign: "G", title: "Mid-diluent, high photoinitiator", people: ["greeshma"], when: span("G"), protocol: `SOP ${project.sop.version}` },
-    { id: "cure-1", project: "fast-cure", title: "Cure profiles, round 1", people: ["greeshma"], when: "Sep 2026", protocol: "Oven SOP draft" },
-    { id: "fit-1", project: "chairside-fit", title: "Fit test 1", people: ["greeshma"], when: "Sep 2026", protocol: "Fit SOP draft" },
+    { id: "S", project: project.id, campaign: "S", title: "Mid-diluent, high photoinitiator", people: ["shreya"], when: span("S"), protocol: `SOP ${project.sop.version}` },
+    { id: "cure-1", project: "fast-cure", title: "Cure profiles, round 1", people: ["shreya"], when: "Sep 2026", protocol: "Oven SOP draft" },
+    { id: "fit-1", project: "chairside-fit", title: "Fit test 1", people: ["shreya"], when: "Sep 2026", protocol: "Fit SOP draft" },
     { id: "shade-1", project: "shade-match", title: "Shade run 1", people: ["cooper"], when: "May 2025", protocol: "Color SOP v1" },
   ],
 };
@@ -555,11 +555,11 @@ const lab: Lab = {
   ],
   // Today's other reservations (project.now is 09:30). In-use blocks come from in_use above.
   schedule: [
-    { inst: "balance", by: "greeshma", from: "08:45", to: "09:15", what: "Cure profiles, round 2" },
-    { inst: "viscometer", by: "greeshma", from: "09:15", to: "09:45", what: "Cure profiles, round 2" },
-    { inst: "degasser", by: "greeshma", from: "10:15", to: "10:35", what: "Cure profiles, round 2" },
-    { inst: "uv-oven", by: "greeshma", from: "12:00", to: "12:45", what: "Cure profiles, round 2" },
-    { inst: "viscometer", by: "greeshma", from: "14:00", to: "14:30", what: "Shade run check" },
+    { inst: "balance", by: "shreya", from: "08:45", to: "09:15", what: "Cure profiles, round 2" },
+    { inst: "viscometer", by: "shreya", from: "09:15", to: "09:45", what: "Cure profiles, round 2" },
+    { inst: "degasser", by: "shreya", from: "10:15", to: "10:35", what: "Cure profiles, round 2" },
+    { inst: "uv-oven", by: "shreya", from: "12:00", to: "12:45", what: "Cure profiles, round 2" },
+    { inst: "viscometer", by: "shreya", from: "14:00", to: "14:30", what: "Shade run check" },
   ],
   consumables: [
     { id: "base", name: "Base monomer", home: "Chemical shelf" },
@@ -570,11 +570,11 @@ const lab: Lab = {
   instruments: [
     { id: "balance", name: "Balance", device: "Balance", source: src("Balance"), calibrated: "2026-09-02", x: 60, y: 55, w: 60, h: 50, z: 18 },
     { id: "mixer", name: "Planetary mixer", device: "Planetary mixer", source: src("Planetary mixer"), calibrated: "2026-06-11", x: 150, y: 50, w: 80, h: 60, z: 42,
-      in_use: { by: "greeshma", from: "09:20", until: "10:10", what: "Cure profiles, round 2" } },
+      in_use: { by: "shreya", from: "09:20", until: "10:10", what: "Cure profiles, round 2" } },
     { id: "degasser", name: "Vacuum degasser", device: "Vacuum degasser", source: src("Vacuum degasser"), calibrated: null, x: 260, y: 50, w: 80, h: 60, z: 46 },
     { id: "viscometer", name: "Viscometer", device: "Viscometer", source: src("Viscometer"), calibrated: "2026-08-20", x: 370, y: 55, w: 70, h: 50, z: 50 },
     { id: "printer-1", name: "DLP printer", device: "DLP printer", source: src("DLP printer"), calibrated: "2026-09-30", x: 580, y: 45, w: 100, h: 70, z: 70,
-      in_use: { by: "greeshma", from: "09:25", until: "11:45", what: "Cure profiles, round 2" } },
+      in_use: { by: "shreya", from: "09:25", until: "11:45", what: "Cure profiles, round 2" } },
     { id: "printer-2", name: "Printer 2", source: "none", calibrated: null, x: 700, y: 45, w: 100, h: 70, z: 70 },
     { id: "uv-oven", name: "UV oven", device: "UV oven", source: src("UV oven"), calibrated: "2025-11-04", x: 830, y: 50, w: 110, h: 60, z: 50 },
     { id: "test-frame", name: "Test frame", device: "Test frame", source: "mhs", calibrated: "2026-05-15", x: 580, y: 450, w: 110, h: 60, z: 90 },
@@ -624,7 +624,7 @@ const said = (id: string) => r2(benchPlanned[id] * benchK);
 const bench: BenchProtocol[] = [{
   id: "resin-batch",
   title: "Resin batch",
-  runner: "greeshma",
+  runner: "shreya",
   uploaded: project.now.slice(0, 10),
   last_run: "2026-10-09",
   next_run: "T15a", // the agent's proposed crossover arm; a run's name is filled in per run
@@ -639,10 +639,10 @@ const bench: BenchProtocol[] = [{
     { say: "Photo.", step: "print", photo: "Build plate" },
   ],
 }, {
-  // A second, older protocol so the list has an order: Greeshma's post-cure, last run before T15a was drafted.
+  // A second, older protocol so the list has an order: Shreya's post-cure, last run before T15a was drafted.
   id: "postcure",
   title: "Post-cure printed parts",
-  runner: "greeshma",
+  runner: "shreya",
   uploaded: "2026-09-14",
   last_run: "2026-10-02",
   params: [
@@ -735,9 +735,9 @@ check("T09 rested ~18 h (from log)", T.T09.inputs.rest_h >= 17.5 && T.T09.inputs
 check("T09 porosity ≈ 0.4%", T.T09.outputs.porosity_pct >= 0.3 && T.T09.outputs.porosity_pct <= 0.5, `${T.T09.outputs.porosity_pct}%`);
 check("Only T09 rested > 2 h", trials.filter((t) => t.inputs.rest_h > 2).map((t) => t.id).join() === "T09");
 check("T09 notes don't mention the rest", !T.T09.notes.some((n) => /rest|overnight|next day|18 ?h/i.test(n.text)));
-check("All Greeshma trials pass every guardrail", G.every((t) => t.pass_all));
-check("Greeshma best viscosity = 1.55", Math.min(...G.map((t) => t.outputs.viscosity_pa_s)) === 1.55, G.map((t) => t.outputs.viscosity_pa_s).join(", "));
-check("Only Greeshma degassed", trials.filter((t) => t.inputs.degas_min > 0).every((t) => t.owners[0] === "greeshma") && G.every((t) => t.inputs.degas_min === 10));
+check("All Shreya trials pass every guardrail", G.every((t) => t.pass_all));
+check("Shreya best viscosity = 1.55", Math.min(...G.map((t) => t.outputs.viscosity_pa_s)) === 1.55, G.map((t) => t.outputs.viscosity_pa_s).join(", "));
+check("Only Shreya degassed", trials.filter((t) => t.inputs.degas_min > 0).every((t) => t.owners[0] === "shreya") && G.every((t) => t.inputs.degas_min === 10));
 check("Every high-diluent (> 30%) strength failure was undegassed", trials.filter((t) => t.inputs.diluent_wt > 30 && !strength(t)).every((t) => t.inputs.degas_min === 0));
 check("True best (degassed) at 38–42% diluent", best.d >= 38 && best.d <= 42, `${best.d}% diluent, ${best.p}% PI, ${best.v} Pa·s`);
 check("True best photoinitiator ≈ 1.6%", best.p >= 1.5 && best.p <= 1.7);
@@ -751,7 +751,7 @@ const degasWall17 = wallAt(lenses.degas, 1.7);
 check("Degas lens: barrier recedes past 40% at PI 1.7", degasWall17 === null || degasWall17 > 40, `PI 1.7 wall: ${degasWall17 ?? "off map"}`);
 check("Campaign B and T15a pass cytotoxicity with margin (≥ 72%)", [...Bc].every((t) => t.outputs.viability_pct >= 72) && GT.viability(38, 1.7) >= 72);
 check("Dead-end hatch covers campaign B", Bc.every((t) => t.inputs.diluent_wt >= 30 && t.inputs.photoinit_wt <= 1.3));
-check("Greeshma's points sit outside the hatch", G.every((t) => t.inputs.photoinit_wt > 1.3));
+check("Shreya's points sit outside the hatch", G.every((t) => t.inputs.photoinit_wt > 1.3));
 {
   const masses = bench[0].steps.flatMap((x) => x.fields).filter((f) => f.scales);
   const sum = r2(masses.reduce((acc, f) => acc + benchPlanned[f.id], 0));
@@ -786,7 +786,7 @@ console.log("Degas-lens wall by PI: " + lenses.degas.boundary.map((b) => `${b.ph
 console.log("Viscosity 1.5 contour: " + viscosity_target_contour.map((c) => `${c.photoinit}:${c.diluent}`).join("  "));
 console.log(`True best (degassed): ${best.d}% diluent, ${best.p}% PI → ${best.v} Pa·s. Near-best region: diluent ${groundTruth.near_best_region.diluent.join("–")}, PI ${groundTruth.near_best_region.photoinit.join("–")}`);
 check("Every logged device is an instrument in the lab", [...logDevices].every((d) => lab.instruments.some((i) => i.device === d)), [...logDevices].filter((d) => !lab.instruments.some((i) => i.device === d)).join(", "));
-check("Every trial campaign is an experiment", ["A", "B", "G"].every((c) => org.experiments.some((x) => x.campaign === c)));
+check("Every trial campaign is an experiment", ["A", "B", "S"].every((c) => org.experiments.some((x) => x.campaign === c)));
 console.log("\nVerification\n");
 for (const [name, ok, detail] of checks) console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? "  (" + detail + ")" : ""}`);
 const failed = checks.filter((c) => !c[1]).length;

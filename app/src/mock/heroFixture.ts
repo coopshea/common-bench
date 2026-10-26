@@ -20,7 +20,7 @@ import { fmtMonth, fmtTime, monthsBetween, trim } from "../lib/format.ts";
 import { restGap } from "../lib/derive.ts";
 import { citationKind } from "../lib/citations.ts";
 
-// The cast of the hero answer (ids, not numbers): Cooper's T08, its replicate T09, Greeshma's T13.
+// The cast of the hero answer (ids, not numbers): Cooper's T08, its replicate T09, Shreya's T13.
 const A_ID = "T08";
 const B_ID = "T13";
 const OUTLIER_ID = "T09";
@@ -141,7 +141,7 @@ function buildLedgerProposal(): Proposal<LedgerChange[]> {
     status: "candidate",
     recorded_at: project.now.slice(0, 10),
     pending_on: "T15",
-    history: [{ at: project.now, by: "agent", change: "proposed from the answer to Greeshma's question" }],
+    history: [{ at: project.now, by: "agent", change: "proposed from the answer to Shreya's question" }],
   };
   return {
     id: LEDGER_PROPOSAL_ID,

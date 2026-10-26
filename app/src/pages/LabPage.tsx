@@ -1,6 +1,6 @@
 // The room: every instrument, how it's logged, and who's using it. The right panel follows the selected instrument,
 // and its Ask books time ("Book the degasser 2–4 pm") through an approval card.
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, Suspense, lazy, useMemo, useState } from "react";
 import type { Instrument, PersonId } from "../shared/types.ts";
 import { people, personById, trials } from "../data/notebook.ts";
 import { ME, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
@@ -10,11 +10,15 @@ import { useStore } from "../state/store.tsx";
 import { Avatar, LogSquare, SOURCE_TEXT } from "../ds/index.tsx";
 import { FloorPlan } from "../components/FloorPlan.tsx";
 import { ScopedAsk } from "../components/ScopedAsk.tsx";
-import { LabDay, LabDayKey } from "../components/LabDay.tsx";
+import { LabDayKey } from "../components/LabDayKey.tsx";
 import { LabTwin, instrumentNumber } from "../figures/LabTwin.tsx";
 import { InstrumentFigure } from "../figures/bench/InstrumentFigure.tsx";
 import { runsOf, stationAt } from "../figures/bench/timeline.ts";
 import type { StepId } from "../shared/types.ts";
+
+// The calendar library loads with the first calendar shown, not with the app.
+const LabDayLazy = lazy(() => import("../components/LabDay.tsx").then((m) => ({ default: m.LabDay })));
+const LabDay = (props: React.ComponentProps<typeof LabDayLazy>) => <Suspense fallback={<div className="labday-loading" />}><LabDayLazy {...props} /></Suspense>;
 
 const STEP_OF: Record<string, StepId> = {
   balance: "weigh", mixer: "mix", degasser: "degas", viscometer: "viscosity", "printer-1": "print", "printer-2": "print", "uv-oven": "postcure", "test-frame": "test",
@@ -43,7 +47,7 @@ export function LabPage() {
           <span><LogSquare source="mhs" />Logs itself</span>
           <span><LogSquare source="manual" />By hand</span>
           <span><LogSquare source="none" />Not logged</span>
-          <span><svg width="22" height="12" aria-hidden="true"><ellipse cx="11" cy="6" rx="10" ry="5" fill="none" stroke="var(--person-greeshma)" strokeWidth="2" /></svg>In use now</span>
+          <span><svg width="22" height="12" aria-hidden="true"><ellipse cx="11" cy="6" rx="10" ry="5" fill="none" stroke="var(--person-shreya)" strokeWidth="2" /></svg>In use now</span>
         </div>
         <section className="twinbox" aria-label={`${lab.room} view`}>
           {plan ? <FloorPlan selected={sel?.id ?? null} onSelect={select} /> : <LabTwin selected={sel?.id ?? null} onSelect={select} booked={booked} />}

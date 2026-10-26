@@ -4,7 +4,7 @@ import { notebook, project, trials } from "../data/notebook.ts";
 
 export const org = notebook.org;
 export const lab = notebook.lab;
-export const ME = "greeshma" as const;
+export const ME = "shreya" as const;
 
 export const thrustById = (id: string) => org.thrusts.find((t) => t.id === id)!;
 export const projectById = (id: string): OrgProject | undefined => org.projects.find((p) => p.id === id);

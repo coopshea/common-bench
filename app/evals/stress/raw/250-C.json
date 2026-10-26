@@ -675,7 +675,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Trial counts by owner, from the viscosity grouping (which includes trials owners excluded, flagged in the notebook): Tomás 57 ([T01]–[T148] range, per the grouping), Dana 83 ([T15] onward), Ravi 39 ([T35] onward), Lucia 28 ([T122] onward), Ines 24 ([T150] onward), Cooper 17 ([T55] onward), and Greeshma 2 ([T242], [T246]). That totals 250, matching T01–T250. The grouping shows only \"Dana\" without a surname, so I can't tell from the notebook whether all 83 belong to Dana Whitfield or Dana Whitford.",
+   "answer": "Trial counts by owner, from the viscosity grouping (which includes trials owners excluded, flagged in the notebook): Tomás 57 ([T01]–[T148] range, per the grouping), Dana 83 ([T15] onward), Ravi 39 ([T35] onward), Lucia 28 ([T122] onward), Ines 24 ([T150] onward), Cooper 17 ([T55] onward), and Shreya 2 ([T242], [T246]). That totals 250, matching T01–T250. The grouping shows only \"Dana\" without a surname, so I can't tell from the notebook whether all 83 belong to Dana Whitfield or Dana Whitford.",
    "tool_calls": 1,
    "trace": [
     {
@@ -726,7 +726,7 @@
    "question": "How many trials has Dana Whitford run, and what is the mean tensile strength across all of them (excluded trials included)?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "The notebook can't isolate Dana Whitford's trials. The owner filter only accepts Cooper or Greeshma, and the owner grouping lumps two people under \"Dana\": Dana Whitfield and Dana Whitford. That combined group has n=83 with mean tensile strength 47.59 MPa (range 30.7–56.2), counting excluded trials. [T188] is the 30.7 MPa minimum and [T30] is the 56.0 maximum. Those figures cover both Danas, so they aren't Whitford's alone. To get her own count and mean, the owner field would need to separate the two names, or someone would need to check each Dana trial's owner record.",
+   "answer": "The notebook can't isolate Dana Whitford's trials. The owner filter only accepts Cooper or Shreya, and the owner grouping lumps two people under \"Dana\": Dana Whitfield and Dana Whitford. That combined group has n=83 with mean tensile strength 47.59 MPa (range 30.7–56.2), counting excluded trials. [T188] is the 30.7 MPa minimum and [T30] is the 56.0 maximum. Those figures cover both Danas, so they aren't Whitford's alone. To get her own count and mean, the owner field would need to separate the two names, or someone would need to check each Dana trial's owner record.",
    "tool_calls": 1,
    "trace": [
     {
@@ -815,7 +815,7 @@
    "question": "How many trials were mixed on the loaner mixer (Planetary mixer #2)?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "I can't answer this from the notebook. The mix entries I checked name only \"Planetary mixer\" with no unit number, so nothing I read identifies a loaner. I checked [T01-L04] and [T01-L05] for Tomás's 2024 run, and [T246-L04] and [T246-L05] for Greeshma's 2026 run. Neither mentions a mixer #2, and the ledger ([L1]–[L17]) doesn't mention a loaner either. Settling it would take the mixer's asset ID from the device export (source \"mhs\") for every mix entry, or asking whoever ran the loaner which trials used it. I didn't scan all 250 trials' logs, so I can't rule out that some trials carry a different label.",
+   "answer": "I can't answer this from the notebook. The mix entries I checked name only \"Planetary mixer\" with no unit number, so nothing I read identifies a loaner. I checked [T01-L04] and [T01-L05] for Tomás's 2024 run, and [T246-L04] and [T246-L05] for Shreya's 2026 run. Neither mentions a mixer #2, and the ledger ([L1]–[L17]) doesn't mention a loaner either. Settling it would take the mixer's asset ID from the device export (source \"mhs\") for every mix entry, or asking whoever ran the loaner which trials used it. I didn't scan all 250 trials' logs, so I can't rule out that some trials carry a different label.",
    "tool_calls": 3,
    "trace": [
     {
@@ -967,7 +967,7 @@
       }
      },
      "status": "done",
-     "summary": "2 trials with campaign G: T242, T246 (Greeshma, G). Viscosity 1.53–1.62 Pa·s"
+     "summary": "2 trials with campaign G: T242, T246 (Shreya, G). Viscosity 1.53–1.62 Pa·s"
     },
     {
      "tool": "get_ledger",
@@ -1702,17 +1702,17 @@
       }
      },
      "status": "done",
-     "summary": "2 trials with campaign G: T242, T246 (Greeshma, G). Viscosity 1.53–1.62 Pa·s"
+     "summary": "2 trials with campaign G: T242, T246 (Shreya, G). Viscosity 1.53–1.62 Pa·s"
     },
     {
      "tool": "search_trials",
      "input": {
       "filter": {
-       "owner": "greeshma"
+       "owner": "shreya"
       }
      },
      "status": "done",
-     "summary": "2 trials with Greeshma's trials: T242, T246 (Greeshma, G). Viscosity 1.53–1.62 Pa·s"
+     "summary": "2 trials with Shreya's trials: T242, T246 (Shreya, G). Viscosity 1.53–1.62 Pa·s"
     },
     {
      "tool": "search_trials",

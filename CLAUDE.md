@@ -1,6 +1,6 @@
 # Common Bench
 
-A collaborative lab notebook: a concept for a team project layer for Claude Science (unofficial). Read this first, then `README.md` and `app/DATA_NOTES.md`.
+A shared lab tool for small research teams: instrument bookings and availability (Lab), SOPs run on paper or a tablet and recorded as trials (SOPs), and the team's history with a cited agent (Projects). It is an early prototype; be honest about what does and doesn't work. Read this first, then `README.md` and `app/DATA_NOTES.md`.
 
 ## The problem
 
@@ -9,7 +9,7 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 ## The demo story
 
 - **Cooper** (former member) searched two years ago and wrongly called high diluent a dead end. His one excluded trial, T09, rested 18 h before printing and passed.
-- **Greeshma** (current) has fewer trials, in a different region, and they're better, because of a degassing habit that isn't in the SOP.
+- **Shreya** (current) has fewer trials, in a different region, and they're better, because of a degassing habit that isn't in the SOP.
 - The agent finds the unintended difference, revives T09, and proposes T15a/T15b: a crossover with a control arm and nothing to order.
 - Only these two people exist. The lab is unnamed.
 
@@ -20,7 +20,7 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 3. **Numbers come from tools, not the model.** Draft estimates come from models fitted to the trials (`src/shared/surrogate.ts`).
 4. **The demo works offline.** The hero answer is recorded in `app/server/cache/`, and replays when there's no key or network.
 5. **Nothing changes without an approval card.** The write tools are gated by the Agent SDK permission callback.
-6. **Colors:** one per person (Cooper `#2a78d6`, Greeshma `#6250d6`). Status colors (✓ `#0ca30c`, ○ `#d99a00`, ✕ `#d03b3b`) are never used for people.
+6. **Colors:** one per person (Cooper `#2a78d6`, Shreya `#6250d6`). Status colors (✓ `#0ca30c`, ○ `#d99a00`, ✕ `#d03b3b`) are never used for people.
 7. **Figures are parametric:** each figure is a pure function of one trial. See `app/src/figures/FIGURES_HANDOFF.md`.
 8. **MHS** means MHS-style logging, built from the public description of Anthropic's Model Hardware Standard research preview. There's no access to MHS itself.
 

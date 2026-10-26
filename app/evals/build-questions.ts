@@ -223,22 +223,22 @@ const q: EvalQuestion[] = [];
   });
 }
 
-// q08 aggregation: mean porosity, Greeshma vs Cooper's campaign A
+// q08 aggregation: mean porosity, Shreya vs Cooper's campaign A
 {
-  const g = nb.trials.filter((t) => t.campaign === "G");
+  const g = nb.trials.filter((t) => t.campaign === "S");
   const a = nb.trials.filter((t) => t.campaign === "A");
   const mg = r2(mean(out(g, "porosity_pct")));
   const ma = r2(mean(out(a, "porosity_pct")));
   q.push({
     id: "q08",
     category: "aggregation",
-    question: "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+    question: "What's Shreya's mean porosity across her trials, compared with Cooper's campaign A?",
     should_abstain: false,
     expected: {
-      summary: `Greeshma (${g.map((t) => t.id).join(", ")}): ${mg}%; campaign A (${a.map((t) => t.id).join(", ")}): ${ma}%`,
+      summary: `Shreya (${g.map((t) => t.id).join(", ")}): ${mg}%; campaign A (${a.map((t) => t.id).join(", ")}): ${ma}%`,
       numbers: [
         // reported to 2 dp in the data; accept a 3-dp answer too
-        { label: "Greeshma mean porosity", values: [mean(out(g, "porosity_pct"))], tol: 0.006, unit: "%" },
+        { label: "Shreya mean porosity", values: [mean(out(g, "porosity_pct"))], tol: 0.006, unit: "%" },
         { label: "campaign A mean porosity", values: [mean(out(a, "porosity_pct"))], tol: 0.006, unit: "%" },
       ],
       required_ids: [],
@@ -396,7 +396,7 @@ q.push({
       summary:
         `Yes: Cooper's campaign B (${b[0].id}–${b[b.length - 1].id}) reached ${Math.min(...vB)}–${Math.max(...vB)} Pa·s with the current diluent but failed strength. ` +
         `T08 vs T13 differs by an unintended ${T13.inputs.degas_min}-min degas. Every >30% failure was undegassed; T09 rested ${r2(rest)} h, passed, and was excluded. ` +
-        `Propose T15: T15a degassed vs T15b undegassed control, nothing to order. Credit Greeshma.`,
+        `Propose T15: T15a degassed vs T15b undegassed control, nothing to order. Credit Shreya.`,
       numbers: [{ label: "a campaign B viscosity under the target", values: vB.filter((v) => v <= nb.project.objective.target), tol: 0.005, unit: "Pa·s" }],
       required_ids: ["T09"],
       any_of_ids: [["T08", "T06", "T07", "T10"], ["T13", "T14", "T11", "T12"]],

@@ -161,12 +161,12 @@ function applyLedger(ledger: LedgerItem[], changes: LedgerChange[]): LedgerItem[
           ? {
               ...l,
               ...c.patch,
-              history: [...(l.history ?? []), { at: project.now, by: "greeshma", change: `status → ${c.patch.status ?? l.status}` }],
+              history: [...(l.history ?? []), { at: project.now, by: "shreya", change: `status → ${c.patch.status ?? l.status}` }],
             }
           : l,
       );
     } else if (!next.some((l) => l.id === c.item.id)) {
-      next.push({ ...c.item, history: [...(c.item.history ?? []), { at: project.now, by: "greeshma", change: "approved" }] });
+      next.push({ ...c.item, history: [...(c.item.history ?? []), { at: project.now, by: "shreya", change: "approved" }] });
     }
   }
   return next;
@@ -334,7 +334,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "askOpen", open: true });
     const preferMock = stateRef.current.health.state === "offline";
     streamAsk(
-      { question, asker: "greeshma", cached: opts?.cached },
+      { question, asker: "shreya", cached: opts?.cached },
       (event) => dispatch({ type: "ask/event", runId, event }),
       { signal: ctl.signal, preferMock, onSource: (source) => dispatch({ type: "ask/source", runId, source }) },
     ).catch((err) => {
@@ -346,7 +346,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const usingMock = stateRef.current.ask.source === "mock";
     // Apply client-side first: the demo never waits on the network.
     dispatch({ type: "decide", id, decision });
-    await postApprove(id, { decision, by: "greeshma" }, usingMock);
+    await postApprove(id, { decision, by: "shreya" }, usingMock);
   }, []);
 
   const replayDate = state.replay.cursor === null ? null : state.replay.events[state.replay.cursor].date;

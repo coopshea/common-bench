@@ -66,7 +66,7 @@ export function buildQuestions(nb: Notebook, plants: Plants): StressQuestion[] {
     dana_whitford: ["Whitford"],
     lucia: ["Lucia", "Ferreira"],
     ines: ["In[eé]s", "Kowalski"],
-    greeshma: ["Greeshma"],
+    shreya: ["Shreya"],
   };
   const personConcept = (pid: string): Concept => ({ label: `names ${name(pid)}`, patterns: NAME_PATTERNS[pid] });
 
@@ -547,7 +547,7 @@ export function buildQuestions(nb: Notebook, plants: Plants): StressQuestion[] {
       category: "abstain-trap",
       question: "What porosity did Cooper Shea's degassed trials show?",
       should_abstain: true,
-      why_hard: "Cooper never degassed; Greeshma, Ines and Dana Whitford did.",
+      why_hard: "Cooper never degassed; Shreya, Ines and Dana Whitford did.",
       expected: {
         summary: "Cooper has no degassed trials",
         numbers: [],

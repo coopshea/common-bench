@@ -48,7 +48,7 @@ export interface ToolResult<T = unknown> {
 
 export class ToolInputError extends Error {}
 
-const PEOPLE = ["cooper", "greeshma"] as const;
+const PEOPLE = ["cooper", "shreya"] as const;
 const round = (x: number, d = 2) => Math.round(x * 10 ** d) / 10 ** d;
 const unique = <T,>(xs: T[]) => [...new Set(xs)];
 
@@ -116,7 +116,7 @@ export const FilterSchema = z
   .object({
     ids: z.array(z.string()).optional().describe('Only these trial ids, e.g. ["T08","T09"]'),
     owner: z.enum(PEOPLE).optional().describe("Trials owned by this person"),
-    campaign: z.enum(["A", "B", "G"]).optional().describe("A, B = Cooper's campaigns; G = Greeshma's"),
+    campaign: z.enum(["A", "B", "S"]).optional().describe("A, B = Cooper's campaigns; S = Shreya's"),
     diluent_min: z.number().optional().describe("Diluent wt % at least this"),
     diluent_max: z.number().optional().describe("Diluent wt % at most this"),
     photoinit_min: z.number().optional().describe("Photoinitiator wt % at least this"),
@@ -186,7 +186,7 @@ function describeFilter(f: Filter | undefined): string {
   return parts.join(", ");
 }
 
-/** "T06–T10 (Cooper, B), T13–T14 (Greeshma, G)" */
+/** "T06–T10 (Cooper, B), T13–T14 (Shreya, G)" */
 export function describeIds(trials: Trial[]): string {
   if (!trials.length) return "none";
   const groups: { key: string; nums: number[] }[] = [];

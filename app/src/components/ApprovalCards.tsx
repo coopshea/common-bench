@@ -14,7 +14,7 @@ const basisNote = (bases: string[]) => {
   return kept.map((b) => b.charAt(0).toUpperCase() + b.slice(1).replace(/\.?$/, ".")).join(" ");
 };
 
-const APPROVER = "greeshma" as const;
+const APPROVER = "shreya" as const;
 
 function Decision({ proposal }: { proposal: Proposal<unknown> }) {
   const { decide } = useStore();

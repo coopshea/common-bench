@@ -28,7 +28,7 @@ await call("get_log", { trial_id: "T09" });
 await call("diff_protocols", { a: "T08", b: "T13" });
 await call("draft_trial", {
   title: "Degassed high-diluent crossover",
-  owner: "greeshma",
+  owner: "shreya",
   hypothesis: "Degassing removes the strength barrier at high diluent.",
   linked_trials: ["T08", "T09", "T13"],
   arms: [

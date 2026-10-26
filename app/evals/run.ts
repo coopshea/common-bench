@@ -143,7 +143,7 @@ How to answer:
 - Lookups and aggregations: answer briefly and stop. Only decision questions ("has anyone tried…", "should I…", "what next") get a proposed experiment and ledger change.
 - Decision answers: at most 140 words. Plain text: no headings, no bold, no tables, no lists.
 
-The person asking is Greeshma (id greeshma, current member). Address them as "you"; credit their work by name where it matters.`;
+The person asking is Shreya (id shreya, current member). Address them as "you"; credit their work by name where it matters.`;
 // Same answer rules, asker and effort as configs B and C (server/prompt.ts, AGENT_EFFORT=medium), so the comparison isolates tools vs. context.
 
 async function runA(q: EvalQuestion): Promise<RawRecord> {
@@ -367,7 +367,7 @@ function renderMarkdown(res: EvalResults, raws: Record<ConfigId, RawFile | null>
   L.push("- **Citation validity:** share of answers whose bracketed ids (plus structured citations and ids inside proposals) all exist in the notebook (T01–T14, Txx-Lnn, L1–L3; L4/T15* allowed only in the hero) *and* include the question's required evidence ids.");
   L.push("- **Abstention:** share of the two \"not in the notebook\" questions answered that way.");
   L.push("- **Wrong numbers:** numbers with a unit (Pa·s, MPa, %, h, min, $, …) or a decimal point that match no notebook value, simple group statistic, log gap, or code-computed estimate at the precision stated. A lenient heuristic: derived percentages (\"a 30% drop\") can be flagged, and a wrong number that happens to equal some other notebook value is missed. Flagged strings are listed per question below.");
-  L.push("- **Hero judge:** `claude-haiku-5-5` with forced tool use scores the proposal on 4 criteria (control arm, cheapest experiment, credit to Greeshma, uncertainty stated). Reported, not part of accuracy.");
+  L.push("- **Hero judge:** `claude-haiku-5-5` with forced tool use scores the proposal on 4 criteria (control arm, cheapest experiment, credit to Shreya, uncertainty stated). Reported, not part of accuracy.");
   L.push("- **Cost:** A from `usage` at published prices (Sonnet 5.5 $2 in / $10 out / $2.50 cache write / $0.20 cache read per MTok; the notebook block is prompt-cached). B and C use `cost_usd` reported by the agent.");
   L.push("");
   L.push("## Per question", "");
@@ -397,12 +397,12 @@ function renderMarkdown(res: EvalResults, raws: Record<ConfigId, RawFile | null>
   const heroRecs = res.configs.filter((c) => c.n > 0).map((c) => raws[c.id]?.records["q14"]).filter((r): r is RawRecord => !!r?.judge);
   if (heroRecs.length) {
     L.push("## Hero judge (claude-haiku-5-5)", "");
-    L.push("| Config | Control arm | Cheapest experiment | Credits Greeshma | Uncertainty stated | Score |");
+    L.push("| Config | Control arm | Cheapest experiment | Credits Shreya | Uncertainty stated | Score |");
     L.push("|---|---|---|---|---|---|");
     for (const r of heroRecs) {
       const j = r.judge!;
       const cell = (x: { pass: boolean; evidence: string }) => `${x.pass ? "✓" : "✗"} ${x.evidence.replace(/\|/g, "/").slice(0, 120)}`;
-      L.push(`| ${r.config} | ${cell(j.control_arm)} | ${cell(j.cheapest_experiment)} | ${cell(j.credits_greeshma)} | ${cell(j.uncertainty_stated)} | ${j.score}/4 |`);
+      L.push(`| ${r.config} | ${cell(j.control_arm)} | ${cell(j.cheapest_experiment)} | ${cell(j.credits_shreya)} | ${cell(j.uncertainty_stated)} | ${j.score}/4 |`);
     }
     L.push("");
   }

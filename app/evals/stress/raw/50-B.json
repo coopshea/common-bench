@@ -61,7 +61,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "B",
    "model": "claude-sonnet-5-5",
-   "answer": "Across the 50 trials, the notebook shows these counts per person:\n\n- Dana: 11 trials, [T03], [T04], [T25], [T33], [T35], [T36], [T38], [T39], [T40], [T43], [T45]\n- Tomás: 10 trials, [T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]\n- Cooper: 8 trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]\n- Ravi: 8 trials, [T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29]\n- Lucia: 6 trials, [T27], [T31], [T32], [T34], [T41], [T48]\n- Ines: 5 trials, [T37], [T42], [T44], [T46], [T50]\n- Greeshma (you): 2 trials, [T47], [T49]\n\nThe notebook lists these trials under \"Dana\" without saying whether that's Dana Whitfield or Dana Whitford. I can't split the 11 between them. Neither has a separate count, and the counts add up to 50.",
+   "answer": "Across the 50 trials, the notebook shows these counts per person:\n\n- Dana: 11 trials, [T03], [T04], [T25], [T33], [T35], [T36], [T38], [T39], [T40], [T43], [T45]\n- Tomás: 10 trials, [T01], [T02], [T05], [T06], [T07], [T09], [T15], [T22], [T23], [T30]\n- Cooper: 8 trials, [T10], [T13], [T14], [T16], [T17], [T19], [T21], [T26]\n- Ravi: 8 trials, [T08], [T11], [T12], [T18], [T20], [T24], [T28], [T29]\n- Lucia: 6 trials, [T27], [T31], [T32], [T34], [T41], [T48]\n- Ines: 5 trials, [T37], [T42], [T44], [T46], [T50]\n- Shreya (you): 2 trials, [T47], [T49]\n\nThe notebook lists these trials under \"Dana\" without saying whether that's Dana Whitfield or Dana Whitford. I can't split the 11 between them. Neither has a separate count, and the counts add up to 50.",
    "tool_calls": 2,
    "trace": [
     {
@@ -71,7 +71,7 @@
       "group_by": "owner"
      },
      "status": "done",
-     "summary": "viscosity by person: Cooper: n=8, 1.35–2.49, 7 of 8 passed all [T10, T13, T14, T16, T17, T19, T21, T26]; Dana: n=11, 1.02–2.27, 3 of 11 passed all [T03, T04, T25, T33, T35, T36, T38, T39, T40, T43, T45]; Greeshma: n=2, 1.4–1.5, 2 of 2 passed all [T47, T49]; Ines: n=5, 1.15–1.72, 5 of 5 passed all [T"
+     "summary": "viscosity by person: Cooper: n=8, 1.35–2.49, 7 of 8 passed all [T10, T13, T14, T16, T17, T19, T21, T26]; Dana: n=11, 1.02–2.27, 3 of 11 passed all [T03, T04, T25, T33, T35, T36, T38, T39, T40, T43, T45]; Shreya: n=2, 1.4–1.5, 2 of 2 passed all [T47, T49]; Ines: n=5, 1.15–1.72, 5 of 5 passed all [T"
     },
     {
      "tool": "compare_groups",
@@ -172,7 +172,7 @@
       "group_by": "owner"
      },
      "status": "done",
-     "summary": "tensile strength by person: Cooper: n=8, 41.2–54.7, 7 of 8 passed all [T10, T13, T14, T16, T17, T19, T21, T26]; Dana: n=11, 28.5–52.3, 3 of 11 passed all [T03, T04, T25, T33, T35, T36, T38, T39, T40, T43, T45]; Greeshma: n=2, 50.1–51.2, 2 of 2 passed all [T47, T49]; Ines: n=5, 46.2–50.3, 5 of 5 pass"
+     "summary": "tensile strength by person: Cooper: n=8, 41.2–54.7, 7 of 8 passed all [T10, T13, T14, T16, T17, T19, T21, T26]; Dana: n=11, 28.5–52.3, 3 of 11 passed all [T03, T04, T25, T33, T35, T36, T38, T39, T40, T43, T45]; Shreya: n=2, 50.1–51.2, 2 of 2 passed all [T47, T49]; Ines: n=5, 46.2–50.3, 5 of 5 pass"
     },
     {
      "tool": "get_trial",
@@ -2548,7 +2548,7 @@
       }
      },
      "status": "done",
-     "summary": "12 trials with meets objective: T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T32 (Lucia, K); T37, T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lucia, K); T49 (Greeshma, G); T50 (Ines, P) (T26 excluded by its owner). Viscosity: Dana 1.08 Pa·s, Cooper 1.35 Pa·s, Lucia 1.38–1.49 Pa·s, "
+     "summary": "12 trials with meets objective: T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T29 (Ravi, H); T32 (Lucia, K); T37, T44, T46 (Ines, P); T47 (Shreya, G); T48 (Lucia, K); T49 (Shreya, G); T50 (Ines, P) (T26 excluded by its owner). Viscosity: Dana 1.08 Pa·s, Cooper 1.35 Pa·s, Lucia 1.38–1.49 Pa·s, "
     }
    ],
    "cost_usd": 0.0185033,
@@ -2669,7 +2669,7 @@
       }
      },
      "status": "done",
-     "summary": "22 trials with viscosity ≤ 1.5 Pa·s: T08, T11 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T32 (Lucia, K); T33 (Dana, D); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46 (Ines, P); T47 (Greeshma, G); T48 (Lu"
+     "summary": "22 trials with viscosity ≤ 1.5 Pa·s: T08, T11 (Ravi, F); T15 (Tomás, N); T18 (Ravi, F); T21 (Cooper, B); T25 (Dana, E); T26 (Cooper, B); T27 (Lucia, K); T28, T29 (Ravi, H); T32 (Lucia, K); T33 (Dana, D); T35, T36 (Dana, E); T37 (Ines, P); T39 (Dana, E); T44, T46 (Ines, P); T47 (Shreya, G); T48 (Lu"
     }
    ],
    "cost_usd": 0.0288003,

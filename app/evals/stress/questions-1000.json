@@ -198,7 +198,7 @@
       "should_abstain": false,
       "why_hard": "Eight exact counts; two people are both named Dana (Whitfield and Whitford), and the owner grouping in the tools keys on first name.",
       "expected": {
-        "summary": "Tomás Herrera 227, Dana Whitfield 233, Ravi Menon 156, Cooper Shea 59, Dana Whitford 127, Lucia Ferreira 100, Ines Kowalski 79, Greeshma 19",
+        "summary": "Tomás Herrera 227, Dana Whitfield 233, Ravi Menon 156, Cooper Shea 59, Dana Whitford 127, Lucia Ferreira 100, Ines Kowalski 79, Shreya 19",
         "numbers": [],
         "required_ids": [],
         "concepts": [],
@@ -257,9 +257,9 @@
             "value": 79
           },
           {
-            "label": "Greeshma",
+            "label": "Shreya",
             "name_patterns": [
-              "Greeshma"
+              "Shreya"
             ],
             "value": 19
           }
@@ -700,7 +700,7 @@
       "category": "abstain-trap",
       "question": "What porosity did Cooper Shea's degassed trials show?",
       "should_abstain": true,
-      "why_hard": "Cooper never degassed; Greeshma, Ines and Dana Whitford did.",
+      "why_hard": "Cooper never degassed; Shreya, Ines and Dana Whitford did.",
       "expected": {
         "summary": "Cooper has no degassed trials",
         "numbers": [],

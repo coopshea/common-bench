@@ -50,7 +50,7 @@ export function LabTwin({ selected, onSelect, booked, active, items = [] }: {
   active?: string; // the bench view's current instrument: only it runs, the rest dim
   items?: TwinItem[];
 }) {
-  const ref: Trial = useMemo(() => [...trials].reverse().find((t) => t.owners.includes("greeshma")) ?? trials[trials.length - 1], []);
+  const ref: Trial = useMemo(() => [...trials].reverse().find((t) => t.owners.includes("shreya")) ?? trials[trials.length - 1], []);
   const R = useMemo(() => runsOf(ref), [ref]);
   const PB = useMemo(() => playbackOf(R), [R]);
   const running = active !== undefined ? !!MODEL[active] : lab.instruments.some((i) => i.in_use && MODEL[i.id]);

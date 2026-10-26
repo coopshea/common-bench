@@ -291,7 +291,7 @@
       "qid": "q08",
       "config": "A",
       "model": "claude-sonnet-5-5",
-      "question": "What's Greeshma's mean porosity across her trials, compared with Cooper's campaign A?",
+      "question": "What's Shreya's mean porosity across her trials, compared with Cooper's campaign A?",
       "answer": "Lookup: mean porosity, your trials vs Cooper's campaign A.\n\nYour trials (T11-T14): 0.12 [T11], 0.13 [T12], 0.15 [T13], 0.22 [T14]. Sum = 0.62, so the mean is 0.155%, about 0.16%.\n\nCooper's campaign A (T01-T05): 0.27 [T01], 0.46 [T02], 0.51 [T03], 0.69 [T04], 0.75 [T05]. Sum = 2.68, so the mean is 0.536%, about 0.54%.\n\nSo your mean is roughly a third of campaign A's (0.155 / 0.536 ≈ 0.29), and your highest value (0.22 in T14) is below Cooper's lowest (0.27 in T01).\n\nThe notebook shows a likely confound: all your trials include a 10-minute vacuum degas [T11-L06], and all of Cooper's campaign A trials had degas_min of 0 [T01]. Degas isn't in SOP v1, and the degasser has no data interface, so it appears only because you wrote it on your worksheet. The difference is therefore not attributable to chemistry alone. Your diluent range (26-32%) also sits higher than campaign A's (15-24%), which makes the lower porosity more notable, but one trial set can't separate degas from formulation effects.",
       "citations": [],
       "proposals_json": "",
@@ -584,9 +584,9 @@
           "pass": true,
           "evidence": "Proposes rerunning the T06 recipe with a 10-minute degas, which uses existing materials and is a short test, before ordering DiluentX."
         },
-        "credits_greeshma": {
+        "credits_shreya": {
           "pass": false,
-          "evidence": "Presents the degas insight as the assistant's finding ('That looks like an unlogged degas-like difference', 'I'd propose a note on [L2]') and never credits Greeshma's degassing step or trials as the source of the insight."
+          "evidence": "Presents the degas insight as the assistant's finding ('That looks like an unlogged degas-like difference', 'I'd propose a note on [L2]') and never credits Shreya's degassing step or trials as the source of the insight."
         },
         "uncertainty_stated": {
           "pass": false,

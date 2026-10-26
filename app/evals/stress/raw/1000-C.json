@@ -127,7 +127,7 @@
    "question": "One print job was aborted partway through and restarted. Which trial was that, and what did the printer log say caused it?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "I couldn't find that job in the notebook. The notebook has no search across print-log text, and scanning the print log of all 1000 trials one by one is beyond what I can check here. I looked at three places. [T01-L07] and [T01-L08] show a normal print start and finish (80 min), with no abort. The ledger [L1]–[L17] doesn't mention an aborted or restarted print. Greeshma's campaign G trials [T907]–[T998] have no abort in their notes. If you have the trial id, or a rough date or recipe, I can pull its print log with `get_log` and tell you what the printer recorded.",
+   "answer": "I couldn't find that job in the notebook. The notebook has no search across print-log text, and scanning the print log of all 1000 trials one by one is beyond what I can check here. I looked at three places. [T01-L07] and [T01-L08] show a normal print start and finish (80 min), with no abort. The ledger [L1]–[L17] doesn't mention an aborted or restarted print. Shreya's campaign G trials [T907]–[T998] have no abort in their notes. If you have the trial id, or a rough date or recipe, I can pull its print log with `get_log` and tell you what the printer recorded.",
    "tool_calls": 4,
    "trace": [
     {
@@ -163,7 +163,7 @@
       }
      },
      "status": "done",
-     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Shreya, G). Viscosity 1.39–1.82 Pa·s"
     }
    ],
    "cost_usd": 0.00393101,
@@ -359,7 +359,7 @@
    "question": "How many trials has each person on the team run? Give a count for every person.",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Counts by owner, including trials their owners excluded from conclusions: Tomás 227, Dana 360, Ravi 156, Lucia 100, Ines 79, Cooper 59, Greeshma 19. Together that's 1,000, every trial from T01 to T1000. The tool returned these by owner field, so a trial's count goes to whoever owns it.",
+   "answer": "Counts by owner, including trials their owners excluded from conclusions: Tomás 227, Dana 360, Ravi 156, Lucia 100, Ines 79, Cooper 59, Shreya 19. Together that's 1,000, every trial from T01 to T1000. The tool returned these by owner field, so a trial's count goes to whoever owns it.",
    "tool_calls": 1,
    "trace": [
     {
@@ -403,7 +403,7 @@
    "question": "How many trials has Dana Whitford run, and what is the mean tensile strength across all of them (excluded trials included)?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "I can't give you a count for Dana Whitford. The notebook has no trials under her id, and the owner filter only accepts Cooper or Greeshma. The closest match is a single \"Dana\" owner group of 360 trials, with a mean tensile strength of 47.72 MPa (range 23.5–57.5), including excluded trials. That group is not labelled by surname, and the sample I checked, [T60], belongs to Dana Whitfield, so the group may be hers rather than Whitford's. Her own trials, if any, would need to be tagged with her id to be counted.",
+   "answer": "I can't give you a count for Dana Whitford. The notebook has no trials under her id, and the owner filter only accepts Cooper or Shreya. The closest match is a single \"Dana\" owner group of 360 trials, with a mean tensile strength of 47.72 MPa (range 23.5–57.5), including excluded trials. That group is not labelled by surname, and the sample I checked, [T60], belongs to Dana Whitfield, so the group may be hers rather than Whitford's. Her own trials, if any, would need to be tagged with her id to be counted.",
    "tool_calls": 2,
    "trace": [
     {
@@ -551,7 +551,7 @@
       "id": "T998"
      },
      "status": "done",
-     "summary": "T998 · Greeshma · 31% diluent, 1.7% PI, degas 10 min, rest 0.6 h → 1.53 Pa·s, porosity 0.2%, UTS 51.7 MPa; passed every guardrail"
+     "summary": "T998 · Shreya · 31% diluent, 1.7% PI, degas 10 min, rest 0.6 h → 1.53 Pa·s, porosity 0.2%, UTS 51.7 MPa; passed every guardrail"
     }
    ],
    "cost_usd": 0.00251545,
@@ -664,7 +664,7 @@
    "question": "What is the parent trial of the trial whose print job had to be restarted, and what was that parent's viscosity?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "I couldn't find the restarted print job, so I can't name its parent or its viscosity. The notebook's search tools don't filter on print-step events, and restarts would sit in the device logs (print step) rather than the trial fields. I checked the ledger [L1]–[L17], Greeshma's 19 trials ([T907]–[T998]), and campaign B's 22 trials ([T408]–[T518]). None mention a restart. The full set of 1000 trials was too large to read in one pass. A per-trial `get_log` with step \"print\" across the campaigns (or a person who logged the print run) would settle it.",
+   "answer": "I couldn't find the restarted print job, so I can't name its parent or its viscosity. The notebook's search tools don't filter on print-step events, and restarts would sit in the device logs (print step) rather than the trial fields. I checked the ledger [L1]–[L17], Shreya's 19 trials ([T907]–[T998]), and campaign B's 22 trials ([T408]–[T518]). None mention a restart. The full set of 1000 trials was too large to read in one pass. A per-trial `get_log` with step \"print\" across the campaigns (or a person who logged the print run) would settle it.",
    "tool_calls": 4,
    "trace": [
     {
@@ -687,11 +687,11 @@
      "tool": "search_trials",
      "input": {
       "filter": {
-       "owner": "greeshma"
+       "owner": "shreya"
       }
      },
      "status": "done",
-     "summary": "19 trials with Greeshma's trials: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+     "summary": "19 trials with Shreya's trials: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Shreya, G). Viscosity 1.39–1.82 Pa·s"
     },
     {
      "tool": "search_trials",
@@ -1104,7 +1104,7 @@
    "question": "How many of Ines Kowalski's trials reached the viscosity target (at most 1.5 Pa·s)?",
    "config": "C",
    "model": "claude-haiku-5-5",
-   "answer": "Of Ines Kowalski's 79 trials, 66 reached the viscosity target of ≤1.5 Pa·s, with values from 1.05 [T982] to 1.48 [T659]. Of those 66, 63 also passed every guardrail, which is the same 63 that met the full objective [T616] [T1000]. The owner filter only accepts Cooper or Greeshma, so I took these counts from the per-person grouping in the notebook.",
+   "answer": "Of Ines Kowalski's 79 trials, 66 reached the viscosity target of ≤1.5 Pa·s, with values from 1.05 [T982] to 1.48 [T659]. Of those 66, 63 also passed every guardrail, which is the same 63 that met the full objective [T616] [T1000]. The owner filter only accepts Cooper or Shreya, so I took these counts from the per-person grouping in the notebook.",
    "tool_calls": 4,
    "trace": [
     {
@@ -1116,7 +1116,7 @@
       }
      },
      "status": "error",
-     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool search_trials: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"shreya\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\":"
     },
     {
      "tool": "search_trials",
@@ -1483,7 +1483,7 @@
       }
      },
      "status": "done",
-     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Greeshma, G). Viscosity 1.39–1.82 Pa·s"
+     "summary": "19 trials with campaign G: T907, T919, T923, T937, T940–T942, T944, T945, T947, T961, T966, T980, T987, T990, T991, T994, T996, T998 (Shreya, G). Viscosity 1.39–1.82 Pa·s"
     },
     {
      "tool": "get_log",
@@ -1695,7 +1695,7 @@
       }
      },
      "status": "error",
-     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"shreya\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
     },
     {
      "tool": "compare_groups",
@@ -1707,7 +1707,7 @@
       }
      },
      "status": "error",
-     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"shreya\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
     },
     {
      "tool": "compare_groups",
@@ -1818,7 +1818,7 @@
       }
      },
      "status": "error",
-     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"greeshma\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
+     "summary": "MCP error -32602: Input validation error: Invalid arguments for tool compare_groups: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"cooper\",\n      \"shreya\"\n    ],\n    \"path\": [\n      \"filter\",\n      \"owner\"\n    ],\n    \"message\""
     }
    ],
    "cost_usd": 0.002641195,
