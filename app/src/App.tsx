@@ -89,8 +89,8 @@ function TopBar({ view }: { view: string }) {
       </button>
       <nav className="nav" aria-label="Main">
         <div className="seg" role="group">
-          {([["Projects", pathOf.home()], ["Bench", pathOf.bench()], ["Lab", pathOf.lab()]] as const).map(([label, path]) => {
-            const on = label === "Lab" ? view === "lab" : label === "Bench" ? view === "bench" : view !== "lab" && view !== "bench";
+          {([["Projects", pathOf.home()], ["SOPs", pathOf.bench()], ["Lab", pathOf.lab()]] as const).map(([label, path]) => {
+            const on = label === "Lab" ? view === "lab" : label === "SOPs" ? view === "bench" : view !== "lab" && view !== "bench";
             return <button key={label} className={on ? "on" : ""} aria-pressed={on} onClick={() => go(path)}>{label}</button>;
           })}
         </div>

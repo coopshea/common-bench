@@ -6231,7 +6231,7 @@
         "id": "materials",
         "title": "Printable dental materials",
         "blurb": "Resins that print faster and last longer.",
-        "funding": "Meridian R&D program DR-07"
+        "funding": "R&D program DR-07"
       },
       {
         "id": "access",
@@ -6874,6 +6874,7 @@
           "put": [
             "pi"
           ],
+          "timer_min": 2,
           "detail": [
             "Cap the cup",
             "Load it and balance the arm",
@@ -6902,6 +6903,7 @@
           "title": "Degas",
           "get": [],
           "put": [],
+          "timer_min": 10,
           "detail": [
             "Uncap the cup",
             "Place it in the chamber",
@@ -6928,6 +6930,7 @@
             "cup"
           ],
           "photo": true,
+          "timer_min": 85,
           "detail": [
             "Pour resin into the vat",
             "Start the job: 6 dogbones, 3 bend bars",
@@ -7036,6 +7039,7 @@
           "title": "Cure",
           "get": [],
           "put": [],
+          "timer_min": 45,
           "detail": [
             "Preheat the oven",
             "Lay parts flat, not touching",

@@ -60,7 +60,7 @@ export function BenchEditor({ base }: { base: BenchProtocol }) {
     <div className="bench-edit">
       <div className="edit-bar">
         <span className="h3">Editing protocol · v{current.n}{unsaved && " + edits"}</span>
-        <button className="cb-btn primary sm" onClick={() => { commit(draft, ME); go(`/bench/${base.id}`); }}>Done</button>
+        <button className="cb-btn primary sm" onClick={() => { commit(draft, ME); go(`/sops/${base.id}`); }}>Done</button>
       </div>
       <div className="edit-grid">
         <div className="bench-doc edit">

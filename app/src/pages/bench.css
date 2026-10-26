@@ -173,3 +173,25 @@
 .approve .ver-changes { font-size: 13.5px; color: var(--ink); }
 @media (max-width: 1000px) { .edit-grid { grid-template-columns: 1fr; } .edit-side { position: static; } }
 .trial-name { display: inline-flex; align-items: baseline; gap: 8px; font-size: 15px; color: var(--ink-3); }
+
+/* Built for gloves and for stepping away */
+.bmarks button { width: 48px; height: 48px; font-size: 18px; }
+.bvalue input { height: 48px; width: 96px; font-size: 18px; }
+.bfield { min-height: 56px; }
+.bfield.off .bvalue input { border-color: var(--status-close); box-shadow: 0 0 0 2px var(--amber-bg); }
+.off-by { font-size: 12px; color: var(--amber-ink); margin-right: 4px; }
+.blabel .at, .rstep-title .at { font-size: 11px; margin-left: 8px; font-weight: 400; }
+.rstep-title .at { margin-left: auto; }
+.timer-start { height: 56px; margin-left: 30px; font-size: 17px; align-self: flex-start; }
+.timer { display: flex; align-items: center; gap: 14px; margin-left: 30px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); align-self: flex-start; }
+.timer-clock { font-size: 30px; font-weight: 600; min-width: 92px; }
+.timer.over:not(.stopped) { border-color: var(--status-goal); animation: timer-done 1.2s ease-in-out infinite; }
+.timer.over .timer-clock { color: var(--amber-ink); }
+.timer.stopped { opacity: .7; }
+@keyframes timer-done { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--status-goal) 25%, transparent); } }
+.step-done { height: 56px; margin-left: 30px; align-self: flex-start; min-width: 140px; justify-content: center; }
+.sop-behind { display: flex; gap: 12px; align-items: center; padding: 10px 24px; background: var(--amber-bg); color: var(--amber-ink); font-size: 14px; }
+.ver-pin { margin-left: auto; font-size: 12px; }
+.delta-btn { margin-left: 6px; vertical-align: -1px; }
+.sop-timer { width: 70px; }
+.bfield { grid-template-columns: minmax(0, 1fr) 110px 172px 108px; }

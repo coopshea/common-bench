@@ -59,7 +59,7 @@ export type BenchMode = "view" | "run" | "print" | "edit";
 export function parseRoute(path: string): Route {
   const seg = path.split("/").filter(Boolean).map(decodeURIComponent);
   if (seg[0] === "lab") return { view: "lab" };
-  if (seg[0] === "bench") return { view: "bench", protocol: seg[1], mode: (["run", "print", "edit"] as const).find((m) => m === seg[2]) ?? "view" };
+  if (seg[0] === "sops" || seg[0] === "bench") return { view: "bench", protocol: seg[1], mode: (["run", "print", "edit"] as const).find((m) => m === seg[2]) ?? "view" };
   if (seg[0] === "evals") return { view: "evals" };
   if (seg[0] === "p" && seg[1] && projectById(seg[1])) {
     if (seg[2] && experimentById(seg[2])) return { view: "experiment", project: seg[1], experiment: seg[2] };
@@ -73,5 +73,5 @@ export const pathOf = {
   project: (id: string) => `/p/${encodeURIComponent(id)}`,
   experiment: (p: string, x: string) => `/p/${encodeURIComponent(p)}/${encodeURIComponent(x)}`,
   lab: () => "/lab",
-  bench: (id?: string) => (id ? `/bench/${encodeURIComponent(id)}` : "/bench"),
+  bench: (id?: string) => (id ? `/sops/${encodeURIComponent(id)}` : "/sops"),
 };

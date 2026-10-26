@@ -44,12 +44,14 @@ const Setting = createReactBlockSpec(
 );
 
 const Step = createReactBlockSpec(
-  { type: "step", propSchema: { sid: { default: "" }, instrument: { default: "balance" }, get: { default: "" }, put: { default: "" }, photo: { default: false } }, content: "inline" },
+  { type: "step", propSchema: { sid: { default: "" }, instrument: { default: "balance" }, get: { default: "" }, put: { default: "" }, photo: { default: false }, timer: { default: "" } }, content: "inline" },
   {
     render: ({ block, editor, contentRef }) => (
       <div className="sop-step">
         <span className="sop-step-num" contentEditable={false} />
         <h2 className="sop-step-title" ref={contentRef} />
+        <input className="sop-in mono sop-timer" contentEditable={false} value={block.props.timer} placeholder="timer" aria-label="Timer, minutes"
+          onChange={(e) => editor.updateBlock(block, { props: { timer: e.target.value.replace(/[^\d.]/g, "") } })} {...own} />
         <select className="sop-in sop-inst" contentEditable={false} value={block.props.instrument} aria-label="Instrument"
           onChange={(e) => editor.updateBlock(block, { props: { instrument: e.target.value } })}>
           {INSTRUMENTS.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
@@ -110,7 +112,7 @@ export const sopSlashItems = (editor: SopEditor, query: string) =>
 export function toBlocks(p: BenchProtocol): SopPartial[] {
   const out: SopPartial[] = p.params.map((x) => ({ type: "setting", props: { pid: x.id, label: x.label, value: String(x.value), unit: x.unit } }));
   for (const st of p.steps) {
-    out.push({ type: "step", props: { sid: st.id, instrument: st.instrument, get: st.get.join(","), put: st.put.join(","), photo: !!st.photo }, content: st.title });
+    out.push({ type: "step", props: { sid: st.id, instrument: st.instrument, get: st.get.join(","), put: st.put.join(","), photo: !!st.photo, timer: st.timer_min ? String(st.timer_min) : "" }, content: st.title });
     for (const d of st.detail) out.push({ type: "bulletListItem", content: d });
     for (const f of st.fields) out.push({ type: "amount", props: { fid: f.id, label: f.label, unit: f.unit, formula: f.formula, scales: !!f.scales } });
   }
@@ -128,7 +130,7 @@ export function fromBlocks(blocks: SopBlock[], base: BenchProtocol): BenchProtoc
     if (b.type === "setting" && b.props.pid) params.push({ id: b.props.pid, label: b.props.label || b.props.pid, value: Number(b.props.value) || 0, unit: b.props.unit });
     else if (b.type === "step") steps.push({
       id: b.props.sid || `step-${steps.length + 1}`, station: STATION[b.props.instrument] ?? "weigh", instrument: b.props.instrument,
-      title: textOf(b) || `Step ${steps.length + 1}`, detail: [], fields: [], get: list(b.props.get), put: list(b.props.put), photo: b.props.photo || undefined,
+      title: textOf(b) || `Step ${steps.length + 1}`, detail: [], fields: [], get: list(b.props.get), put: list(b.props.put), photo: b.props.photo || undefined, timer_min: Number(b.props.timer) || undefined,
     });
     else if (steps.length && (b.type === "bulletListItem" || b.type === "numberedListItem" || b.type === "checkListItem") && textOf(b)) steps[steps.length - 1].detail.push(textOf(b));
     else if (steps.length && b.type === "amount" && b.props.fid) {

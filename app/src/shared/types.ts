@@ -252,6 +252,7 @@ export interface BenchStep {
   get: string[]; // consumable ids to fetch for this step
   put: string[]; // consumable ids to put back (or throw away) during this step
   photo?: boolean; // the step ends with a photo of the result
+  timer_min?: number; // unattended time: the run view counts it down and alerts when it's done
 }
 
 /** One scripted thing said at the bench, the offline stand-in for speech. */

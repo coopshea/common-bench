@@ -2,7 +2,7 @@
 // "Add instruction Wear gloves to step 1", "Remove step 6", "Rename step 4 to Mix 3 min". The parse is local
 // (deterministic, works offline) and returns a proposed protocol; nothing applies until the approval card is approved.
 // Free-form edits through the agent are the roadmap version, behind the same card.
-import type { BenchProtocol, BenchStep } from "../shared/types.ts";
+import type { BenchProtocol, BenchStep, StepId } from "../shared/types.ts";
 import { parse } from "../shared/calc.ts";
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -12,6 +12,11 @@ const INSTRUMENT_WORDS: [RegExp, string][] = [
   [/oven|cure/i, "uv-oven"], [/degas|vacuum/i, "degasser"], [/mix/i, "mixer"], [/print/i, "printer-1"],
   [/visco/i, "viscometer"], [/test|pull|bend/i, "test-frame"], [/weigh|balance|pour|add/i, "balance"],
 ];
+
+// Which bench drawing each instrument uses (same map as the editor's Step block).
+const STATION: Record<string, StepId> = {
+  balance: "weigh", mixer: "mix", degasser: "degas", viscometer: "viscosity", "printer-1": "print", "printer-2": "print", "uv-oven": "postcure", "test-frame": "test",
+};
 
 function findStep(p: BenchProtocol, ref: string): number {
   const r = norm(ref.replace(/^step\s+/i, ""));
@@ -55,7 +60,7 @@ export function parseSopEdit(q: string, p: BenchProtocol): BenchProtocol | null 
     const prev = p.steps[Math.max(0, at - 1)];
     const instrument = INSTRUMENT_WORDS.find(([re]) => re.test(title))?.[1] ?? prev?.instrument ?? "balance";
     const step: BenchStep = {
-      id: `step-${Date.now().toString(36)}`, station: prev?.station ?? "weigh", instrument, title: unquote(title),
+      id: `step-${Date.now().toString(36)}`, station: STATION[instrument] ?? prev?.station ?? "weigh", instrument, title: unquote(title),
       detail: [], fields: [], get: [], put: [],
     };
     const n = clone(p);
@@ -107,6 +112,9 @@ export function diffProtocols(a: BenchProtocol, b: BenchProtocol): string[] {
     if (!o) { out.push(`Added step ${i + 1}: ${s.title}`); continue; }
     if (o.title !== s.title) out.push(`Step ${i + 1}: ${o.title} → ${s.title}`);
     if (o.instrument !== s.instrument) out.push(`Step ${i + 1} instrument: ${o.instrument} → ${s.instrument}`);
+    if ((o.timer_min ?? 0) !== (s.timer_min ?? 0)) out.push(`Step ${i + 1} timer: ${o.timer_min ?? "none"} → ${s.timer_min ?? "none"} min`);
+    if (!!o.photo !== !!s.photo) out.push(`Step ${i + 1}: ${s.photo ? "photo added" : "photo removed"}`);
+    if (o.get.join() !== s.get.join() || o.put.join() !== s.put.join()) out.push(`Step ${i + 1}: consumables changed`);
     for (const d of s.detail) if (!o.detail.includes(d)) out.push(`Step ${i + 1} +“${d}”`);
     for (const d of o.detail) if (!s.detail.includes(d)) out.push(`Step ${i + 1} −“${d}”`);
     for (const f of s.fields) {

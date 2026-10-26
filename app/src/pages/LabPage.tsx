@@ -1,7 +1,7 @@
 // The room: every instrument, how it's logged, and who's using it. The right panel follows the selected instrument,
 // and its Ask books time ("Book the degasser 2–4 pm") through an approval card.
 import { Fragment, useMemo, useState } from "react";
-import type { Instrument } from "../shared/types.ts";
+import type { Instrument, PersonId } from "../shared/types.ts";
 import { people, personById, trials } from "../data/notebook.ts";
 import { ME, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
@@ -84,6 +84,17 @@ export function LabPage() {
   );
 }
 
+/** What a proposed booking overlaps on that instrument: in use now, today's reservations, and approved bookings. */
+function clashesOf(d: BookingDraft, bookings: { inst: string; by: PersonId; day: string; from: string; to: string }[]) {
+  const today = d.day === "Today";
+  const taken = [
+    ...(today && d.inst.in_use ? [{ by: d.inst.in_use.by, from: d.inst.in_use.from, to: d.inst.in_use.until }] : []),
+    ...(today ? lab.schedule.filter((x) => x.inst === d.inst.id) : []),
+    ...bookings.filter((b) => b.inst === d.inst.id && b.day === d.day),
+  ];
+  return taken.filter((t) => d.from < t.to && d.to > t.from);
+}
+
 /** Booking requests in the Ask become an approval card under it. Nothing is booked until approved. */
 function useBooking(context?: Instrument) {
   const { dispatch, state } = useStore();
@@ -96,17 +107,19 @@ function useBooking(context?: Instrument) {
     setMiss(!d);
     return true;
   };
+  const clashes = draft ? clashesOf(draft, state.bookings) : [];
   const card = draft ? (
-    <div className="approve" role="group" aria-label="Booking to approve">
+    <div className={`approve ${clashes.length ? "clash" : ""}`} role="group" aria-label="Booking to approve">
       <span className="cb-label">Book</span>
       <p className="approve-what"><b>{draft.inst.name}</b> · {draft.day} {draft.from}–{draft.to}</p>
+      {clashes.map((x, k) => <p key={k} className="clash-line"><Avatar id={x.by} size="sm" />Overlaps {x.from}–{x.to}</p>)}
       <div className="pn-row start"><Avatar id={ME} size="sm" /><span className="muted">{personById(ME).name.split(" ")[0]}</span></div>
       <div className="pn-row end">
         <button className="cb-btn ghost" onClick={() => setDraft(null)}>Cancel</button>
         <button className="cb-btn primary" onClick={() => {
           dispatch({ type: "book", booking: { id: `B${state.bookings.length + 1}`, inst: draft.inst.id, by: ME, day: draft.day, from: draft.from, to: draft.to } });
           setDraft(null);
-        }}>Approve</button>
+        }}>{clashes.length ? "Book anyway" : "Approve"}</button>
       </div>
     </div>
   ) : miss ? <p className="cb-label">Which instrument? Try “Book the degasser 2–4 pm”.</p> : null;
@@ -163,6 +176,11 @@ function InstrumentPanel({ i }: { i: Instrument }) {
         <div className="pn-title"><span className="cb-label">{instrumentNumber(i.id)} · {benchOf(i)}</span><h2 className="pn-name">{i.name}</h2></div>
         <button className="cb-round sm" aria-label="Close instrument" onClick={() => dispatch({ type: "select", sel: { inst: null } })}>×</button>
       </header>
+      <section className="pn-sect">
+        <h3 className="h3">Today</h3>
+        <LabDay inst={i.id} height={440} onBook={(from, to) => propose({ inst: i, day: "Today", from, to })} />
+        <LabDayKey inst={i.id} />
+      </section>
       {step && (
         <div className="pn-fig">
           <InstrumentFigure step={step} state={stationAt(ref, runsOf(ref), step, Infinity)} t={0.6} width={300} height={260} label={i.name} />
@@ -173,11 +191,7 @@ function InstrumentPanel({ i }: { i: Instrument }) {
         <dt>Calibration</dt><dd>{i.calibrated ?? "None on record"}</dd>
         {bookings.filter((b) => b.day !== "Today").map((b) => <Fragment key={b.id}><dt>Booked</dt><dd><Avatar id={b.by} size="sm" />{b.day} {b.from}–{b.to}</dd></Fragment>)}
       </dl>
-      <section className="pn-sect">
-        <h3 className="h3">Today</h3>
-        <LabDay inst={i.id} height={440} onBook={(from, to) => propose({ inst: i, day: "Today", from, to })} />
-        <LabDayKey inst={i.id} />
-      </section>
+
       <section className="pn-sect">
         <div className="pn-row"><h3 className="h3">Recent trials</h3><span className="cb-people">{owners.map((o) => <Avatar key={o} id={o} size="sm" />)}</span></div>
         {recent.length ? (

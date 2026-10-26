@@ -329,3 +329,6 @@
 .labday-key i.idle { background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--ic) 25%, var(--panel-2)) 0 3px, var(--panel-2) 3px 6px); border-style: dashed; border-left-style: solid; }
 .labday-key i.free { background: var(--panel-2); border: 1px solid var(--line); }
 .labday .rbc-today { background: transparent; }
+
+.approve.clash { border-color: var(--status-close); }
+.clash-line { display: flex; align-items: center; gap: 8px; color: var(--amber-ink); font-size: 14px; }

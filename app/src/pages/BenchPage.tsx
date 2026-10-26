@@ -10,7 +10,7 @@ import { notebook, personById, trials } from "../data/notebook.ts";
 import type { BenchMode } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
 import { compute, fmt, useBench, useLastActivity } from "../lib/benchRun.ts";
-import { Avatar, Later } from "../ds/index.tsx";
+import { Avatar, Delta, Later } from "../ds/index.tsx";
 import { MathTex, texText } from "../components/MathTex.tsx";
 import { PlatePhoto } from "../figures/PlatePhoto.tsx";
 import { InstrumentFigure } from "../figures/bench/InstrumentFigure.tsx";
@@ -36,17 +36,17 @@ function BenchList() {
   const sorted = [...protocols].sort((a, b) => lastOf(b).localeCompare(lastOf(a)));
   return (
     <div className="bench-pick">
-      <h1 className="h1">Protocols</h1>
+      <h1 className="h1">SOPs</h1>
       <div className="bench-list">
         {sorted.map((p) => (
           <div key={p.id} className="bench-item">
-            <button className="bench-item-main" onClick={() => go(`/bench/${p.id}`)}>
+            <button className="bench-item-main" onClick={() => go(`/sops/${p.id}`)}>
               <span className="h2">{p.title}</span>
               <span className="mono muted">{day(lastOf(p))}</span>
             </button>
             <Avatar id={p.runner} size="sm" />
-            <button className="cb-btn ghost sm" onClick={() => go(`/bench/${p.id}`)}>Open</button>
-            <button className="cb-btn ghost sm" onClick={() => go(`/bench/${p.id}/print`)}>Print SOP</button>
+            <button className="cb-btn ghost sm" onClick={() => go(`/sops/${p.id}`)}>Open</button>
+            <button className="cb-btn ghost sm" onClick={() => go(`/sops/${p.id}/print?now`)}>Print SOP</button>
           </div>
         ))}
         <div className="bench-item upload"><span className="h3">Upload a PDF</span><Later /></div>
@@ -62,7 +62,10 @@ const unitTex = (u: string) => (u ? `\\ \\text{${texText(u)}}` : "");
 
 function amountTex(f: BenchField, labels: Record<string, string>, scope: Record<string, number>, result: number | undefined, paper: boolean) {
   const lhs = `\\text{${texText(f.label)}}`;
-  const res = paper ? blankTex("target", 4) : `\\mathbf{${fmt(result, f.unit)}}`;
+  // On paper the computed target is printed faintly inside its blank: write over it only if something changed.
+  const res = paper
+    ? `\\underset{\\text{target}}{\\underline{\\hspace{0.5em}\\textcolor{#8a857b}{${fmt(result, f.unit)}}\\hspace{0.5em}}}`
+    : `\\mathbf{${fmt(result, f.unit)}}`;
   try {
     if (isPlain(f.formula)) return `${lhs} = ${res}${unitTex(f.unit)}`;
     const words = toTex(f.formula, (id) => `\\text{${texText(labels[id] ?? id)}}`);
@@ -75,11 +78,21 @@ function amountTex(f: BenchField, labels: Record<string, string>, scope: Record<
 
 function BenchDoc({ base, paper }: { base: BenchProtocol; paper: boolean }) {
   const go = useGo();
-  const { proto, run, editRun, newRun } = useBench(base);
+  const { trialProto: proto, proto: latest, run, editRun, newRun } = useBench(base);
+  const sopValue = (id: string) => latest.params.find((x) => x.id === id)?.value;
   const c = compute(proto, run);
   const ref = useMemo(() => [...trials].reverse().find((t) => t.owners.includes(proto.runner)) ?? trials[trials.length - 1], [proto.runner]);
   const runs = useMemo(() => runsOf(ref), [ref]);
   const labels = useMemo(() => Object.fromEntries([...proto.params.map((x) => [x.id, x.label]), ...proto.steps.flatMap((s) => s.fields.map((f) => [f.id, f.label]))]), [proto]);
+  // Print SOP opens the print dialog straight away (once fonts and math have laid out), then returns to where it came from.
+  useEffect(() => {
+    if (!paper || !new URLSearchParams(window.location.search).has("now")) return;
+    let done = false, cancelled = false;
+    const back = () => { if (!done) { done = true; window.history.back(); } };
+    window.addEventListener("afterprint", back, { once: true });
+    document.fonts.ready.then(() => requestAnimationFrame(() => { if (!cancelled) window.print(); }));
+    return () => { cancelled = true; window.removeEventListener("afterprint", back); };
+  }, [paper]);
   const setParam = (id: string, v: string) => {
     if (v.trim() === "" || !Number.isFinite(Number(v))) return;
     editRun((x) => ({ ...x, params: { ...x.params, [id]: Number(v) } }));
@@ -99,15 +112,15 @@ function BenchDoc({ base, paper }: { base: BenchProtocol; paper: boolean }) {
         </div>
         {paper ? (
           <span className="doc-actions no-print">
-            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}`)}>Back</button>
+            <button className="cb-btn ghost" onClick={() => go(`/sops/${proto.id}`)}>Back</button>
             <button className="cb-btn primary" onClick={() => window.print()}>Print</button>
           </span>
         ) : (
           <span className="doc-actions">
-            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}/edit`)}>Edit SOP</button>
-            <button className="cb-btn ghost" onClick={() => go(`/bench/${proto.id}/print`)}>Print SOP</button>
+            <button className="cb-btn ghost" onClick={() => go(`/sops/${proto.id}/edit`)}>Edit SOP</button>
+            <button className="cb-btn ghost" onClick={() => go(`/sops/${proto.id}/print?now`)}>Print SOP</button>
             {c.started && <button className="cb-btn ghost" onClick={newRun}>New trial</button>}
-            {!c.done && <button className="cb-btn primary" onClick={() => go(`/bench/${proto.id}/run`)}>{c.started ? "Resume trial" : "Start trial"}</button>}
+            {!c.done && <button className="cb-btn primary" onClick={() => go(`/sops/${proto.id}/run`)}>{c.started ? "Resume trial" : "Start trial"}</button>}
           </span>
         )}
       </header>
@@ -116,7 +129,12 @@ function BenchDoc({ base, paper }: { base: BenchProtocol; paper: boolean }) {
       <section className="doc-block params">
         {proto.params.map((p) => (
           <label key={p.id} className="param">
-            <span className="param-label">{p.label}</span>
+            <span className="param-label">{p.label}
+              {!paper && run.params[p.id] !== undefined && run.params[p.id] !== sopValue(p.id) && (
+                <button className="delta-btn" title={`SOP: ${sopValue(p.id)} ${p.unit}. Reset`} aria-label={`Reset ${p.label} to the SOP value`}
+                  onClick={(e) => { e.preventDefault(); editRun((x) => ({ ...x, params: { ...x.params, [p.id]: sopValue(p.id)! } })); }}><Delta size={13} /></button>
+              )}
+            </span>
             <span className="param-val">
               {paper
                 ? <><span className="mono planned">{fmt(run.params[p.id] ?? p.value, p.unit)}</span><span className="blank"><i>{p.id}</i></span></>

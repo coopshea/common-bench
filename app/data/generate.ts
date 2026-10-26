@@ -497,7 +497,7 @@ const lastDate = project.now.slice(0, 10); // the notebook project is the one be
 
 const org: Org = {
   thrusts: [
-    { id: "materials", title: "Printable dental materials", blurb: "Resins that print faster and last longer.", funding: "Meridian R&D program DR-07" },
+    { id: "materials", title: "Printable dental materials", blurb: "Resins that print faster and last longer.", funding: "R&D program DR-07" },
     { id: "access", title: "Accessible chairside dentistry", blurb: "Same-day parts on low-cost printers.", funding: "Clinic partnership pilot" },
     { id: "process", title: "Print process reliability", blurb: "Every printer and oven gives the same part.", funding: "Internal" },
     { id: "devices", title: "Bioresorbable devices", blurb: "Closed in 2025.", funding: "SBIR Phase I (fictional)", closed: true },
@@ -607,13 +607,13 @@ const benchSteps: BenchProtocol["steps"] = [
   { id: "pi", station: "weigh", instrument: "balance", title: "Add photoinitiator", get: ["pi"], put: ["diluent"],
     detail: ["Weigh the powder on a boat", "Tip it into the cup", "Keep it out of direct light"],
     fields: [{ id: "pi", label: "Photoinitiator", unit: "g", formula: "batch_g * pi_pct / 100", scales: true }] },
-  { id: "mix", station: "mix", instrument: "mixer", title: "Mix", get: [], put: ["pi"],
+  { id: "mix", station: "mix", instrument: "mixer", title: "Mix", get: [], put: ["pi"], timer_min: 2,
     detail: ["Cap the cup", "Load it and balance the arm", "Run", "Check no powder is left"],
     fields: [{ id: "rpm", label: "Speed", unit: "rpm", formula: "mix_rpm" }, { id: "mix_min", label: "Time", unit: "min", formula: "mix_min" }] },
-  { id: "degas", station: "degas", instrument: "degasser", title: "Degas", get: [], put: [],
+  { id: "degas", station: "degas", instrument: "degasser", title: "Degas", get: [], put: [], timer_min: 10,
     detail: ["Uncap the cup", "Place it in the chamber", "Pull vacuum", "Foam rises, then collapses", "Hold until no bubbles rise"],
     fields: [{ id: "degas_min", label: "Vacuum", unit: "min", formula: "degas_min" }] },
-  { id: "print", station: "print", instrument: "printer-1", title: "Print", get: [], put: ["cup"], photo: true,
+  { id: "print", station: "print", instrument: "printer-1", title: "Print", get: [], put: ["cup"], photo: true, timer_min: 85,
     detail: ["Pour resin into the vat", "Start the job: 6 dogbones, 3 bend bars", "Photograph the plate when it finishes", "Throw the cup away"],
     fields: [] },
 ];
@@ -654,7 +654,7 @@ const bench: BenchProtocol[] = [{
     { id: "rinse", station: "postcure", instrument: "uv-oven", title: "Rinse parts", get: [], put: [],
       detail: ["Remove parts from the plate", "Rinse twice in IPA", "Let them dry fully"],
       fields: [{ id: "rinsed", label: "Parts rinsed", unit: "", formula: "parts" }] },
-    { id: "cure", station: "postcure", instrument: "uv-oven", title: "Cure", get: [], put: [],
+    { id: "cure", station: "postcure", instrument: "uv-oven", title: "Cure", get: [], put: [], timer_min: 45,
       detail: ["Preheat the oven", "Lay parts flat, not touching", "Run the cure", "Let parts cool before handling"],
       fields: [{ id: "oven_c", label: "Oven", unit: "°C", formula: "cure_c" }, { id: "oven_min", label: "Time", unit: "min", formula: "cure_min" }] },
   ],
