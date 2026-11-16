@@ -35,6 +35,7 @@ Lab science is a search run by a team, and nobody can see the whole search. Regi
 - **Review:** double-click a trial, a chart point or a step (or the flag button) to send that exact view to a teammate with a note (`components/Review.tsx`). The recording is roadmap (issue #6).
 - **Lab twin:** `figures/LabTwin.tsx` places the bench instrument models on the room's benches. Instruments in use run their animation and hum. Fixtures are dashed outlines.
 - **SOPs tab (`/sops`):** reusable protocols, sorted by last activity. Protocol page (the trial's name and settings; amounts typeset with KaTeX and worked live), Print SOP (opens the print dialog with fill-in-the-blank paper), Start trial (lab twin | steps, voice or typing), Edit SOP (the SOP as a BlockNote document with Step, Amount and Setting blocks; the only place the SOP changes). See `PRIMITIVES.md`.
+- **Your own SOPs (`lib/sopLibrary.ts`):** New SOP (blank or pasted steps, read by a local parse), Duplicate and Delete. They live in localStorage next to the seeded ones; `useProtocols()` is the list. Starting a new trial moves the old one to the SOP's history (`useBench().history`), shown as Trials on the protocol page with Export CSV (`trialsCsv`).
 - **Not built yet:** a quiet dotted "later" tag, never a disabled control.
 - **Retired:** the old single-screen `Workspace.tsx` and the Guide (`TourBar`, `tour.ts`) are no longer mounted. `DEMO_WALKTHROUGH.md` is rewritten for this structure (Projects → SOPs/trial → Lab → evals).
 

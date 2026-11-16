@@ -96,5 +96,5 @@ export function toTex(formula: string, name: (id: string) => string): string {
   return go(parse(formula));
 }
 
-/** True when the formula is just one variable (a setting copied straight through): no math to show. */
-export const isPlain = (formula: string) => /^\s*[A-Za-z_]\w*\s*$/.test(formula);
+/** True when the formula is just one variable (a setting copied straight through) or one number: no math to show. */
+export const isPlain = (formula: string) => /^\s*(?:[A-Za-z_]\w*|\d*\.?\d+)\s*$/.test(formula);

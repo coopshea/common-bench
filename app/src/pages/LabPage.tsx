@@ -5,7 +5,7 @@ import type { Instrument, PersonId } from "../shared/types.ts";
 import { people, personById, trials } from "../data/notebook.ts";
 import { ME, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
-import { parseBooking, type BookingDraft } from "../lib/booking.ts";
+import { isBookingRequest, parseBooking, type BookingDraft } from "../lib/booking.ts";
 import { useStore } from "../state/store.tsx";
 import { Avatar, LogSquare, SOURCE_TEXT } from "../ds/index.tsx";
 import { FloorPlan } from "../components/FloorPlan.tsx";
@@ -105,7 +105,7 @@ function useBooking(context?: Instrument) {
   const [draft, setDraft] = useState<BookingDraft | null>(null);
   const [miss, setMiss] = useState(false);
   const intercept = (q: string) => {
-    if (!/\b(book|reserve|hold)\b/i.test(q)) return false;
+    if (!isBookingRequest(q, !!context)) return false;
     const d = parseBooking(q, context);
     setDraft(d);
     setMiss(!d);

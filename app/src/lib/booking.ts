@@ -33,25 +33,46 @@ function clock(h: string, m: string | undefined, ap: string | undefined, fallbac
   return [H, M];
 }
 
+const T = "(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm|a\\.m\\.|p\\.m\\.)?";
+const RANGE = new RegExp(`${T}\\s*(?:-|–|—|to|until|till)\\s*${T}`, "i");
+const AT = new RegExp(`\\b(?:at|from)\\s+${T}`, "i");
+
+/** "for 30 minutes", "for 1.5 hours", "for half an hour", "for an hour" → hours. */
+function hoursIn(q: string): number | null {
+  if (/\bhalf\s+an?\s+hour\b/i.test(q)) return 0.5;
+  if (/\bfor\s+an?\s+hour\b/i.test(q)) return 1;
+  const m = /\bfor\s+(\d+(?:\.\d+)?)\s*(h|hr|hrs|hours?|m|min|mins|minutes?)\b/i.exec(q);
+  return m ? (/^h/i.test(m[2]) ? Number(m[1]) : Number(m[1]) / 60) : null;
+}
+
+/**
+ * Is this a request to book? "Book/reserve/hold …" always is. So is naming an instrument with a time
+ * ("mixer 2–3 pm", "I need the oven at 3 for 30 minutes"), unless it's a question ("is the degasser free at 2?").
+ */
+export function isBookingRequest(q: string, instrumentOpen = false): boolean {
+  if (/\b(book|reserve|hold)\b/i.test(q)) return true;
+  if (/^\s*(is|are|was|were|who|when|what|which|how|does|do|did|has|have|why)\b/i.test(q)) return false;
+  // With an instrument's panel open, a bare time is enough: "2–4 pm", "at 3 for 30 minutes".
+  return (instrumentOpen || ALIASES.some(([re]) => re.test(q))) && (RANGE.test(q) || AT.test(q));
+}
+
 export function parseBooking(q: string, context?: Instrument): BookingDraft | null {
-  if (!/\b(book|reserve|hold)\b/i.test(q)) return null;
+  if (!isBookingRequest(q, !!context)) return null;
   const id = ALIASES.find(([re]) => re.test(q))?.[1];
   const inst = (id && lab.instruments.find((i) => i.id === id)) || context;
   if (!inst) return null;
   const day = /tomorrow/i.test(q) ? "Tomorrow" : "Today";
-  const T = "(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm|a\\.m\\.|p\\.m\\.)?";
-  const range = new RegExp(`${T}\\s*(?:-|–|—|to|until)\\s*${T}`, "i").exec(q);
+  const range = RANGE.exec(q);
   let from: [number, number], to: [number, number];
   if (range) {
     to = clock(range[4], range[5], range[6]);
     from = clock(range[1], range[2], range[3], range[6]);
   } else {
-    const at = new RegExp(`at\\s+${T}`, "i").exec(q);
-    const hrs = /for\s+(\d+(?:\.\d+)?)\s*(?:h|hour)/i.exec(q);
+    // The duration is taken out first, so the "30" in "at 3 for 30 minutes" is never read as a clock time.
+    const at = AT.exec(q.replace(/\bfor\s+[\d.]+\s*[a-z]+/i, ""));
     const nowH = Number(project.now.slice(11, 13)) + 1;
     from = at ? clock(at[1], at[2], at[3]) : [nowH, 0];
-    const dur = hrs ? Number(hrs[1]) : 1;
-    const end = from[0] * 60 + from[1] + dur * 60;
+    const end = Math.round(from[0] * 60 + from[1] + (hoursIn(q) ?? 1) * 60);
     to = [Math.floor(end / 60), end % 60];
   }
   return { inst, day, from: hhmm(...from), to: hhmm(...to) };

@@ -52,6 +52,7 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   const { trialProto: proto, sop, run, editRun, adoptLatest } = useBench(base);
   const c = compute(proto, run);
   const [heard, setHeard] = useState<string | null>(null);
+  const [missed, setMissed] = useState(false); // the last thing heard had nothing in it to record
   const [fresh, setFresh] = useState<Set<string>>(new Set());
   const [listening, setListening] = useState(false);
   const [rerecord, setRerecord] = useState<string | null>(null);
@@ -166,12 +167,16 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
     const st = rerecord ? stepOfField(rerecord) : named && proto.steps[named - 1] ? proto.steps[named - 1] : proto.steps[c.current];
     if (!st) return;
     setHeard(text);
+    setMissed(false);
     if (st.timer_min && /\bstart(ed)?\b/i.test(text) && !run.timers[st.id]) return startTimer(st);
     if (/\bstop(ped)?\b/i.test(text) && run.timers[st.id] && !run.timers[st.id].stop) return stopTimer(st);
     const { values, photo } = parseUtterance(text, rerecord ? st.fields.filter((f) => f.id === rerecord) : st.fields);
+    const finished = !st.fields.length && !st.photo && /\b(done|next|finished|complete|completed|check|okay|ok)\b/i.test(text);
     if (Object.keys(values).length) { record(values, "voice"); setRerecord(null); }
     if (photo && st.photo) takePhoto();
-    if (!st.fields.length && !st.photo && /\b(done|next|finished|complete)\b/i.test(text)) markDone(st.id);
+    if (finished) markDone(st.id);
+    // Heard, but nothing in it to record: say so, and say what would work for this step.
+    if (!Object.keys(values).length && !(photo && st.photo) && !finished) setMissed(true);
   };
 
   const listen = () => {
@@ -180,6 +185,7 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
     let fallback = false;
     setListening(true);
     setHeard(null);
+    setMissed(false);
     stopRef.current = listenOnce({
       interim: setHeard,
       final: apply,
@@ -281,7 +287,11 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
         </ol>
 
         <footer className="run-mic">
-          {heard && <p className="heard" aria-live="polite">“{heard}”</p>}
+          {heard && (
+            <p className={`heard ${missed ? "missed" : ""}`} aria-live="polite">“{heard}”
+              {missed && !listening && <span className="cb-label">Not recorded · say {sayHint(step)}</span>}
+            </p>
+          )}
           {c.done ? (
             <button className="cb-btn primary" onClick={() => go(`/sops/${base.id}`)}>Done</button>
           ) : (
@@ -307,6 +317,12 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   );
 }
 
+/** What to say for a step, in its own terms: “Speed 3000, Time 2”, “photo”, “start” or “done”. */
+function sayHint(st: BenchStep): string {
+  if (st.fields.length) return `“${st.fields.slice(0, 2).map((f) => `${f.label.toLowerCase()} ${f.formula.match(/^\d*\.?\d+$/) ? f.formula : "…"}`).join(", ")}”`;
+  return st.photo ? "“photo”" : st.timer_min ? "“start” or “done”" : "“done”";
+}
+
 /** The recorded value: voice fills it, or tap and type. Enter or leaving the box records it. Off-target values show how far. */
 function ValueBox({ value, unit, label, off, onCommit }: { value: number | undefined; unit: string; label: string; off: number | null; onCommit: (v: number) => void }) {
   const [text, setText] = useState(value === undefined ? "" : fmt(value, unit));
@@ -319,7 +335,13 @@ function ValueBox({ value, unit, label, off, onCommit }: { value: number | undef
     <span className="bvalue">
       {off !== null && <span className="mono off-by">{off > 0 ? "+" : "−"}{Math.round(Math.abs(off) * 100)}%</span>}
       <input className="mono" inputMode="decimal" aria-label={label} value={text} onChange={(e) => setText(e.target.value)}
-        onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} />
+        onBlur={commit} onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          // Enter records this value and moves to the next empty box (which may be in the step that just opened).
+          const here = e.target as HTMLInputElement;
+          here.blur();
+          window.setTimeout(() => { [...document.querySelectorAll<HTMLInputElement>(".bvalue input")].find((x) => x !== here && x.value === "")?.focus(); }, 60);
+        }} />
       <span className="mono unit">{unit}</span>
     </span>
   );
