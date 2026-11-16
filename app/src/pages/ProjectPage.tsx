@@ -9,6 +9,8 @@ import { useStore } from "../state/store.tsx";
 import { Avatar, DocIcon, Later, People } from "../ds/index.tsx";
 import { ScopedAsk } from "../components/ScopedAsk.tsx";
 import { AtlasChart } from "../components/plots/AtlasChart.tsx";
+import { summarize, useAllTrials } from "../lib/benchRun.ts";
+import { projectOf, protocolById } from "../lib/sopLibrary.ts";
 
 export function ProjectPage({ projectId }: { projectId: string }) {
   const p = projectById(projectId)!;
@@ -19,6 +21,9 @@ export function ProjectPage({ projectId }: { projectId: string }) {
   const th = thrustById(p.thrust);
   const { known, open } = knownAndOpen(p, state.ledger);
   const exps = experimentsOf(p.id);
+  // Trials run from this project's SOPs on this device: the bench record, newest first.
+  const bench = useAllTrials().flatMap((t) => { const sop = protocolById(t.id); return sop && projectOf(sop) === p.id ? [{ ...t, sop, sum: summarize(sop, t.run) }] : []; })
+    .sort((a, b) => (b.sum.ended ?? "").localeCompare(a.sum.ended ?? ""));
   const openTrial = (id: string) => {
     const t = trialById(id);
     const x = t && experimentOfTrial(t);
@@ -71,6 +76,22 @@ export function ProjectPage({ projectId }: { projectId: string }) {
             ))}
           </div>
         </section>
+        {bench.length > 0 && (
+          <section className="exps-sect" aria-labelledby="bench-trials">
+            <h2 id="bench-trials" className="h2">Bench trials</h2>
+            <div className="bench-trials">
+              {bench.map(({ id, run, sop, sum, current }) => (
+                <button key={`${id}-${sum.started}`} className="trial-row" onClick={() => go(pathOf.bench(id))}>
+                  <b className="mono">{run.name || "—"}</b>
+                  <span>{sop.title}</span>
+                  <span className="trial-who">{run.operator ?? ""}</span>
+                  <span className="mono">{sum.recorded}/{sum.total} values{sum.off.length > 0 && <span className="muted"> · {sum.off.length} off target</span>}{sum.notes > 0 && <span className="muted"> · {sum.notes} note{sum.notes === 1 ? "" : "s"}</span>}</span>
+                  <span className="mono muted end">{sum.ended ? new Date(sum.ended).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""} · {sum.done ? "done" : current ? "in progress" : "stopped"}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
       <aside className="pg-panel" aria-label="Project">
         <ScopedAsk scope="This project" suggestions={p.id === nb.id ? ["hero"] : []}>

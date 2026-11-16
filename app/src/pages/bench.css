@@ -206,13 +206,11 @@
 .sheet textarea { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55; }
 .trial-log { display: flex; flex-direction: column; gap: 2px; padding-top: 28px; border-bottom: 0; }
 .trial-log-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--ink); }
-.trial-row { display: grid; grid-template-columns: 90px 130px 40px 1fr auto; gap: 12px; align-items: baseline; padding: 10px 4px; border-bottom: 1px solid var(--line-2); font-size: 13.5px; }
-.trial-row .end { text-align: right; }
 .doc-title-input { font: inherit; font-size: 44px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.08; color: var(--ink); width: 100%; border: 0; border-bottom: 1px dashed var(--line); background: transparent; padding: 0 0 4px; }
 .doc-title-input:focus { outline: none; border-bottom-color: var(--ink); }
 @media (max-width: 640px) {
   .trial-row { grid-template-columns: 70px 1fr auto; }
-  .trial-row > :nth-child(3), .trial-row > :nth-child(2) { display: none; }
+  .trial-row > :nth-child(3), .trial-row > :nth-child(2), .trial-row > :nth-child(4) { display: none; }
   .doc-title-input { font-size: 34px; }
 }
 
@@ -227,3 +225,30 @@
   .blabel { grid-column: 1 / -1; }
   .btarget { text-align: left; }
 }
+
+/* The operator's view: targets readable from a step back, notes, the timer you may skip, and the end of a trial */
+.rstep.now .btarget { font-size: 17px; font-weight: 500; color: var(--ink); }
+.timer-row { display: flex; align-items: center; gap: 16px; }
+.timer-skipped { margin-left: 30px; }
+.rnote { display: flex; gap: 10px; align-items: baseline; margin: 0 0 0 30px; font-size: 14.5px; color: var(--ink-2); }
+.rnote .mono { font-size: 11px; }
+.rnote-in { margin: 4px 0 0 30px; width: calc(100% - 36px); height: 40px; border: 0; border-bottom: 1px dashed var(--line); background: transparent; font: inherit; font-size: 15px; color: var(--ink); padding: 0 2px; }
+.rnote-in:focus { outline: none; border-bottom: 1px solid var(--ink); }
+.bphoto img { display: block; border: 1px solid var(--line); border-radius: 4px; height: auto; }
+.finish { display: flex; flex-direction: column; gap: 8px; width: 100%; padding: 0 24px; }
+.finish-line { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13.5px; }
+.finish-line span { color: var(--ink-2); }
+.finish-flag { font-size: 14px; color: var(--amber-ink); }
+.finish-away { display: flex; gap: 10px; align-items: baseline; font-size: 14px; }
+.finish-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
+
+/* Ready check before a trial, and bench trials listed on a project */
+.ready-who { display: flex; flex-direction: column; gap: 6px; }
+.ready-sect { display: flex; flex-direction: column; border-top: 1px solid var(--ink); padding-top: 8px; gap: 0; }
+.ready-sect > .cb-label { padding-bottom: 4px; }
+.ready-row { display: grid; grid-template-columns: 1fr auto minmax(0, 150px); gap: 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--line-2); font-size: 15px; }
+.ready-row .muted { font-size: 13px; text-align: right; }
+.ready-row.taken { color: var(--amber-ink); }
+.ready-clash { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px; grid-column: 2 / 4; justify-self: end; }
+.sheet { max-height: 80vh; overflow-y: auto; }
+.kit-paper .bullets { columns: 2; display: block; }

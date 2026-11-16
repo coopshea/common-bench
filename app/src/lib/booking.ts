@@ -1,6 +1,6 @@
 // "Book the degasser 2–4 pm": the lab's Ask turns a booking request into an approval card. The parse is local
 // (deterministic, works offline); the roadmap version is a book_instrument tool behind the same approval gate.
-import type { Instrument } from "../shared/types.ts";
+import type { BenchProtocol, Instrument, PersonId } from "../shared/types.ts";
 import { project } from "../data/notebook.ts";
 import { lab } from "./org.ts";
 
@@ -76,4 +76,26 @@ export function parseBooking(q: string, context?: Instrument): BookingDraft | nu
     to = [Math.floor(end / 60), end % 60];
   }
   return { inst, day, from: hhmm(...from), to: hhmm(...to) };
+}
+
+/** What a proposed booking overlaps on that instrument: in use now, today's reservations, and approved bookings. */
+export function clashesOf(d: BookingDraft, bookings: { inst: string; by: PersonId; day: string; from: string; to: string }[]) {
+  const today = d.day === "Today";
+  const taken = [
+    ...(today && d.inst.in_use ? [{ by: d.inst.in_use.by, from: d.inst.in_use.from, to: d.inst.in_use.until }] : []),
+    ...(today ? lab.schedule.filter((x) => x.inst === d.inst.id) : []),
+    ...bookings.filter((b) => b.inst === d.inst.id && b.day === d.day),
+  ];
+  return taken.filter((t) => d.from < t.to && d.to > t.from);
+}
+
+/** About how long a trial of this SOP takes: its timers, plus a few minutes of hands-on time per step, to the quarter hour. */
+export const minutesFor = (p: BenchProtocol) => Math.max(15, Math.ceil((p.steps.reduce((n, s) => n + (s.timer_min ?? 0), 0) + p.steps.length * 3) / 15) * 15);
+
+/** The hold a trial starting now would put on each instrument it uses, in step order. */
+export function holdsFor(p: BenchProtocol): BookingDraft[] {
+  const [h, m] = [Number(project.now.slice(11, 13)), Number(project.now.slice(14, 16))];
+  const end = h * 60 + m + minutesFor(p);
+  const ids = [...new Set(p.steps.map((s) => s.instrument))];
+  return ids.flatMap((id) => { const inst = lab.instruments.find((i) => i.id === id); return inst ? [{ inst, day: "Today", from: hhmm(h, m), to: hhmm(Math.floor(end / 60), end % 60) }] : []; });
 }

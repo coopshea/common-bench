@@ -332,3 +332,11 @@
 
 .approve.clash { border-color: var(--status-close); }
 .clash-line { display: flex; align-items: center; gap: 8px; color: var(--amber-ink); font-size: 14px; }
+
+/* A trial in a row: on an SOP's page and on its project (so it lives here, not with the lazily loaded SOP styles) */
+.trial-row { display: grid; grid-template-columns: 80px 120px 36px minmax(0, 120px) 1fr auto; gap: 12px; align-items: baseline; padding: 10px 4px; border-bottom: 1px solid var(--line-2); font-size: 13.5px; }
+.trial-row .end { text-align: right; }
+.trial-row .trial-who { font-size: 13.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bench-trials { display: flex; flex-direction: column; }
+.bench-trials .trial-row { grid-template-columns: 70px minmax(0, 1.2fr) minmax(0, 110px) 1fr auto; width: 100%; text-align: left; }
+.cb .bench-trials .trial-row:hover b { color: var(--sel); }

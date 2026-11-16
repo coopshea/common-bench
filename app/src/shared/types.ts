@@ -269,6 +269,7 @@ export interface BenchProtocol {
   runner: PersonId;
   uploaded: string; // ISO date the protocol was added or last revised
   last_run: string | null; // ISO date of the most recent run, if any
+  project?: string; // OrgProject.id this SOP's trials belong to (seeded SOPs belong to the notebook project)
   next_run?: string; // suggested name for the next run (e.g. a planned trial id); each run can rename itself
   params: BenchParam[];
   steps: BenchStep[];

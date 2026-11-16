@@ -4,7 +4,7 @@
 // instructions, a time ("5 min") becomes the step's timer, and an amount ("30 g of monomer") becomes a value to record.
 import { useSyncExternalStore } from "react";
 import type { BenchField, BenchProtocol, BenchStep, PersonId, StepId } from "../shared/types.ts";
-import { notebook } from "../data/notebook.ts";
+import { notebook, project as notebookProject } from "../data/notebook.ts";
 
 const KEY = "common-bench:sops:v1";
 const seeded = notebook.bench ?? [];
@@ -26,6 +26,9 @@ function commit(next: BenchProtocol[]) {
 
 /** Every SOP: the seeded ones, then the ones made on this device. */
 export const useProtocols = () => useSyncExternalStore(subscribe, () => all);
+/** The project an SOP's trials belong to: the one it was given, or the notebook project for the seeded SOPs. */
+export const projectOf = (p: BenchProtocol): string | undefined => p.project ?? (seeded.some((x) => x.id === p.id) ? notebookProject.id : undefined);
+export const protocolById = (id: string) => all.find((p) => p.id === id);
 export const isCustom = (id: string) => custom.some((p) => p.id === id);
 export const addProtocol = (p: BenchProtocol) => commit([...custom, p]);
 export const removeProtocol = (id: string) => commit(custom.filter((p) => p.id !== id));
@@ -87,7 +90,7 @@ function amountsIn(text: string, used: Set<string>): BenchField[] {
 }
 
 /** Read pasted steps into a protocol. Empty text gives one empty step to start from. */
-export function protocolFromText(title: string, text: string, by: PersonId): BenchProtocol {
+export function protocolFromText(title: string, text: string, by: PersonId, projectId?: string): BenchProtocol {
   const lines = text.split(/\r?\n/).map((l) => l.replace(/\s+$/, "")).filter((l) => l.trim());
   const anyNumbered = lines.some((l) => NUMBERED.test(l));
   const steps: BenchStep[] = [];
@@ -114,5 +117,5 @@ export function protocolFromText(title: string, text: string, by: PersonId): Ben
   if (!steps.length) steps.push({ id: "s1", station: "weigh", instrument: "balance", title: "First step", detail: [], fields: [], get: [], put: [] });
   for (const s of steps) if (s.timer_min === undefined) delete s.timer_min;
   const name = title.trim() || "Untitled SOP";
-  return { id: newId(name), title: name, runner: by, uploaded: today(), last_run: null, next_run: "1", params: [], steps, script: [] };
+  return { id: newId(name), title: name, runner: by, uploaded: today(), last_run: null, next_run: "1", params: [], steps, script: [], ...(projectId ? { project: projectId } : {}) };
 }

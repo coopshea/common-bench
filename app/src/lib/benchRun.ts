@@ -13,6 +13,7 @@ import { isCustom } from "./sopLibrary.ts";
 import { evaluateAll, type Scope } from "../shared/calc.ts";
 
 export interface Entry { value: number; by: "voice" | "typed" | "timer"; ok: boolean; at: string } // at: ISO time recorded
+export interface Note { text: string; at: string; by: "voice" | "typed" }
 export interface SopVersion { n: number; by: PersonId | "claude"; approvedBy?: PersonId; at: string; changes: string[]; proto: BenchProtocol }
 export interface SopEdits { proto: BenchProtocol | null; versions: SopVersion[] }
 export interface RunState {
@@ -21,7 +22,11 @@ export interface RunState {
   entries: Record<string, Entry>;
   done: Record<string, string>; // step id → ISO time marked done (steps with nothing to enter)
   timers: Record<string, { start: string; stop?: string }>; // step id → ISO times
-  photo: { at: string } | null;
+  photo: { at: string; src?: string } | null; // src: the picture itself (a small JPEG data URL), when a camera took one
+  operator?: string; // who ran it, as typed on this device when the trial started
+  notes?: Record<string, Note[]>; // step id → what the operator said or typed about it, in order
+  skipped?: Record<string, string>; // step id → ISO time its timer was skipped on purpose
+  finished?: string; // ISO time the last step was completed
   pinned: { n: number; proto: BenchProtocol } | null; // the SOP version this trial follows, set when it starts
   last: string | null;
 }
@@ -51,7 +56,12 @@ export const lastVersion = (sop: SopEdits) => sop.versions[sop.versions.length -
 export const defaultsOf = (p: BenchProtocol, sop: SopEdits): Scope => Object.fromEntries(effective(p, sop).params.map((x) => [x.id, x.value]));
 const freshRun = (p: BenchProtocol, sop: SopEdits): RunState =>
   ({ name: p.next_run ?? "", params: defaultsOf(p, sop), entries: {}, done: {}, timers: {}, photo: null, pinned: null, last: null });
-const isStarted = (r: RunState) => Object.keys(r.entries).length > 0 || Object.keys(r.done).length > 0 || Object.keys(r.timers).length > 0;
+const isStarted = (r: RunState) => Object.keys(r.entries).length > 0 || Object.keys(r.done).length > 0 || Object.keys(r.timers).length > 0 || Object.keys(r.notes ?? {}).length > 0;
+
+// Who is at the bench: asked once per device before a trial starts, then stamped on every trial.
+const WHO = "common-bench:operator";
+export const getOperator = (): string => { try { return localStorage.getItem(WHO) ?? ""; } catch { return ""; } };
+export const setOperator = (name: string) => { try { localStorage.setItem(WHO, name.trim()); } catch { /* keep going */ } };
 const get = (p: BenchProtocol): State => {
   if (!states.has(p.id)) { const sop: SopEdits = { proto: null, versions: [{ n: 1, by: p.runner, at: p.uploaded, changes: [isCustom(p.id) ? "Created" : "Uploaded"], proto: p }] }; states.set(p.id, { sop, run: freshRun(p, sop) }); }
   return states.get(p.id)!;
@@ -87,6 +97,7 @@ export function useBench(p: BenchProtocol) {
       const cur = get(p);
       const next = { ...fn(cur.run), last: today() };
       if (!next.pinned && isStarted(next)) next.pinned = { n: lastVersion(cur.sop).n, proto: effective(p, cur.sop) };
+      if (!next.operator && isStarted(next) && getOperator()) next.operator = getOperator();
       set(p, { ...cur, run: next });
     },
     /** Move a started trial onto the latest SOP version (its recorded values stay). */
@@ -135,8 +146,10 @@ export function compute(p: BenchProtocol, run: RunState) {
   const scaled = k === 1 ? planned : evaluateAll(formulas, scope);
   const target = { ...scaled.values, ...(anchor ? { [anchor.id]: planned.values[anchor.id] } : {}) };
   // A step is done when its values are in and its photo taken; a step with neither needs an explicit Done.
+  // A step with a timer also needs the timer to have been run, or skipped on purpose (which is recorded).
   const stepDone = (i: number) => {
     const s = p.steps[i];
+    if (s.timer_min && !run.timers[s.id] && !run.skipped?.[s.id]) return false;
     if (!s.fields.length && !s.photo) return !!run.done[s.id];
     return s.fields.every((f) => run.entries[f.id]) && (!s.photo || run.photo !== null);
   };
@@ -145,6 +158,33 @@ export function compute(p: BenchProtocol, run: RunState) {
     planned: planned.values, target, scope: scaled.values, errors: planned.errors, k,
     stepDone, current, done: current === -1, started: isStarted(run),
   };
+}
+
+/** Every time stamped during a trial, in order: the first is when it started, the last is the latest thing done. */
+export const timesOf = (r: RunState) => [
+  ...Object.values(r.entries).map((e) => e.at), ...Object.values(r.done), ...Object.values(r.skipped ?? {}),
+  ...Object.values(r.timers).flatMap((t) => (t.stop ? [t.start, t.stop] : [t.start])), ...Object.values(r.notes ?? {}).flat().map((n) => n.at), ...(r.photo ? [r.photo.at] : []),
+].sort();
+
+/** A trial in a line: how long it took, what was recorded, what was off target, what was said. */
+export function summarize(p: BenchProtocol, run: RunState) {
+  const proto = run.pinned?.proto ?? p, c = compute(proto, run);
+  const fields = proto.steps.flatMap((s) => s.fields);
+  const times = timesOf(run);
+  const off = fields.filter((f) => { const e = run.entries[f.id], o = e ? offBy(e.value, c.target[f.id]) : null; return o !== null && Math.abs(o) > TOLERANCE; });
+  return {
+    done: c.done, started: times[0], ended: times[times.length - 1],
+    minutes: times.length > 1 ? Math.max(1, Math.round((new Date(times[times.length - 1]).getTime() - new Date(times[0]).getTime()) / 60_000)) : 0,
+    recorded: fields.filter((f) => run.entries[f.id]).length, total: fields.length, off,
+    unconfirmed: fields.filter((f) => run.entries[f.id] && !run.entries[f.id].ok),
+    notes: Object.values(run.notes ?? {}).flat().length, skipped: Object.keys(run.skipped ?? {}).length,
+  };
+}
+
+/** Every trial on this device, for the pages that list them across SOPs (newest activity first). */
+export function useAllTrials() {
+  useSyncExternalStore(subscribe, () => version);
+  return [...states].flatMap(([id, s]) => [...(s.history ?? []), ...(isStarted(s.run) ? [s.run] : [])].map((run) => ({ id, run, current: run === s.run })));
 }
 
 /** How far a recorded value is from its target, as a fraction; null when there's no target to compare. */
@@ -162,11 +202,11 @@ const cell = (v: string | number | undefined) => { const t = v === undefined ? "
 
 /** Trials as CSV (long format): one row per recorded value, timer or step marked done. */
 export function trialsCsv(p: BenchProtocol, runs: RunState[]): string {
-  const rows: (string | number | undefined)[][] = [["sop", "trial", "sop_version", "step", "measure", "unit", "target", "value", "off_pct", "recorded_at", "method", "confirmed"]];
+  const rows: (string | number | undefined)[][] = [["sop", "trial", "operator", "sop_version", "step", "measure", "unit", "target", "value", "off_pct", "recorded_at", "method", "confirmed"]];
   for (const run of runs) {
     const proto = run.pinned?.proto ?? p;
     const c = compute(proto, run);
-    const head = [p.title, run.name, run.pinned ? `v${run.pinned.n}` : ""];
+    const head = [p.title, run.name, run.operator ?? "", run.pinned ? `v${run.pinned.n}` : ""];
     for (const [i, st] of proto.steps.entries()) {
       const step = `${i + 1}. ${st.title}`;
       for (const f of st.fields) {
@@ -177,6 +217,8 @@ export function trialsCsv(p: BenchProtocol, runs: RunState[]): string {
       }
       const t = run.timers[st.id];
       if (t) rows.push([...head, step, "Timer", "min", st.timer_min, t.stop ? Math.round(((new Date(t.stop).getTime() - new Date(t.start).getTime()) / 60_000) * 100) / 100 : "", "", t.start, "timer", t.stop ? "yes" : "no"]);
+      if (run.skipped?.[st.id]) rows.push([...head, step, "Timer skipped", "min", st.timer_min, "", "", run.skipped[st.id], "typed", "yes"]);
+      for (const n of run.notes?.[st.id] ?? []) rows.push([...head, step, "Note", "", "", n.text, "", n.at, n.by, "yes"]);
       if (run.done[st.id]) rows.push([...head, step, "Done", "", "", "", "", run.done[st.id], "typed", "yes"]);
       if (st.photo && run.photo) rows.push([...head, step, "Photo", "", "", "", "", run.photo.at, "typed", "yes"]);
     }
