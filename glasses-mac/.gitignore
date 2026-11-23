@@ -1,0 +1,4 @@
+# Mentra's SDK source (fetched by run.sh) and build output
+vendor/
+.build/
+build/
