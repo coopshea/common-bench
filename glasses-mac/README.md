@@ -108,6 +108,31 @@ The closing card shows what was measured, what the SOP works out from it (the SO
 
 By hand: `npm run finish -- <id> --open`, or `npm run export -- <id> --cut=8,4` for more seconds around each moment. Set `GLASSES_AUTOFINISH=0` to turn the automatic run off. The app has to be running (`npm run dev`); the export draws the overlay in a windowless Chrome and lays it on with ffmpeg, so nothing is screen-recorded.
 
+## Putting a replay on the web
+
+A finished recording's replay can be published to the hosted copy of the app, where it opens by a private link.
+
+```
+cd app
+npm run publish-trial                    # the latest recording
+npm run publish-trial -- <id>            # that one
+npm run publish-trial -- <id> --remove   # take it down; the link stops working
+npm run publish-trial -- --list          # the links given out from this computer
+```
+
+It prints the link. Anyone who has the link can watch; nobody else can find it. The link ends in a long random name, there is no list of links on the site, and one replay says nothing about another. Publishing the same recording again keeps its link and only sends what changed.
+
+What is sent: the replay's data (log, aims, readings, closing card), the browser-ready video, the camera frames and the display cut-outs. The exported videos in `export/` are not sent. The recording on this computer is not changed. A 9-minute recording is about 170 MB.
+
+Set up once:
+
+- On this computer, in `app/.env.local`: `PUBLISH_KEY=<a long random value>` and, if the site is not `https://labworkers.app`, `PUBLISH_TO=<its address>`.
+- On the hosted copy: the same `PUBLISH_KEY`, and `PUBLISH_DIR` pointing at a disk that outlives a deploy (on Railway, a volume). `PUBLISH_MAX_GB` caps the total (4 by default). With no `PUBLISH_KEY`, nothing can be sent.
+
+To try it on this computer first: `RAILWAY_ENVIRONMENT=production PORT=8799 PUBLISH_KEY=test PUBLISH_DIR=/tmp/published npm start` (after `npm run build`), then `PUBLISH_KEY=test npm run publish-trial -- <id> --to=http://localhost:8799`.
+
+The code is `app/server/glasses-publish.ts`. Checked on 2026-11-22 against a hosted-mode server on this computer, not yet on the live site.
+
 ## Rehearsing without the glasses
 
 A video file can stand in for the glasses: with a trial open, something has to report in as the phone (`POST /api/glasses/device/poll` with the bench key every 2 s), then press Record and send the file to the address the poll returns, e.g. `ffmpeg -re -i clip.mov -c:v libx264 -tune zerolatency -c:a aac -f flv rtmp://127.0.0.1:1935/live/<key>`. Everything after the glasses runs as it would live. This is how the path was tested on 2026-11-22; real glasses add their own start-up delay and microphone echo, which a file does not.

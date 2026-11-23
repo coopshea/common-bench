@@ -33,15 +33,30 @@ export interface ReplayData {
   readings: { step: number; said: number; readable: boolean; value: number | null; seen_unit: string; agrees: boolean | null; crop: string | null; why: string }[]; // what the display showed (npm run read-scale)
 }
 
-export function replayRoutes(root: string, ffmpeg: string | undefined, isLive: (id: string) => boolean) {
+/** The four forms a replay's data comes in (?derived=1, ?extra=1): the file names a published copy keeps them under. */
+export const dataFile = (derived: boolean, extra: boolean) => `data${derived ? "-derived" : ""}${extra ? "-extra" : ""}.json`;
+
+/**
+ * `published`: the folder holds copies sent from the bench (server/glasses-publish.ts), each under an unguessable
+ * name. Such a copy is only what the page needs, worked out before it was sent: the data as JSON, the browser-ready
+ * video, the pictures. Nothing is worked out or converted here, no folder is read for its neighbours, and there is
+ * no "latest", so knowing one link shows nothing of the others.
+ */
+export function replayRoutes(root: string, ffmpeg: string | undefined, isLive: (id: string) => boolean, opts: { published?: boolean } = {}) {
   const app = new Hono();
-  const dirOf = (id: string) => (/^[\w-]+$/.test(id) && existsSync(join(root, id, "log.jsonl")) ? join(root, id) : null);
+  const published = opts.published === true;
+  const dirOf = (id: string) => (/^[\w-]+$/.test(id) && existsSync(join(root, id, published ? "data.json" : "log.jsonl")) ? join(root, id) : null);
+  if (published) app.use("*", async (c, next) => { await next(); c.header("X-Robots-Tag", "noindex, nofollow"); c.header("Referrer-Policy", "no-referrer"); });
   const partsOf = (dir: string) => readdirSync(dir).filter((f) => /^video-\d+\.mp4$/.test(f)).sort();
   const latest = () => readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory() && dirOf(d.name)).map((d) => d.name).sort().pop();
 
   app.get("/recordings/:id/data", (c) => {
     const id = c.req.param("id"), dir = dirOf(id);
     if (!dir) return c.json({ error: "no such recording" }, 404);
+    if (published) {
+      const asked = join(dir, dataFile(c.req.query("derived") === "1", c.req.query("extra") === "1"));
+      return new Response(readFileSync(existsSync(asked) ? asked : join(dir, "data.json")), { headers: { "Content-Type": "application/json", "Cache-Control": "private, no-cache" } });
+    }
     const read = (f: string) => (existsSync(f) ? readFileSync(f, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l) as GlassesEvent) : []);
     const live = read(join(dir, "log.jsonl")), rebuilt = read(join(dir, "derived", "log.jsonl"));
     // ?derived=1: the log rebuilt from the video alone (npm run reprocess). An imported video has no other.
@@ -139,9 +154,9 @@ export function replayRoutes(root: string, ffmpeg: string | undefined, isLive: (
   };
   app.get("/recordings/:id/video/:n", async (c) => {
     const id = c.req.param("id"), dir = dirOf(id), n = c.req.param("n");
-    if (!dir || !/^\d{3}$/.test(n) || !existsSync(join(dir, `video-${n}.mp4`))) return c.notFound();
+    if (!dir || !/^\d{3}$/.test(n) || !existsSync(join(dir, `${published ? "replay" : "video"}-${n}.mp4`))) return c.notFound();
     if (isLive(id)) return c.text("This recording is still running. Stop it first.", 409);
-    const file = (await playable(dir, n)) ? join(dir, `replay-${n}.mp4`) : join(dir, `video-${n}.mp4`);
+    const file = published || (await playable(dir, n)) ? join(dir, `replay-${n}.mp4`) : join(dir, `video-${n}.mp4`);
     const size = statSync(file).size;
     const range = c.req.header("range")?.match(/^bytes=(\d*)-(\d*)$/);
     const base = { "Content-Type": "video/mp4", "Accept-Ranges": "bytes", "Cache-Control": "private, max-age=3600" };
@@ -155,7 +170,7 @@ export function replayRoutes(root: string, ffmpeg: string | undefined, isLive: (
   });
 
   app.get("/replay/:id?", (c) => {
-    const id = c.req.param("id") ?? latest();
+    const id = c.req.param("id") ?? (published ? undefined : latest());
     if (!id || !dirOf(id)) return c.text("No recording to replay yet.", 404);
     if (!c.req.param("id")) return c.redirect(`/api/glasses/replay/${id}`);
     return c.html(readFileSync(PAGE, "utf8"));

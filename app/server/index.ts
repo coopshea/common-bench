@@ -12,7 +12,7 @@
 // Env: ANTHROPIC_API_KEY (from .env.local), NOTEBOOK_OFFLINE=1 (force cache), RECORD_CACHE=1
 // (save each clean live run to server/cache/), REPLAY_SPEED (default 1), PORT (default 8787).
 
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { serve, type HttpBindings } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
@@ -23,6 +23,7 @@ import type { ApproveRequest, ApproveResponse, AskEvent, AskRequest, HealthRespo
 import { AgentUnavailableError, apiKeyPresent, DEFAULT_MODEL, runAgent } from "./agent.ts";
 import { cancel, decide, waitForDecision } from "./approvals.ts";
 import { createRecorder, findRecording, loadRecordings, replay, saveRecording } from "./cache.ts";
+import { publishedRoutes } from "./glasses-publish.ts";
 import { hostedGlasses } from "./kitchen-import.ts";
 import { getDrafts, getLedger, notebook, person, resetState } from "./notebook.ts";
 
@@ -61,7 +62,13 @@ app.get("/api/health", async (c) => {
 // it out entirely and only offers the kitchen SOPs to add.
 const HOSTED = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID) || process.env.GLASSES === "off";
 const bench = HOSTED ? null : await import("./glasses.ts");
-if (bench) app.route("/api/glasses", bench.glasses); else app.route("/api/glasses", hostedGlasses);
+if (bench) app.route("/api/glasses", bench.glasses);
+else {
+  // Replays published from a bench computer (server/glasses-publish.ts). PUBLISH_DIR should be on a disk that
+  // outlives a deploy; with no PUBLISH_KEY nothing can be sent here.
+  app.route("/api/glasses", publishedRoutes(process.env.PUBLISH_DIR ?? fileURLToPath(new URL("../published/", import.meta.url)), process.env.PUBLISH_KEY));
+  app.route("/api/glasses", hostedGlasses);
+}
 
 app.get("/api/ledger", (c) => c.json({ ledger: getLedger(), drafts: getDrafts() }));
 
@@ -200,6 +207,11 @@ app.post("/api/ask", async (c) => {
     }
   });
 });
+
+// The replay page draws its molecules with three.js and asks for it by this path. The dev server (Vite) answers it;
+// when this server is the only one (npm start, Railway), it does. Without it the page falls back to a flat drawing.
+const THREE = fileURLToPath(new URL("../node_modules/three/build/three.module.js", import.meta.url));
+app.get("/node_modules/three/build/three.module.js", (c) => (existsSync(THREE) ? c.body(readFileSync(THREE), 200, { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "public, max-age=86400" }) : c.notFound()));
 
 // Production (npm start, e.g. on Railway): serve the built UI from dist/ on the same port as the API.
 const DIST = fileURLToPath(new URL("../dist/", import.meta.url));

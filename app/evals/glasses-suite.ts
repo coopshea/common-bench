@@ -1,12 +1,12 @@
 // The glasses pipeline's own rules, checked with no glasses, microphone, browser, speech model or API key:
 // cutting sound into sentences, telling our own replies from the person, what a spoken sentence does to a trial,
 // what the SOP works out from recorded values, which footage a video keeps, whether a display agrees with what was
-// said, what a replay is given, and what a hosted copy serves. Run: npm run test:glasses
+// said, what a replay is given, what a hosted copy serves, and publishing a replay to one. Run: npm run test:glasses
 //
 // Not covered here, because they need the real thing: Whisper's hearing (npm run reprocess on a recording checks it
 // against the live log), the camera log and the display reader (both ask Claude), and the glasses themselves.
 
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import { join } from "node:path";
 import { KITCHEN } from "../src/data/chickenRub.ts";
@@ -16,6 +16,7 @@ import { evaluate } from "../src/shared/calc.ts";
 import type { BenchProtocol } from "../src/shared/types.ts";
 import { placeReplies, planPieces } from "../server/glasses-export.ts";
 import { agreesWith, cropBox } from "../server/glasses-read.ts";
+import { placeOf, publishRecording, publishedLinks, publishedRoutes, unpublishRecording } from "../server/glasses-publish.ts";
 import { replayRoutes, type ReplayData } from "../server/glasses-replay.ts";
 import { NOT_SPEECH, isEchoOf, sentences, speechHint, wav, wordsOf } from "../server/glasses-speech.ts";
 import { hostedGlasses, importPage } from "../server/kitchen-import.ts";
@@ -314,6 +315,91 @@ want("a reading picture that isn't there is a 404", (await app.request("/recordi
 want("a reading name that climbs out is refused", (await app.request("/recordings/r2/readings/..%2Flog.jsonl")).status, 404);
 want("a moment picture that isn't there is a 404", (await app.request("/recordings/r2/moments/x.jpg")).status, 404);
 want("a video part that doesn't exist is a 404", (await app.request("/recordings/r2/video/001")).status, 404);
+
+// ---------- Publishing a replay to a hosted copy ----------
+section("published");
+{
+  const KEY = "suite-publish-key", TO = "https://hosted.example";
+  const pub = mkdtempSync(join(os.tmpdir(), "cb-pub-"));
+  const hosted = publishedRoutes(pub, KEY);
+  const send = (path: string, init?: RequestInit) => Promise.resolve(hosted.request(path, init));
+  const h = { "x-publish-key": KEY };
+  const NAME = "A".repeat(22);
+  const put = (path: string, body: BodyInit = "x", headers: Record<string, string> = h) => hosted.request(`/publish/${path}`, { method: "PUT", headers, body });
+  // What a real recording has beside its log: a video part and pictures.
+  const video = Buffer.from(Array.from({ length: 1000 }, (_, n) => n % 251));
+  for (const [rel, body] of [["video-001.mp4", video], ["frames/000001.jpg", Buffer.from("frame")], ["derived/moments/m1.jpg", Buffer.from("moment")], ["derived/readings/01-step1.jpg", Buffer.from("reading")], ["frames/notes.txt", Buffer.from("no")]] as const) {
+    mkdirSync(join(root, "r2", rel, ".."), { recursive: true });
+    writeFileSync(join(root, "r2", rel), body);
+  }
+  const tree = (d: string): string[] => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? tree(join(d, e.name)).map((x) => `${e.name}/${x}`) : [e.name])).sort();
+  const before = tree(join(root, "r2"));
+
+  want("sending needs the key", (await put(`${NAME}/data.json`, "{}", {})).status, 401);
+  want("...the right one", (await put(`${NAME}/data.json`, "{}", { "x-publish-key": "suite-publish-kez" })).status, 401);
+  want("listing needs the key", (await hosted.request(`/publish/${NAME}`)).status, 401);
+  want("removing needs the key", (await hosted.request(`/publish/${NAME}`, { method: "DELETE" })).status, 401);
+  want("with no key set, nothing can be sent", (await publishedRoutes(pub, undefined).request(`/publish/${NAME}/data.json`, { method: "PUT", headers: h, body: "{}" })).status, 404);
+  want("a short name is refused", (await put("abc/data.json")).status, 400);
+  want("a name that climbs out is refused", [(await put("..%2F..%2Fescape-escape-escape/data.json")).status, (await put(`${"A".repeat(20)}%2F../data.json`)).status].every((x) => x === 400 || x === 404), true);
+  want("only a replay's files are taken", ["log.jsonl", "session.json", "../x.json", "frames/../../x.jpg", "frames/a.txt", "data.json/x", "replay-001.mp4.part", "derived/readings/..%2F..%2Fdata.json", ".env"].map((f) => placeOf(f) !== null), Array(9).fill(false));
+  want("...and they are", ["data.json", "data-derived-extra.json", "replay-001.mp4", "frames/000012.jpg", "derived/moments/a-1.jpg", "derived/readings/01-step1.jpg"].map((f) => placeOf(f) !== null), Array(6).fill(true));
+  want("a file that isn't a replay's is refused over the wire", [(await put(`${NAME}/log.jsonl`)).status, (await put(`${NAME}/frames/..%2F..%2F..%2Fx.jpg`)).status, (await put(`${NAME}/frames/%2e%2e/%2e%2e/x.jpg`)).status].every((x) => x === 400 || x === 404), true);
+  want("nothing was written by any of that", tree(pub), []);
+  {
+    const r = await put(`${NAME}/frames/1.jpg?offset=5`, "late");
+    want("a piece out of order is told where to pick up", [r.status, ((await r.json()) as { have: number }).have], [409, 0]);
+    want("a bad offset is refused", (await put(`${NAME}/frames/1.jpg?offset=-1`)).status, 400);
+    want("a picture too large is refused", (await put(`${NAME}/frames/1.jpg`, new Blob([new Uint8Array(8 * 1024 * 1024 + 1)]))).status, 413);
+    await put(`${NAME}/frames/1.jpg`, "half");
+    want("a half-sent copy has no link yet", [(await hosted.request(`/replay/${NAME}`)).status, (await hosted.request(`/recordings/${NAME}/data`)).status, (await hosted.request(`/recordings/${NAME}/frames/1.jpg`)).status], [404, 404, 404]);
+    rmSync(join(pub, NAME), { recursive: true, force: true });
+  }
+
+  const said: string[] = [];
+  const first = await publishRecording({ root, id: "r2", to: TO, key: KEY, send, chunk: 300, say: (x) => said.push(x) });
+  const name = first.token;
+  want("the link ends in a long random name", [first.url === `${TO}/api/glasses/replay/${name}`, /^[A-Za-z0-9_-]{22}$/.test(name)], [true, true]);
+  want("with no ffmpeg it says the video went as written", said.length, 1);
+  want("the page opens at the link", [(await hosted.request(`/replay/${name}`)).status, (await hosted.request(`/replay/${name}`)).headers.get("content-type")?.includes("text/html")], [200, true]);
+  want("...and asks not to be indexed or named to other sites", [(await hosted.request(`/replay/${name}`)).headers.get("x-robots-tag"), (await hosted.request(`/recordings/${name}/data`)).headers.get("referrer-policy")], ["noindex, nofollow", "no-referrer"]);
+  {
+    const there = (await (await hosted.request(`/recordings/${name}/data`)).json()) as ReplayData, here = (await data("r2")).d!;
+    want("its data is what the bench computer shows", there, here);
+    want("...with the session's other trials worked out before sending", there.series.map((t) => t.trial), ["1", "2"]);
+    want("?derived=1 and ?extra=1 are answered too", [(await hosted.request(`/recordings/${name}/data?derived=1`)).status, (await hosted.request(`/recordings/${name}/data?extra=1&derived=1`)).status], [200, 200]);
+  }
+  {
+    const whole = await hosted.request(`/recordings/${name}/video/001`);
+    want("the video arrives whole, sent in pieces", [whole.status, Buffer.from(await whole.arrayBuffer()).equals(video)], [200, true]);
+    const some = await hosted.request(`/recordings/${name}/video/001`, { headers: { range: "bytes=10-19" } });
+    want("...and can be jumped around in", [some.status, some.headers.get("content-range"), Buffer.from(await some.arrayBuffer()).equals(video.subarray(10, 20))], [206, "bytes 10-19/1000", true]);
+    want("a part that wasn't sent is a 404", (await hosted.request(`/recordings/${name}/video/002`)).status, 404);
+  }
+  want("the pictures arrive", await Promise.all(["frames/000001.jpg", "moments/m1.jpg", "readings/01-step1.jpg"].map(async (f) => (await (await hosted.request(`/recordings/${name}/${f}`)).text()))), ["frame", "moment", "reading"]);
+  want("only what the page uses was copied", tree(join(pub, name)), ["data-derived-extra.json", "data-derived.json", "data-extra.json", "data.json", "derived/moments/m1.jpg", "derived/readings/01-step1.jpg", "frames/000001.jpg", "replay-001.mp4"]);
+  want("the recording itself is untouched", tree(join(root, "r2")), before);
+  want("the recording's own id is not a link", [(await hosted.request("/replay/r2")).status, (await hosted.request("/recordings/r2/data")).status], [404, 404]);
+  want("there is no latest and no list", [(await hosted.request("/replay")).status, (await hosted.request("/recordings")).status, (await hosted.request("/publish", { headers: h })).status], [404, 404, 404]);
+  want("a wrong name is a 404", [(await hosted.request(`/replay/${"B".repeat(22)}`)).status, (await hosted.request(`/recordings/${"B".repeat(22)}/video/001`)).status], [404, 404]);
+  want("a name that climbs out is a 404", [(await hosted.request("/recordings/..%2F..%2Fetc/data")).status, (await hosted.request(`/recordings/${name}/readings/..%2F..%2Fdata.json`)).status, (await hosted.request(`/recordings/${name}/frames/..%2Fdata.json`)).status], [404, 404, 404]);
+
+  const again = await publishRecording({ root, id: "r2", to: TO, key: KEY, send, chunk: 300 });
+  want("publishing again keeps the link and skips what is there", [again.token === name, again.skipped, again.sent], [true, 4, 4]);
+  const other = await publishRecording({ root, id: "r3", to: TO, key: KEY, send });
+  want("another recording gets another name", other.token !== name, true);
+  want("one copy doesn't name the other", [JSON.stringify(await (await hosted.request(`/recordings/${name}/data`)).json()).includes(other.token), JSON.stringify(await (await hosted.request(`/recordings/${other.token}/data`)).json()).includes(name)], [false, false]);
+  want("this computer remembers its links", publishedLinks(root).map((l) => [l.id, l.url]), [["r2", first.url], ["r3", other.url]]);
+  want("the wrong key is said plainly", await publishRecording({ root, id: "r1", to: TO, key: "wrong", send }).then(() => "sent", (e: Error) => e.message), "The hosted copy refused the publish key.");
+  want("an unknown recording can't be published", await publishRecording({ root, id: "../r2", to: TO, key: KEY, send }).then(() => "sent", (e: Error) => e.message), "No such recording.");
+  {
+    const small = publishedRoutes(mkdtempSync(join(os.tmpdir(), "cb-pub-small-")), KEY, 500);
+    want("a full store refuses more", await publishRecording({ root, id: "r2", to: "https://small.example", key: KEY, send: (p, i) => Promise.resolve(small.request(p, i)) }).then(() => "sent", (e: Error) => e.message.includes("size limit")), true);
+  }
+  want("removing takes the link down", [await unpublishRecording({ root, id: "r2", to: TO, key: KEY, send }), (await hosted.request(`/replay/${name}`)).status, (await hosted.request(`/recordings/${name}/video/001`)).status, existsSync(join(pub, name))], [true, 404, 404, false]);
+  want("...and only that one", [(await hosted.request(`/replay/${other.token}`)).status, await unpublishRecording({ root, id: "r2", to: TO, key: KEY, send })], [200, false]);
+  rmSync(pub, { recursive: true, force: true });
+}
 rmSync(root, { recursive: true, force: true });
 
 // ---------- A hosted copy ----------

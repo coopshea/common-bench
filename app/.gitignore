@@ -9,3 +9,5 @@ recordings/
 # a local certificate and its private key
 auto.crt
 auto.key
+# replays published to this copy when it runs as the hosted one
+published/
