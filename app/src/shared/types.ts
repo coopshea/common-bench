@@ -240,6 +240,10 @@ export interface BenchField {
   unit: string;
   formula: string; // over the protocol's params and earlier field ids, e.g. "batch_g * diluent_pct / 100"
   scales?: boolean; // a batch mass: the first one weighed sets the batch for everything after it
+  result?: boolean; // something measured, not aimed for (a foam height, a mass lost): it has no target to be off from
+  /** For an SOP that runs the same thing several times side by side: which one this value belongs to ("A"), and what it is ("Soap"). The closing card sets them out as a table, one row per group. */
+  group?: string;
+  kind?: string;
 }
 
 export interface BenchStep {
@@ -253,6 +257,8 @@ export interface BenchStep {
   put: string[]; // consumable ids to put back (or throw away) during this step
   photo?: boolean; // the step ends with a photo of the result
   timer_min?: number; // unattended time: the run view counts it down and alerts when it's done
+  why?: string; // one sentence on what this step is for; shown on a recording's overlay
+  phase?: string; // the part of the experiment this step belongs to ("Setup", "Prepare", "Run"); a recording's overlay shows one phase at a time
 }
 
 /** One scripted thing said at the bench, the offline stand-in for speech. */
@@ -274,6 +280,18 @@ export interface BenchProtocol {
   params: BenchParam[];
   steps: BenchStep[];
   script: BenchUtterance[];
+  /** For an SOP that is vinegar meeting baking soda: which fields hold the two, and how strong the vinegar is. Lets the trial answer "how much gas should I expect?" from what was weighed. */
+  reaction?: { acid: string; base: string; acid_frac: number };
+  /** What the experiment is for, in the audience's terms: opens a recording's video before the steps. */
+  about?: { question: string; equation?: string; measured?: string };
+  /**
+   * Acceptance: an amount has to be within `pct` percent of its aim, or within `abs` of its unit (the scale's own
+   * step), whichever is looser, before the trial moves to the next step. Saying "accept" keeps it as it is.
+   * Without this, any recorded value moves the trial on.
+   */
+  accept?: { pct: number; abs: number };
+  /** Worked out from what was recorded (field ids as names), never typed in: shown on a recording's closing card. */
+  calc?: { id: string; label: string; unit: string; formula: string; note?: string; group?: string; kind?: string }[];
 }
 
 // ---------- The lab around the project: thrusts → projects → experiments, and the room ----------

@@ -23,6 +23,7 @@ import type { ApproveRequest, ApproveResponse, AskEvent, AskRequest, HealthRespo
 import { AgentUnavailableError, apiKeyPresent, DEFAULT_MODEL, runAgent } from "./agent.ts";
 import { cancel, decide, waitForDecision } from "./approvals.ts";
 import { createRecorder, findRecording, loadRecordings, replay, saveRecording } from "./cache.ts";
+import { hostedGlasses } from "./kitchen-import.ts";
 import { getDrafts, getLedger, notebook, person, resetState } from "./notebook.ts";
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -54,6 +55,13 @@ app.get("/api/health", async (c) => {
   const body: HealthResponse = { live, model: DEFAULT_MODEL, cached_questions: loadRecordings().map((r) => r.question) };
   return c.json(body);
 });
+
+// Mentra glasses as the bench camera and microphone: see server/glasses.ts.
+// It records video and runs programs on the computer it is on, so a hosted copy (Railway, or GLASSES=off) leaves
+// it out entirely and only offers the kitchen SOPs to add.
+const HOSTED = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID) || process.env.GLASSES === "off";
+const bench = HOSTED ? null : await import("./glasses.ts");
+if (bench) app.route("/api/glasses", bench.glasses); else app.route("/api/glasses", hostedGlasses);
 
 app.get("/api/ledger", (c) => c.json({ ledger: getLedger(), drafts: getDrafts() }));
 
@@ -205,4 +213,5 @@ serve({ fetch: app.fetch, port: PORT }, (info) => {
   console.log(
     `notebook api on http://localhost:${info.port} · key ${apiKeyPresent() ? "present" : "missing"}${FORCE_OFFLINE ? " · OFFLINE forced" : ""} · ${n} cached question${n === 1 ? "" : "s"}${RECORD ? " · recording live runs" : ""}`,
   );
+  console.log(bench ? bench.glassesInfo() : "glasses: off (hosted copy)");
 });

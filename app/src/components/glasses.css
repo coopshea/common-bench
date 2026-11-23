@@ -1,0 +1,29 @@
+/* Glasses in a trial: a small card over the lab twin's bottom-left corner. Hairlines and ink, like the rest. */
+.split-twin { position: relative; }
+.gls { position: absolute; left: 16px; bottom: 16px; display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 10px; z-index: 2; }
+.gls-toggle { position: relative; }
+.gls-toggle::after { content: ""; position: absolute; top: 3px; right: 3px; width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--ink-4); background: var(--panel); }
+.gls-toggle.on::after { background: var(--ink); border-color: var(--ink); }
+.gls-toggle.rec::after { background: var(--sel); border-color: var(--sel); animation: gls-rec 1.4s ease-in-out infinite; }
+@keyframes gls-rec { 50% { opacity: .35; } }
+
+.gls-card { width: 320px; max-width: calc(50vw - 48px); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(27, 26, 23, .08); }
+.gls-head { display: flex; align-items: baseline; gap: 10px; }
+.gls-status { font-size: 13px; color: var(--ink-2); margin-right: auto; }
+.gls-status.rec { color: var(--sel); }
+.gls-head .muted { font-size: 12px; }
+.gls-video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--ink); border-radius: 4px; }
+.gls-note { font-size: 14px; color: var(--ink-3); }
+
+.gls-log { list-style: none; margin: 0; padding: 8px 0 0; border-top: 1px solid var(--line-2); display: flex; flex-direction: column; gap: 6px; }
+.gls-line { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: baseline; font-size: 14px; color: var(--ink); }
+.gls-line .mono { font-size: 11.5px; }
+.gls-line.voice .gls-text { color: var(--ink-2); }
+.gls-line.reply .gls-text { color: var(--sel); }
+.gls-line.guess .gls-text { color: var(--ink-3); }
+.gls-marks { display: inline-flex; gap: 2px; }
+.gls-marks button { width: 28px; height: 28px; border-radius: 50%; color: var(--ink-3); font-size: 14px; }
+.gls-marks button:hover { background: var(--panel-2); color: var(--ink); }
+
+.gls-foot { display: flex; align-items: center; gap: 14px; }
+.gls-foot .cb-btn { height: 38px; }

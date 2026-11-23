@@ -10,3 +10,5 @@ dist/
 *.log
 .DS_Store
 mockups/hifi/figures-out/
+# a sample of what a finished recording produces; large, kept on disk
+rehearsal/

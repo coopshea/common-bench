@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/@mentra/miniapp-cli/schema/miniapp.schema.json",
+  "packageName": "com.commonbench.glasses",
+  "version": "0.1.0",
+  "name": "Common Bench",
+  "description": "Records a trial from your glasses and fills in the steps as you speak",
+  "icon": "icon.png",
+  "type": "standard",
+  "sdkVersion": "0.3.0",
+  "minHostVersion": "1.42.0",
+  "entry": {
+    "background": "background/index.js",
+    "ui": "ui/index.html"
+  },
+  "permissions": [
+    {
+      "type": "CAMERA",
+      "description": "Records what you see while a trial is running, to your lab computer."
+    },
+    {
+      "type": "MICROPHONE",
+      "description": "Hears the values you say while a trial is open."
+    }
+  ],
+  "hardwareRequirements": [
+    {
+      "type": "CAMERA",
+      "level": "REQUIRED"
+    },
+    {
+      "type": "MICROPHONE",
+      "level": "REQUIRED"
+    }
+  ]
+}

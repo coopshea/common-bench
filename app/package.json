@@ -12,7 +12,15 @@
     "build": "tsc -b && vite build",
     "start": "node server/index.ts",
     "typecheck": "tsc -b --noEmit",
-    "test:phrases": "tsx evals/phrases-speech.ts && tsx evals/phrases-edits.ts && tsx evals/phrases-bookings.ts",
+    "glasses:check": "tsx --env-file-if-exists=.env.local server/glasses-check.ts",
+    "reprocess": "tsx --env-file-if-exists=.env.local server/glasses-reprocess.ts",
+    "finish": "tsx --env-file-if-exists=.env.local server/glasses-finish.ts",
+    "read-scale": "tsx --env-file-if-exists=.env.local server/glasses-read.ts",
+    "ask-after": "tsx --env-file-if-exists=.env.local server/glasses-ask-after.ts",
+    "export": "tsx --env-file-if-exists=.env.local server/glasses-export.ts",
+    "test:phrases": "tsx evals/phrases-speech.ts && tsx evals/phrases-edits.ts && tsx evals/phrases-bookings.ts && tsx evals/phrases-trials.ts",
+    "test:glasses": "tsx evals/glasses-suite.ts",
+    "test": "npm run -s typecheck && npm run -s test:phrases && npm run -s test:glasses",
     "managed:setup": "tsx --env-file-if-exists=.env.local managed/setup.ts",
     "managed:ask": "tsx --env-file-if-exists=.env.local managed/ask.ts"
   },
@@ -37,6 +45,7 @@
     "react": "^19.3.0",
     "react-big-calendar": "^1.19.4",
     "react-dom": "^19.3.0",
+    "three": "^0.170.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
