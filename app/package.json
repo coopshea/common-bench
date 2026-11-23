@@ -12,6 +12,7 @@
     "build": "tsc -b && vite build",
     "start": "node server/index.ts",
     "typecheck": "tsc -b --noEmit",
+    "test:phrases": "tsx evals/phrases-speech.ts && tsx evals/phrases-edits.ts && tsx evals/phrases-bookings.ts",
     "managed:setup": "tsx --env-file-if-exists=.env.local managed/setup.ts",
     "managed:ask": "tsx --env-file-if-exists=.env.local managed/ask.ts"
   },

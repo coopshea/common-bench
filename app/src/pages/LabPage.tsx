@@ -5,7 +5,7 @@ import type { Instrument, PersonId } from "../shared/types.ts";
 import { people, personById, trials } from "../data/notebook.ts";
 import { ME, experimentOfTrial, instrumentById, lab, pathOf, recentTrialsAt } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
-import { parseBooking, type BookingDraft } from "../lib/booking.ts";
+import { clashesOf, isBookingRequest, parseBooking, type BookingDraft } from "../lib/booking.ts";
 import { useStore } from "../state/store.tsx";
 import { Avatar, LogSquare, SOURCE_TEXT } from "../ds/index.tsx";
 import { FloorPlan } from "../components/FloorPlan.tsx";
@@ -88,24 +88,13 @@ export function LabPage() {
   );
 }
 
-/** What a proposed booking overlaps on that instrument: in use now, today's reservations, and approved bookings. */
-function clashesOf(d: BookingDraft, bookings: { inst: string; by: PersonId; day: string; from: string; to: string }[]) {
-  const today = d.day === "Today";
-  const taken = [
-    ...(today && d.inst.in_use ? [{ by: d.inst.in_use.by, from: d.inst.in_use.from, to: d.inst.in_use.until }] : []),
-    ...(today ? lab.schedule.filter((x) => x.inst === d.inst.id) : []),
-    ...bookings.filter((b) => b.inst === d.inst.id && b.day === d.day),
-  ];
-  return taken.filter((t) => d.from < t.to && d.to > t.from);
-}
-
 /** Booking requests in the Ask become an approval card under it. Nothing is booked until approved. */
 function useBooking(context?: Instrument) {
   const { dispatch, state } = useStore();
   const [draft, setDraft] = useState<BookingDraft | null>(null);
   const [miss, setMiss] = useState(false);
   const intercept = (q: string) => {
-    if (!/\b(book|reserve|hold)\b/i.test(q)) return false;
+    if (!isBookingRequest(q, !!context)) return false;
     const d = parseBooking(q, context);
     setDraft(d);
     setMiss(!d);

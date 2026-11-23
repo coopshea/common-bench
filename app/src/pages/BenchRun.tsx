@@ -8,8 +8,8 @@ import type { BenchField, BenchProtocol, BenchStep } from "../shared/types.ts";
 import { personById } from "../data/notebook.ts";
 import { lab } from "../lib/org.ts";
 import { useGo } from "../lib/nav.tsx";
-import { TOLERANCE, clock, compute, fmt, lastVersion, nowIso, offBy, useBench, type Entry } from "../lib/benchRun.ts";
-import { FATAL, listenOnce, parseUtterance, speechAvailable, stepNamed } from "../lib/benchSpeech.ts";
+import { TOLERANCE, clock, compute, fmt, lastVersion, nowIso, offBy, summarize, useBench, type Entry, type Note } from "../lib/benchRun.ts";
+import { FATAL, listenOnce, parseUtterance, speechAvailable, stepNamed, wordsToDigits } from "../lib/benchSpeech.ts";
 import { LabTwin, type TwinItem } from "../figures/LabTwin.tsx";
 import { PlatePhoto } from "../figures/PlatePhoto.tsx";
 
@@ -31,6 +31,25 @@ function chime() {
   } catch { /* no audio: the screen still shows it */ }
 }
 
+/** One frame from the camera as a small JPEG, or nothing when there's no camera (or no permission) to take it with. */
+async function snap(): Promise<string | undefined> {
+  let stream: MediaStream | undefined;
+  try {
+    stream = await Promise.race([
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 1280 } } }),
+      new Promise<never>((_, no) => window.setTimeout(() => no(new Error("camera timeout")), 8000)),
+    ]);
+    const video = document.createElement("video");
+    video.srcObject = stream; video.muted = true; video.playsInline = true;
+    await video.play();
+    await new Promise((r) => window.setTimeout(r, 500)); // let exposure settle
+    const w = 640, h = Math.round((w * video.videoHeight) / (video.videoWidth || w)) || 480;
+    const cv = Object.assign(document.createElement("canvas"), { width: w, height: h });
+    cv.getContext("2d")!.drawImage(video, 0, 0, w, h);
+    return cv.toDataURL("image/jpeg", 0.7);
+  } catch { return undefined; } finally { stream?.getTracks().forEach((t) => t.stop()); }
+}
+
 /** Keep the screen on while a trial is open, and take it back after the tab returns from the background. */
 function useWakeLock() {
   useEffect(() => {
@@ -49,9 +68,10 @@ function useTick(on: boolean) {
 
 export function BenchRun({ base }: { base: BenchProtocol }) {
   const go = useGo();
-  const { trialProto: proto, sop, run, editRun, adoptLatest } = useBench(base);
+  const { trialProto: proto, sop, run, editRun, adoptLatest, newRun } = useBench(base);
   const c = compute(proto, run);
   const [heard, setHeard] = useState<string | null>(null);
+  const [missed, setMissed] = useState(false); // the last thing heard had nothing in it to record
   const [fresh, setFresh] = useState<Set<string>>(new Set());
   const [listening, setListening] = useState(false);
   const [rerecord, setRerecord] = useState<string | null>(null);
@@ -59,7 +79,11 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   const [mode, setMode] = useState<"live" | "script">(() =>
     speechAvailable() && !new URLSearchParams(window.location.search).has("script") ? "live" : "script");
   const stopRef = useRef<() => void>(() => {});
-  useEffect(() => () => stopRef.current(), []);
+  // Hands-free: one tap on the microphone and it keeps listening, sentence after sentence, until tapped again.
+  const [live, setLive] = useState(false);
+  const handsFree = useRef(false);
+  const lastRef = useRef<string[]>([]); // the field(s) most recently recorded: what "no, 31.2", "redo" and "confirm" refer to
+  useEffect(() => () => { handsFree.current = false; stopRef.current(); }, []);
   useWakeLock();
 
   const step = proto.steps[c.done ? proto.steps.length - 1 : c.current];
@@ -114,8 +138,19 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
       },
     }));
     setFresh(new Set(Object.keys(values)));
+    lastRef.current = Object.keys(values);
   };
-  const takePhoto = () => editRun((x) => ({ ...x, photo: { at: nowIso() } }));
+  // The picture itself when a camera is there to take it (no tap needed once it's allowed); otherwise just the time.
+  const takePhoto = async () => {
+    const at = nowIso();
+    const src = mode === "script" ? undefined : await snap();
+    editRun((x) => ({ ...x, photo: { at, src } }));
+  };
+  const addNote = (sid: string, text: string, by: Note["by"]) => {
+    const t = text.trim().replace(/^./, (ch) => ch.toUpperCase());
+    if (t) editRun((x) => ({ ...x, notes: { ...x.notes, [sid]: [...(x.notes?.[sid] ?? []), { text: t, at: nowIso(), by }] } }));
+  };
+  const skipTimer = (st: BenchStep) => editRun((x) => ({ ...x, skipped: { ...x.skipped, [st.id]: nowIso() } }));
   const markDone = (sid: string) => editRun((x) => ({ ...x, done: { ...x.done, [sid]: nowIso() } }));
   const confirm = (id: string) => editRun((x) => ({ ...x, entries: { ...x.entries, [id]: { ...x.entries[id], ok: true } } }));
   const redo = (id: string) => { editRun((x) => { const { [id]: _, ...rest } = x.entries; return { ...x, entries: rest }; }); setRerecord(id); };
@@ -144,6 +179,8 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   const playScript = () => {
     const st = rerecord ? stepOfField(rerecord) : proto.steps[c.current];
     if (!st) return;
+    // A step with a timer: the first thing said is "start".
+    if (!rerecord && st.timer_min && !run.timers[st.id] && !run.skipped?.[st.id]) { setHeard("Start."); return startTimer(st); }
     const fields = rerecord ? st.fields.filter((f) => f.id === rerecord) : st.fields;
     const firstMass = !proto.steps.flatMap((x) => x.fields).some((f) => f.scales && run.entries[f.id]);
     const values = Object.fromEntries(fields.map((f) => [f.id, f.scales && firstMass ? Math.round(c.target[f.id] * 1.02 * 10) / 10 : r2(c.target[f.id])]));
@@ -162,31 +199,90 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
 
   // One heard sentence → fields. "Step 3" targets that step; "start"/"stop" run its timer; "done" finishes a step with nothing to enter.
   const apply = (text: string) => {
+    const said = text.trim();
     const named = stepNamed(text);
-    const st = rerecord ? stepOfField(rerecord) : named && proto.steps[named - 1] ? proto.steps[named - 1] : proto.steps[c.current];
+    const st = rerecord ? stepOfField(rerecord) : named && proto.steps[named - 1] ? proto.steps[named - 1] : proto.steps[c.done ? proto.steps.length - 1 : c.current];
     if (!st) return;
     setHeard(text);
+    setMissed(false);
+    // "Note: foamed more than usual" is words about the step, never values, whatever numbers are in it.
+    // ("Step 1 note, the bottle was nearly empty" puts it on that step.)
+    const note = said.replace(/^(?:for\s+|on\s+)?step\s+\w+[\s,:.-]*/i, "").match(/^(?:note|notes|comment|observation|remark)(?:\s+that)?[\s:,.-]+(.+)$/i);
+    if (note) return addNote(st.id, note[1], "voice");
+    const last = lastRef.current, all = proto.steps.flatMap((x) => x.fields);
+    const CORRECT = /^(?:no|nope|sorry|scratch that|i mean|actually|correction|make that|wait)\b/i;
+    // "No, 31.2": a correction to what was just recorded, even if that finished its step and the next one is open.
+    if (!rerecord && last.length && CORRECT.test(said) && /\d/.test(wordsToDigits(said))) {
+      const fixed = parseUtterance(said, all.filter((f) => last.includes(f.id))).values;
+      if (Object.keys(fixed).length) return record(fixed, "voice");
+    }
+    // "Redo" / "wrong": take the last value back and wait for it again.
+    if (!rerecord && last.length && /^(?:redo|undo|wrong|scratch that|delete that|no|nope)\W*$/i.test(said)) return redo(last[last.length - 1]);
+    // "Confirm" / "yes" / "correct": every value still waiting for its ✓.
+    const waiting = all.filter((f) => run.entries[f.id] && !run.entries[f.id].ok).map((f) => f.id);
+    if (waiting.length && /^(?:confirm(?:ed)?|yes|yep|yeah|correct|that'?s right|right|looks good|good|ok|okay)\W*$/i.test(said))
+      return editRun((x) => ({ ...x, entries: { ...x.entries, ...Object.fromEntries(waiting.map((id) => [id, { ...x.entries[id], ok: true }])) } }));
+    if (st.timer_min && !run.timers[st.id] && /\b(?:skip|no)\b.*\btimer\b/i.test(said)) return skipTimer(st);
+    if (c.done && !rerecord) return setMissed(true); // the trial is finished: nothing new is recorded by voice
     if (st.timer_min && /\bstart(ed)?\b/i.test(text) && !run.timers[st.id]) return startTimer(st);
     if (/\bstop(ped)?\b/i.test(text) && run.timers[st.id] && !run.timers[st.id].stop) return stopTimer(st);
     const { values, photo } = parseUtterance(text, rerecord ? st.fields.filter((f) => f.id === rerecord) : st.fields);
+    const finished = !st.fields.length && !st.photo && /\b(done|next|finished|complete|completed|check|okay|ok)\b/i.test(text);
     if (Object.keys(values).length) { record(values, "voice"); setRerecord(null); }
     if (photo && st.photo) takePhoto();
-    if (!st.fields.length && !st.photo && /\b(done|next|finished|complete)\b/i.test(text)) markDone(st.id);
+    if (finished) markDone(st.id);
+    // Heard, but nothing in it to record: say so, and say what would work for this step.
+    if (!Object.keys(values).length && !(photo && st.photo) && !finished) setMissed(true);
   };
 
-  const listen = () => {
-    if (listening || (c.done && !rerecord)) return;
-    if (mode === "script") return playScript();
-    let fallback = false;
+  // What's heard is handled by the latest render's apply, however long ago listening began.
+  const applyRef = useRef(apply);
+  applyRef.current = apply;
+  const playRef = useRef(playScript);
+  playRef.current = playScript;
+  const hear = () => {
+    let fatal = false;
     setListening(true);
-    setHeard(null);
     stopRef.current = listenOnce({
       interim: setHeard,
-      final: apply,
-      error: (code) => { if (FATAL.has(code) || code === "unsupported") { fallback = true; setMode("script"); } },
-      end: () => { setListening(false); if (fallback) playScript(); },
+      final: (t) => applyRef.current(t),
+      error: (code) => { if (FATAL.has(code) || code === "unsupported") { fatal = true; handsFree.current = false; setLive(false); setMode("script"); } },
+      end: () => {
+        setListening(false);
+        if (fatal) return playRef.current();
+        // Still hands-free: listen for the next sentence (a pause or silence ends each one).
+        if (handsFree.current) window.setTimeout(() => { if (handsFree.current && !document.hidden) hear(); }, 150);
+      },
     });
   };
+  const stopListening = () => { handsFree.current = false; setLive(false); stopRef.current(); setListening(false); };
+  /** The microphone button (or the space bar): play the script, or turn hands-free listening on and off. */
+  const listen = () => {
+    if (mode === "script") { if (!listening && !(c.done && !rerecord)) playScript(); return; }
+    if (live) return stopListening();
+    handsFree.current = true;
+    setLive(true);
+    setHeard(null);
+    setMissed(false);
+    hear();
+  };
+  // Coming back to the tab picks hands-free listening up again.
+  useEffect(() => {
+    const back = () => { if (!document.hidden && handsFree.current && !listening) hear(); };
+    document.addEventListener("visibilitychange", back);
+    return () => document.removeEventListener("visibilitychange", back);
+  });
+  // The trial's end is stamped once, when its last step completes.
+  useEffect(() => { if (c.done && !run.finished) editRun((x) => ({ ...x, finished: nowIso() })); }, [c.done]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A running timer shows in the tab's title, so it can be read from another tab or across the room.
+  useEffect(() => {
+    const [sid, t] = running[0] ?? [];
+    const st = sid ? proto.steps.find((x) => x.id === sid) : undefined;
+    if (!st?.timer_min || !t) return;
+    const left = st.timer_min * 60_000 - (Date.now() - new Date(t.start).getTime());
+    document.title = `${left <= 0 ? "Done" : mmss(left)} · ${st.title}`;
+    return () => { document.title = "Common Bench"; };
+  });
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -222,7 +318,9 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   const timerRow = (st: BenchStep) => {
     const t = run.timers[st.id];
     if (!st.timer_min) return null;
-    if (!t) return <button className="cb-btn timer-start" onClick={() => startTimer(st)}>Start {mmss(st.timer_min * 60_000)}</button>;
+    if (!t) return run.skipped?.[st.id]
+      ? <p className="cb-label timer-skipped">Timer skipped {clock(run.skipped[st.id])}</p>
+      : <div className="timer-row"><button className="cb-btn timer-start" onClick={() => startTimer(st)}>Start {mmss(st.timer_min * 60_000)}</button><button className="cb-link" onClick={() => skipTimer(st)}>Skip timer</button></div>;
     const end = t.stop ? new Date(t.stop).getTime() : Date.now();
     const left = st.timer_min * 60_000 - (end - new Date(t.start).getTime());
     return (
@@ -266,13 +364,15 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
                   {doneAt && <span className="mono muted at">{clock(doneAt)}</span>}
                 </button>
                 {showBullets && <ul className="bullets rstep-detail">{st.detail.map((d) => <li key={d}>{d}</li>)}</ul>}
-                {(now || run.timers[st.id]) && timerRow(st)}
+                {(now || run.timers[st.id] || run.skipped?.[st.id]) && timerRow(st)}
                 {(now || did) && st.fields.map(fieldRow)}
                 {now && !st.fields.length && !st.photo && <button className="cb-btn primary step-done" onClick={() => markDone(st.id)}>Done</button>}
+                {(run.notes?.[st.id] ?? []).map((n, k) => <p key={k} className="rnote"><span className="mono muted">{clock(n.at)}</span>{n.text}</p>)}
+                {now && <NoteBox onAdd={(t) => addNote(st.id, t, "typed")} />}
                 {st.photo && run.photo && (
                   <figure className="bphoto">
-                    <PlatePhoto dogbones={6} bars={3} width={260} />
-                    <figcaption className="cb-label">{proto.title} · Trial {run.name} · {personById(proto.runner).name} · {clock(run.photo.at)}</figcaption>
+                    {run.photo.src ? <img src={run.photo.src} alt={`Photo, ${st.title}`} width={260} /> : <PlatePhoto dogbones={6} bars={3} width={260} />}
+                    <figcaption className="cb-label">{proto.title} · Trial {run.name} · {run.operator || personById(proto.runner).name} · {clock(run.photo.at)}</figcaption>
                   </figure>
                 )}
               </li>
@@ -281,13 +381,17 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
         </ol>
 
         <footer className="run-mic">
-          {heard && <p className="heard" aria-live="polite">“{heard}”</p>}
+          {heard && (
+            <p className={`heard ${missed ? "missed" : ""}`} aria-live="polite">“{heard}”
+              {missed && !listening && <span className="cb-label">Not recorded · say {sayHint(step)}</span>}
+            </p>
+          )}
           {c.done ? (
-            <button className="cb-btn primary" onClick={() => go(`/sops/${base.id}`)}>Done</button>
+            <Finish proto={proto} run={run} onNew={() => { stopListening(); newRun(); go(`/sops/${base.id}`); }} onDone={() => { stopListening(); go(`/sops/${base.id}`); }} />
           ) : (
             <div className="mic-row">
               <span className="mic-side" />
-              <button className={`mic ${listening ? "on" : ""}`} aria-label="Speak" onClick={listen}>
+              <button className={`mic ${listening || live ? "on" : ""}`} aria-label={live ? "Stop listening" : "Speak"} aria-pressed={live} onClick={listen}>
                 <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
                   <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -307,6 +411,45 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   );
 }
 
+/** One line about the step, typed. (Spoken: "note, foamed more than usual".) */
+function NoteBox({ onAdd }: { onAdd: (text: string) => void }) {
+  const [text, setText] = useState("");
+  return (
+    <input className="rnote-in" value={text} placeholder="Note" aria-label="Note on this step" onChange={(e) => setText(e.target.value)}
+      onKeyDown={(e) => { if (e.key === "Enter" && text.trim()) { onAdd(text); setText(""); } }} onBlur={() => { if (text.trim()) { onAdd(text); setText(""); } }} />
+  );
+}
+
+/** The end of a trial: what was recorded, what still needs a look, and what to put away before leaving the bench. */
+function Finish({ proto, run, onNew, onDone }: { proto: BenchProtocol; run: ReturnType<typeof useBench>["run"]; onNew: () => void; onDone: () => void }) {
+  const s = summarize(proto, run);
+  const uniq = (xs: string[]) => [...new Set(xs)];
+  const away = uniq(proto.steps.flatMap((x) => x.put)).map((id) => lab.consumables.find((k) => k.id === id)?.name).filter(Boolean);
+  const used = uniq(proto.steps.map((x) => x.instrument)).map((id) => lab.instruments.find((i) => i.id === id)?.name).filter(Boolean);
+  return (
+    <div className="finish" role="status">
+      <p className="finish-line mono">
+        <b>Trial {run.name || "—"}</b>{run.operator && <span>{run.operator}</span>}{s.minutes > 0 && <span>{s.minutes} min</span>}
+        <span>{s.recorded}/{s.total} values</span>{s.notes > 0 && <span>{s.notes} note{s.notes === 1 ? "" : "s"}</span>}{s.skipped > 0 && <span>{s.skipped} timer{s.skipped === 1 ? "" : "s"} skipped</span>}
+      </p>
+      {s.off.length > 0 && <p className="finish-flag">Off target: {s.off.map((f) => f.label).join(", ")}</p>}
+      {s.unconfirmed.length > 0 && <p className="finish-flag">Not confirmed: {s.unconfirmed.map((f) => f.label).join(", ")}</p>}
+      {away.length > 0 && <p className="finish-away"><span className="cb-label">Put back</span>{away.join(" · ")}</p>}
+      {used.length > 0 && <p className="finish-away"><span className="cb-label">Clean and free</span>{used.join(" · ")}</p>}
+      <div className="finish-actions">
+        <button className="cb-btn ghost" onClick={onNew}>New trial</button>
+        <button className="cb-btn primary" onClick={onDone}>Done</button>
+      </div>
+    </div>
+  );
+}
+
+/** What to say for a step, in its own terms: “Speed 3000, Time 2”, “photo”, “start” or “done”. */
+function sayHint(st: BenchStep): string {
+  if (st.fields.length) return `“${st.fields.slice(0, 2).map((f) => `${f.label.toLowerCase()} ${f.formula.match(/^\d*\.?\d+$/) ? f.formula : "…"}`).join(", ")}”`;
+  return st.photo ? "“photo”" : st.timer_min ? "“start” or “done”" : "“done”";
+}
+
 /** The recorded value: voice fills it, or tap and type. Enter or leaving the box records it. Off-target values show how far. */
 function ValueBox({ value, unit, label, off, onCommit }: { value: number | undefined; unit: string; label: string; off: number | null; onCommit: (v: number) => void }) {
   const [text, setText] = useState(value === undefined ? "" : fmt(value, unit));
@@ -319,7 +462,13 @@ function ValueBox({ value, unit, label, off, onCommit }: { value: number | undef
     <span className="bvalue">
       {off !== null && <span className="mono off-by">{off > 0 ? "+" : "−"}{Math.round(Math.abs(off) * 100)}%</span>}
       <input className="mono" inputMode="decimal" aria-label={label} value={text} onChange={(e) => setText(e.target.value)}
-        onBlur={commit} onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} />
+        onBlur={commit} onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          // Enter records this value and moves to the next empty box (which may be in the step that just opened).
+          const here = e.target as HTMLInputElement;
+          here.blur();
+          window.setTimeout(() => { [...document.querySelectorAll<HTMLInputElement>(".bvalue input")].find((x) => x !== here && x.value === "")?.focus(); }, 60);
+        }} />
       <span className="mono unit">{unit}</span>
     </span>
   );

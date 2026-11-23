@@ -36,7 +36,7 @@ const Setting = createReactBlockSpec(
           <input className="sop-in label" value={p.label} placeholder="Name" onChange={(e) => set("label", e.target.value)} {...own} />
           <input className="sop-in mono num" value={p.value} placeholder="0" inputMode="decimal" onChange={(e) => set("value", e.target.value)} {...own} />
           <input className="sop-in mono unit" value={p.unit} placeholder="unit" onChange={(e) => set("unit", e.target.value)} {...own} />
-          <input className="sop-in mono id" value={p.pid} placeholder="variable" onChange={(e) => set("pid", e.target.value.replace(/\W/g, "_"))} {...own} />
+          <input className="sop-in mono id" value={p.pid} placeholder={slugId(p.label) || "variable"} aria-label="Variable name" onChange={(e) => set("pid", e.target.value.replace(/\W/g, "_"))} {...own} />
         </div>
       );
     },
@@ -63,12 +63,13 @@ const Step = createReactBlockSpec(
 
 function AmountView({ props, set }: { props: { fid: string; label: string; unit: string; formula: string }; set: (k: string, v: string) => void }) {
   const scope = useContext(SopScope);
-  const err = scope.errors[props.fid];
+  const id = props.fid || slugId(props.label);
+  const err = scope.errors[id];
   let tex = "";
   try {
     tex = isPlain(props.formula)
-      ? `\\text{${texText(props.label || "Amount")}} = ${fmt(scope.values[props.fid], props.unit)}\\ \\text{${texText(props.unit)}}`
-      : `\\text{${texText(props.label || "Amount")}} = ${toTex(props.formula, (id) => `\\text{${texText(scope.labels[id] ?? id)}}`)} = ${fmt(scope.values[props.fid], props.unit)}\\ \\text{${texText(props.unit)}}`;
+      ? `\\text{${texText(props.label || "Amount")}} = ${fmt(scope.values[id], props.unit)}\\ \\text{${texText(props.unit)}}`
+      : `\\text{${texText(props.label || "Amount")}} = ${toTex(props.formula, (id) => `\\text{${texText(scope.labels[id] ?? id)}}`)} = ${fmt(scope.values[id], props.unit)}\\ \\text{${texText(props.unit)}}`;
   } catch { tex = ""; }
   return (
     <div className="sop-amount" contentEditable={false}>
@@ -77,7 +78,7 @@ function AmountView({ props, set }: { props: { fid: string; label: string; unit:
         <input className={`sop-in mono formula ${err ? "bad" : ""}`} value={props.formula} placeholder="batch_g * 0.38" spellCheck={false} title={err}
           onChange={(e) => set("formula", e.target.value)} {...own} />
         <input className="sop-in mono unit" value={props.unit} placeholder="unit" onChange={(e) => set("unit", e.target.value)} {...own} />
-        <input className="sop-in mono id" value={props.fid} placeholder="variable" onChange={(e) => set("fid", e.target.value.replace(/\W/g, "_"))} {...own} />
+        <input className="sop-in mono id" value={props.fid} placeholder={slugId(props.label) || "variable"} aria-label="Variable name" onChange={(e) => set("fid", e.target.value.replace(/\W/g, "_"))} {...own} />
       </div>
       {tex && !err && <MathTex tex={tex} />}
     </div>
@@ -104,7 +105,8 @@ export const sopSlashItems = (editor: SopEditor, query: string) =>
       onItemClick: () => insertOrUpdateBlockForSlashMenu(editor, { type: "amount" }) },
     { title: "Setting", aliases: ["setting", "param", "variable"], group: "Protocol", subtext: "A number the run can change",
       onItemClick: () => insertOrUpdateBlockForSlashMenu(editor, { type: "setting" }) },
-    ...getDefaultReactSlashMenuItems(editor),
+    // Only what a protocol uses: text and lists. (No media, tables, code or emoji in an SOP.)
+    ...getDefaultReactSlashMenuItems(editor).filter((i) => ["Bullet List", "Numbered List", "Check List", "Paragraph"].includes(i.title)),
   ], query);
 
 // ---------- Protocol ⇄ document ----------
@@ -119,6 +121,9 @@ export function toBlocks(p: BenchProtocol): SopPartial[] {
   return out;
 }
 
+/** A variable name from a label ("Base monomer" → base_monomer), for blocks whose variable box was left empty. */
+export const slugId = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").replace(/^(\d)/, "_$1");
+
 const textOf = (b: SopBlock) => (Array.isArray(b.content) ? b.content.map((c) => ("text" in c ? c.text : "")).join("") : "");
 const list = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean);
 
@@ -127,14 +132,17 @@ export function fromBlocks(blocks: SopBlock[], base: BenchProtocol): BenchProtoc
   const params: BenchProtocol["params"] = [];
   const steps: BenchStep[] = [];
   for (const b of blocks) {
-    if (b.type === "setting" && b.props.pid) params.push({ id: b.props.pid, label: b.props.label || b.props.pid, value: Number(b.props.value) || 0, unit: b.props.unit });
+    // A block with a name but no variable gets one from its name; a block with neither is still being typed.
+    const taken = (id: string) => params.some((x) => x.id === id) || steps.some((s) => s.fields.some((f) => f.id === id));
+    const idFor = (given: string, label: string) => { const base = given || slugId(label); let id = base, k = 2; while (id && taken(id)) id = `${base}_${k++}`; return id; };
+    if (b.type === "setting" && (b.props.pid || b.props.label.trim())) params.push({ id: idFor(b.props.pid, b.props.label), label: b.props.label || b.props.pid, value: Number(b.props.value) || 0, unit: b.props.unit });
     else if (b.type === "step") steps.push({
       id: b.props.sid || `step-${steps.length + 1}`, station: STATION[b.props.instrument] ?? "weigh", instrument: b.props.instrument,
       title: textOf(b) || `Step ${steps.length + 1}`, detail: [], fields: [], get: list(b.props.get), put: list(b.props.put), photo: b.props.photo || undefined, timer_min: Number(b.props.timer) || undefined,
     });
     else if (steps.length && (b.type === "bulletListItem" || b.type === "numberedListItem" || b.type === "checkListItem") && textOf(b)) steps[steps.length - 1].detail.push(textOf(b));
-    else if (steps.length && b.type === "amount" && b.props.fid) {
-      const f: BenchField = { id: b.props.fid, label: b.props.label || b.props.fid, unit: b.props.unit, formula: b.props.formula };
+    else if (steps.length && b.type === "amount" && (b.props.fid || b.props.label.trim())) {
+      const f: BenchField = { id: idFor(b.props.fid, b.props.label), label: b.props.label || b.props.fid, unit: b.props.unit, formula: b.props.formula };
       if (b.props.scales) f.scales = true;
       steps[steps.length - 1].fields.push(f);
     }
