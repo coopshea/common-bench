@@ -4,3 +4,8 @@ dist
 *.log
 managed/.state.json
 managed/runs/
+# glasses recordings: video, frames and logs stay on this machine
+recordings/
+# a local certificate and its private key
+auto.crt
+auto.key

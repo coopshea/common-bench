@@ -12,6 +12,7 @@ import { TOLERANCE, clock, compute, fmt, lastVersion, nowIso, offBy, summarize, 
 import { FATAL, listenOnce, parseUtterance, speechAvailable, stepNamed, wordsToDigits } from "../lib/benchSpeech.ts";
 import { LabTwin, type TwinItem } from "../figures/LabTwin.tsx";
 import { PlatePhoto } from "../figures/PlatePhoto.tsx";
+import { GlassesPanel } from "../components/GlassesPanel.tsx";
 
 const consumable = (id: string) => lab.consumables.find((k) => k.id === id)!;
 const r2 = (x: number) => Math.round(x * 100) / 100;
@@ -183,7 +184,7 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
     if (!rerecord && st.timer_min && !run.timers[st.id] && !run.skipped?.[st.id]) { setHeard("Start."); return startTimer(st); }
     const fields = rerecord ? st.fields.filter((f) => f.id === rerecord) : st.fields;
     const firstMass = !proto.steps.flatMap((x) => x.fields).some((f) => f.scales && run.entries[f.id]);
-    const values = Object.fromEntries(fields.map((f) => [f.id, f.scales && firstMass ? Math.round(c.target[f.id] * 1.02 * 10) / 10 : r2(c.target[f.id])]));
+    const values = Object.fromEntries(fields.map((f) => [f.id, f.result ? 5 : f.scales && firstMass ? Math.round(c.target[f.id] * 1.02 * 10) / 10 : r2(c.target[f.id])])); // a measured result has no target to say: the script says 5
     const say = fields.length ? fields.map((f) => `${f.label}, ${values[f.id]} ${f.unit}`).join("; ") : st.photo ? "Photo." : "Done.";
     setListening(true);
     setHeard(null);
@@ -219,8 +220,10 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
     // "Redo" / "wrong": take the last value back and wait for it again.
     if (!rerecord && last.length && /^(?:redo|undo|wrong|scratch that|delete that|no|nope)\W*$/i.test(said)) return redo(last[last.length - 1]);
     // "Confirm" / "yes" / "correct": every value still waiting for its ✓.
-    const waiting = all.filter((f) => run.entries[f.id] && !run.entries[f.id].ok).map((f) => f.id);
-    if (waiting.length && /^(?:confirm(?:ed)?|yes|yep|yeah|correct|that'?s right|right|looks good|good|ok|okay)\W*$/i.test(said))
+    // A value held for being outside the SOP's acceptance needs the word itself: a passing "okay" doesn't let it through.
+    const strong = /^(?:confirm(?:ed)?|accept(?:ed)?(?: it)?|keep it)\W*$/i.test(said);
+    const waiting = all.filter((f) => run.entries[f.id] && !run.entries[f.id].ok && (strong || !c.held(f.id))).map((f) => f.id);
+    if (waiting.length && /^(?:confirm(?:ed)?|accept(?:ed)?(?: it)?|keep it|yes|yep|yeah|correct|that'?s right|right|looks good|good|ok|okay)\W*$/i.test(said))
       return editRun((x) => ({ ...x, entries: { ...x.entries, ...Object.fromEntries(waiting.map((id) => [id, { ...x.entries[id], ok: true }])) } }));
     if (st.timer_min && !run.timers[st.id] && /\b(?:skip|no)\b.*\btimer\b/i.test(said)) return skipTimer(st);
     if (c.done && !rerecord) return setMissed(true); // the trial is finished: nothing new is recorded by voice
@@ -297,13 +300,13 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
   const fieldRow = (f: BenchField) => {
     const e = run.entries[f.id];
     const t = c.target[f.id];
-    const moved = !e && Math.abs(t - c.planned[f.id]) > 1e-9;
+    const moved = !e && !f.result && Math.abs(t - c.planned[f.id]) > 1e-9;
     const off = e ? offBy(e.value, t) : null;
     const isOff = off !== null && Math.abs(off) > TOLERANCE;
     return (
       <div key={f.id} className={`bfield ${fresh.has(f.id) ? "fresh" : ""} ${rerecord === f.id ? "armed" : ""} ${isOff ? "off" : ""}`}>
         <span className="blabel">{f.label}{e && <span className="mono muted at">{clock(e.at)}</span>}</span>
-        <span className="btarget mono">{moved && <s>{fmt(c.planned[f.id], f.unit)}</s>} {fmt(t, f.unit)} {f.unit}</span>
+        <span className="btarget mono">{f.result ? "measured" : <>{moved && <s>{fmt(c.planned[f.id], f.unit)}</s>} {fmt(t, f.unit)} {f.unit}</>}</span>
         <ValueBox value={e?.value} unit={f.unit} label={f.label} off={isOff ? off : null} onCommit={(v) => { record({ [f.id]: v }, "typed"); setRerecord(null); }} />
         <span className="bmarks">
           {e && <>
@@ -336,6 +339,8 @@ export function BenchRun({ base }: { base: BenchProtocol }) {
     <div className="bench-split">
       <section className="split-twin" aria-label="Lab">
         <LabTwin selected={c.done ? null : step.instrument} onSelect={() => {}} active={c.done ? "" : step.instrument} items={items} />
+        {/* Glasses: the camera's log beside the twin; what's said through them fills the steps like the microphone does. */}
+        <GlassesPanel proto={proto} run={run} trial={run.name} current={c.done ? null : c.current} onHeard={apply} onInterim={setHeard} />
       </section>
 
       <section className="split-steps">

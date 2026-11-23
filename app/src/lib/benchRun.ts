@@ -144,19 +144,22 @@ export function compute(p: BenchProtocol, run: RunState) {
   const k = anchor && planned.values[anchor.id] ? run.entries[anchor.id].value / planned.values[anchor.id] : 1;
   const scope = k === 1 ? params : { ...params, [BATCH]: params[BATCH] * k };
   const scaled = k === 1 ? planned : evaluateAll(formulas, scope);
-  const target = { ...scaled.values, ...(anchor ? { [anchor.id]: planned.values[anchor.id] } : {}) };
+  const target: Record<string, number> = { ...scaled.values, ...(anchor ? { [anchor.id]: planned.values[anchor.id] } : {}) };
+  for (const f of fields) if (f.result) target[f.id] = NaN; // a measured result has nothing to aim for
+  // With acceptance set on the SOP, a value outside it holds its step until it is fixed or accepted (entry.ok).
+  const held = (id: string) => { const e = run.entries[id]; return Boolean(e && !e.ok && outsideAccept(p, e.value, target[id])); };
   // A step is done when its values are in and its photo taken; a step with neither needs an explicit Done.
   // A step with a timer also needs the timer to have been run, or skipped on purpose (which is recorded).
   const stepDone = (i: number) => {
     const s = p.steps[i];
     if (s.timer_min && !run.timers[s.id] && !run.skipped?.[s.id]) return false;
     if (!s.fields.length && !s.photo) return !!run.done[s.id];
-    return s.fields.every((f) => run.entries[f.id]) && (!s.photo || run.photo !== null);
+    return s.fields.every((f) => run.entries[f.id] && !held(f.id)) && (!s.photo || run.photo !== null);
   };
   const current = p.steps.findIndex((_, i) => !stepDone(i));
   return {
     planned: planned.values, target, scope: scaled.values, errors: planned.errors, k,
-    stepDone, current, done: current === -1, started: isStarted(run),
+    stepDone, held, current, done: current === -1, started: isStarted(run),
   };
 }
 
@@ -191,6 +194,9 @@ export function useAllTrials() {
 export const offBy = (value: number, target: number | undefined) =>
   target === undefined || !Number.isFinite(target) || target === 0 ? null : (value - target) / target;
 export const TOLERANCE = 0.05;
+/** Is this value outside what the SOP accepts for its aim? Never for a measured result, or an SOP with no acceptance. */
+export const outsideAccept = (p: BenchProtocol, value: number, target: number | undefined) =>
+  Boolean(p.accept) && target !== undefined && Number.isFinite(target) && Math.abs(value - target) > Math.max(Math.abs(target) * p.accept!.pct / 100, p.accept!.abs) + 1e-9;
 
 export const fmt = (x: number | undefined, unit: string) =>
   x === undefined || !Number.isFinite(x) ? "—" : unit === "g" ? x.toFixed(2) : String(Math.round(x * 100) / 100);
